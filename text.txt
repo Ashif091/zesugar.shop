@@ -1,0 +1,86 @@
+                  <div class="cart_data_div single-<%=cartItem._id%>">
+                <div class="img_product ">
+                  <img src="/<%=productItem.product_image_url[0] %>" alt="">
+                </div>
+                <div class="name_product">
+                  <p class="name">
+                    <%=productItem.product_name%><span class="price_tag">
+                      <%=cartItem.product_price%>,DHS
+                    </span>
+                  </p>
+                  <div class="description_div">
+                    <p class="description">
+                      <%=productItem.product_description%>
+                    </p>
+                  </div>
+
+
+
+                </div>
+                <!-- quantity meter -->
+                <div class="quantity_meter" width="100px" height="30px">
+                  <div class="minus minus-<%=cartItem._id%>" onclick="decreaseValue('<%=cartItem._id%>')">
+                    -</div>
+                  <div class="value" id="value-<%=cartItem._id%>" data-id="<%=cartItem._id%>" data-qty="<%=qty_product%>">
+                    <%=cartItem.quantity%>
+                  </div>
+                  <div class="plus plus-<%=cartItem._id%>" onclick="increaseValue('<%=cartItem._id%>')" data-qty="<%=qty_product%>">+</div>
+                </div>
+                <p class="out_stock out_stock-<%=cartItem._id%>">Out of Stock</p>
+
+                <div class="delete_btn_div">
+                  <button class="delete_btn" onclick="deleteproduct('<%=cartItem._id%>')">cancel</button>
+                </div>
+
+
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="col-3">
+            <div class="left_bar">
+              <div class="data_visible_div">
+                <h3>Price Details</h3>
+                <hr>
+                <div class="price_data_div">
+                  <p class="quantity">Quantity: <strong class="qty">
+                      <%=isCart.totalQuantity %>
+              </strong></p>
+              <p class="total_price">Total Price: <span class="price">
+                  <%=isCart.total%>
+                </span>,DHS</p>
+              <p class="charge">Delivery Charge: <s>0.3,DHS</s><span style="color: rgb(49, 188, 49);"> Free</span>
+              </p>
+              <hr>
+            </div>
+            <p class="amount">Total Price: <span class="amountv">
+                <%=isCart.total%>
+              </span>,DHS</p>
+
+
+
+
+          </div>
+
+        </div>
+
+      </div>

@@ -1,0 +1,336 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Uchen', serif;
+}
+
+.btnclass {
+    position: absolute;
+    top: -32px;
+
+}
+
+.btnclasscard {
+    position: absolute;
+    top: 0px;
+}
+
+.btnsub {
+    margin-left: 1149px;
+    background-color: transparent;
+    width: 90px;
+    border-radius: 20px;
+
+    color: white;
+
+}
+
+.all-content {
+    background: rgb(72, 20, 44);
+}
+
+#navbar {
+    background-color: rgb(72, 20, 44);
+    padding-left: 60px;
+    font-weight: bold;
+}
+
+#logo {
+    font-size: 23px;
+    color: white;
+}
+
+#logo img {
+    margin-bottom: 15px;
+}
+
+.navbar-nav {
+    margin-left: 10px;
+}
+
+.nav-link {
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    margin-left: 15px;
+    transition: 0.5s ease;
+}
+
+.nav-link:hover {
+    background-color: rgb(242, 93, 132);
+    color: white;
+    border-radius: 5px;
+}
+
+.icons {
+    margin-left: 30px;
+}
+
+.icons img {
+    margin-left: 10px;
+    transition: .5s ease;
+    cursor: pointer;
+}
+
+.icons img:hover {
+    transform: translateY(-5px);
+
+}
+
+@media screen and (max-width:330px) {
+    #logo {
+        font-size: 15px;
+    }
+}
+
+/* navbar end */
+
+/* footer */
+#footer {
+    width: 100%;
+    background-color: rgb(110, 30, 67);
+    box-shadow: 0px 0px 5px black;
+    margin-top: 100px;
+}
+
+#footer h1 {
+    color: white;
+    padding-top: 30px;
+}
+
+#footer p {
+    color: white;
+}
+
+.icons i {
+    background-color: white;
+    color: rgb(110, 30, 67);
+    border-radius: 50px;
+    padding: 6px;
+    font-size: 30px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.icons i:hover {
+    background-color: rgb(179, 50, 110);
+    color: white;
+}
+
+.copyright {
+    color: white;
+    margin-top: 20px;
+}
+
+.credite {
+    color: white;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.arrow {
+    position: fixed;
+    background-color: rgb(190, 71, 104);
+    border-radius: 50px;
+    height: 50px;
+    bottom: 40px;
+    right: 50px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+}
+
+/* footer */
+
+
+/* =========left bar========= */
+.main_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    margin-left: 10%;
+    height: 900px;
+}
+
+.left_bar {
+    flex: 1.1;
+}
+
+.action_div {
+    margin-top: 6rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.action_div p {
+    margin-top: 10px;
+    color: #fff;
+}
+
+.right_bar {
+    position: relative;
+    flex: 4;
+}
+
+.form_div {
+    height: 40px;
+    margin: 5px 10px 5px 10px;
+    border-radius: 0 12px 0 12px;
+    border: 1px solid rgb(130, 8, 43);
+    background: rgb(201, 24, 74);
+    background: linear-gradient(90deg, rgba(201, 24, 74, 1) 0%, rgba(255, 117, 143, 1) 100%);
+}
+
+/* =========left bar end========= */
+
+
+/* =======Right Bar ============ */
+.data_display_div {
+    width: 90%;
+    background: rgb(179, 0, 50);
+    background: linear-gradient(90deg, rgba(179, 0, 50, 1) 0%, rgba(254, 86, 118, 1) 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 2% 5% 0 5%;
+    min-height: 600px; 
+    position: relative;
+}
+.logoutbtn{
+    background-color: transparent;
+    padding:0 5px 0 5px;
+    border-radius: 12px 0 12px 0;
+    color: #fff;
+    border: 2px solid rgb(217, 85, 123);
+    :hover{
+        outline: hidden;
+    }
+}
+.profile{
+    position: relative;
+    display: flex;
+}
+
+.profile_img {
+    width: 8rem;
+    height: 8rem;
+    border: 2px solid rgb(179, 37, 96);
+    background: rgb(238, 197, 209);
+    background: linear-gradient(90deg, rgba(238, 197, 209, 1) 0%, rgba(254, 86, 118, 1) 100%);
+    border-radius: 50%;
+    margin: 10px 0 0 43%;
+    overflow: hidden;
+    position: relative;
+    background-size: cover;
+
+
+}
+.user_pic{
+    background-size: cover;
+}
+.vertical_line {
+    width: 3px;
+    height: 600px;
+    border-radius: 5px;
+    background-color: rgb(255, 117, 143);
+    position: absolute;
+    margin: 3rem 0 0 0;
+
+}
+
+@keyframes up {
+    from {
+        bottom: -70px;
+    }
+
+    to {
+        bottom: 0px;
+    }
+}
+
+@keyframes down {
+    from {
+        bottom: 0px;
+    }
+
+    to {
+        bottom: -70px;
+    }
+}
+
+.upload_div {
+    position: absolute;
+    width: 100%;
+    height: 70px;
+    background-color: rgba(159, 159, 150, 0.603);
+    bottom: 0;
+    display: flex;
+    animation-name: up;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+
+    .upload_img {
+
+        margin: auto auto;
+    }
+}
+
+/* ===========EDIT Profile============ */
+.edit_img {
+    position: absolute;
+    top: 6.4rem;/* Adjust as needed */
+    left: 62%; /* Position it to the right of the .profile_img div */
+    transform: translateX(-100%); /* Move it back by its own width */
+    width: 30px; /* Same width as in your HTML */
+    height: auto; /* Maintain aspect ratio */
+  }
+/* =================================== */
+
+/* ========Error msg======== */
+.errormsg{
+    height: 70px;
+    width: 100px;
+    position: absolute;
+    border: 2px solid #e18383;
+    color: #fff;
+    background: rgb(255,255,255);
+    background: linear-gradient(148deg, rgba(255,255,255,0.6056547619047619) 0%, rgba(244,2,2,0.7401085434173669) 29%, rgba(252,0,0,0.7401085434173669) 63%, rgba(244,244,244,0.6532738095238095) 100%);
+    padding: 10px;
+    border-radius: 8px;
+    bottom: 40px;
+    right: 80px;
+    overflow: hidden;
+   }
+   @keyframes expand {
+    from {width: 0;}
+    to {width: 300px;}
+   }
+   @keyframes hide {
+    from {width: 300px;}
+    to {width: 0;}
+   }
+   .errormsg {
+    animation-name: expand;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+   }
+/* ========================= */
+.id_div{
+    width:100%;
+    height:60px;
+    margin-top: 10px;
+}
+.nameUser{
+width: 100%;
+color: #fff;
+text-align: center;
+padding-left: 25px;
+margin-bottom: 0px;
+
+}

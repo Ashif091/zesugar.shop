@@ -1,0 +1,586 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url(./image2/bgimg.png);
+    /* Replace with your background image URL */
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.container_main {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+}
+
+/* side bar */
+.sidebar {
+    width: 230px;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(100, 91, 91, 0.852);
+    color: white;
+
+}
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.button {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 5px;
+    text-align: center;
+    background-color: rgb(136, 118, 118);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color, .3s;
+}
+
+#myBtn {
+    background-color: transparent;
+    border: 2px solid rgb(68, 42, 42);
+    border-radius: 30px;
+    right: 20px;
+    top: 10px;
+    position: absolute;
+    color: #fff;
+}
+
+.button:focus {
+    background-color: rgb(95, 75, 75);
+    border: 1px solid rgb(255, 255, 255);
+    outline: none;
+}
+
+.profile_bar {
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*  */
+
+.circle {
+    width: 80%;
+    height: 90%;
+    border-radius: 300px;
+    background-color: rgb(98, 59, 59);
+    border: 2px solid rgb(62, 30, 30);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admintag {
+    position: absolute;
+    bottom: 0;
+}
+
+.circle img {
+    width: 100px;
+    height: auto;
+    border-radius: 30px;
+}
+
+
+
+/* end of side bar */
+/* heading  section */
+.search-bar {
+    position: absolute;
+    right: 8rem;
+    top: 2rem;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+.search-bar h1 {
+    margin-right: 10rem;
+    color: #fff;
+}
+
+#search-input {
+    width: 260px;
+    padding: 5px;
+    padding-left: 10px;
+    border: 2px solid rgb(62, 30, 30);
+    background-color: rgba(100, 91, 91, 0.852);
+    color: #fff;
+    border-radius: 30px;
+    outline: none;
+}
+
+#search-button {
+    background: none;
+    position: absolute;
+    right: 1rem;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+
+}
+
+#search-button:focus {
+    border: none;
+    outline: none;
+}
+
+
+#search-button img {
+    width: 20px;
+    /* Adjust the size of the search icon */
+    height: 20px;
+}
+
+/* img crop ====================*/
+#imag_crop_div {
+    position: absolute;
+    top: 2rem;
+    left: 4rem;
+    width: 200px;
+    height: 200px;
+    border: 5px solid red;
+    display: none;
+}
+.close{
+   margin-right: 30px;
+   margin-top: 10px;
+   cursor: pointer;
+}
+
+
+/* end */
+/* validation */
+.input_div{
+    position: relative;
+}
+.error-message{
+    color: rgb(158, 42, 42);
+    
+
+}
+#productname-error{
+    top: 26px;
+    position: absolute;
+    left:20px;
+}
+@keyframes slideInFromLeft {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+   }
+   
+   #alert-message {
+    animation: slideInFromLeft .3s forwards;
+    position: absolute;
+    right: -71px;
+    top: 498px;
+    width: 328px;
+   }
+   
+/* end */
+
+#clsbtn {
+    background-color: transparent;
+    border: none;
+}
+
+.scrollable-content {
+    position: relative;
+
+    width: 850px;
+    border-radius: 20px;
+    border: 2px solid rgb(68, 30, 30);
+    height: 500px;
+    background-color: rgba(100, 91, 91, 0.852);
+    margin-top: 15vh;
+    padding: 0px;
+    margin-left: 24vw;
+    overflow: hidden;
+
+}
+
+.box::-webkit-scrollbar {
+    width: 0.5rem;
+    /* Adjust as needed */
+    background-color: transparent;
+    /* Hide the background of the scrollbar */
+}
+
+.box {
+    position: relative;
+    margin-top: 1rem;
+    width: 100%;
+    margin-left: 2rem;
+    height: 400px;
+    /* Total height of the 10 inner boxes (10 * 40px) */
+    overflow-y: scroll;
+    /* Enable vertical scrolling for the box */
+    padding-bottom: 200px;
+    padding-right: 17px;
+
+}
+
+.inner-box {
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 140px;
+    width: 90%;
+    border-radius: 12px;
+    border: 1px solid rgb(68, 30, 30);
+    /* align-items: center; */
+    top: 20px;
+    left: 30px;
+    bottom: 20px;
+    background-color: rgb(151, 126, 126);
+    box-shadow: 5px 5px 10px black;
+    display: grid;
+    grid-template-columns: .5fr 3fr 2fr 1fr 1fr;
+    /* Updated grid columns */
+    gap: 3px;
+    transition: background-color 0.3s;
+    margin-bottom: 20PX;
+}
+
+.brownline {
+    position: absolute;
+    width: 90%;
+    margin-left: 1.3rem;
+    margin-top: 1.3rem;
+    height: 70%;
+    /* background-color:713200; */
+}
+
+.item {
+    text-align: center;
+    margin: auto 0;
+    position: relative;
+    padding: 10px;
+    /* Optional padding for items */
+    color: white;
+    /* background-color: rgb(151, 126, 126); */
+}
+
+.inner-box:hover {
+    background-color: rgb(113, 88, 88);
+}
+
+.edit_btn {
+    background-color: rgb(161, 142, 142);
+    border-radius: 12px;
+    border: 2px solid rgb(90, 75, 75);
+    color: #fff;
+}
+
+.line {
+    position: absolute;
+    width: 5%;
+    height: 90px;
+    color: #fff;
+
+    background-color: rgb(41, 21, 21);
+    text-align: center;
+}
+
+.imgdiv_product {
+    border: 1px solid rgb(117, 76, 76);
+    border-radius: 12px;
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imgdiv_product img {
+
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.imgtext {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+
+}
+
+.discription {
+    width: 12rem;
+    padding-left: .5rem;
+    overflow-wrap: break-word;
+}
+
+.icons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    transition: width, 0.3s;
+}
+
+.icons img:hover {
+    width: 34px;
+}
+
+.icons .unlockimg:hover {
+    width: 46px;
+}
+
+.icons .btn_icon {
+    background-color: transparent;
+    outline: none;
+    padding: 0;
+    border: none;
+
+}
+
+.model {
+    position: absolute;
+    width: 100px;
+    height: 200px;
+    background-color: black;
+    color: #fff;
+    z-index: 12;
+}
+
+.modelstyle {
+    margin-top: 30vh;
+    color: rgb(255, 255, 255);
+}
+
+.modelstyle .inner {
+
+    border: 2px solid rgb(68, 30, 30);
+    background-color: rgb(100, 91, 91);
+    border-top-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+
+}
+
+.modeltext {
+    border-color: rgb(100, 91, 91);
+}
+
+#emailp {
+    margin-top: -15px;
+}
+
+#pname {
+    margin-left: 3.4rem;
+}
+
+#labelname {
+    position: absolute;
+}
+
+#name_user {
+    color: rgb(200, 35, 51);
+}
+
+#editModalLablel {
+    margin-left: 10.4rem;
+}
+
+#updateuser input {
+    background-color: rgb(70, 63, 63);
+    border: 2px solid rgb(83, 61, 61);
+    color: rgb(255, 255, 255);
+    margin-bottom: 2rem;
+    border-top-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+
+.label {
+    font-size: 17px;
+    background: none;
+    color: rgb(68, 30, 30);
+    margin-left: 10.4rem;
+
+
+}
+
+#submit {
+    background-color: rgb(74, 58, 58);
+    border: 2px solid rgb(52, 31, 31);
+
+}
+
+#signupForm input {
+    background-color: rgb(70, 63, 63);
+    border: 2px solid rgb(83, 61, 61);
+    color: rgb(255, 255, 255);
+    margin-bottom: 2rem;
+    border-top-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+
+#logoutbtn {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: 20px;
+    padding: 0;
+    position: absolute;
+    bottom: 1rem;
+    right: 3rem;
+}
+
+#logoutbtn img {
+    width: 20px;
+    border-radius: 0px;
+    transition: width, .4s;
+
+
+
+}
+
+#logoutbtn img:hover {
+    width: 25px;
+
+}
+
+
+/* .inner  */
+
+/* lebal bar  */
+.labelbar {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: 10%;
+}
+
+.lebel {
+    position: absolute;
+    padding-top: 10px;
+}
+
+.underline {
+    width: 80%;
+    height: 2px;
+    background-color: rgb(70, 32, 32);
+    margin-top: 10px;
+    margin-left: 10%;
+}
+
+#list_btn {
+    background-color: transparent;
+    border: none;
+}
+
+
+
+/* model css */
+/* The Modal (background) */
+.creatimgmd_main {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    backdrop-filter: blur(5px);
+   }
+   
+   /* Modal Content/Box */
+   .md_msg_div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    border: 2px solid rgb(53, 38, 38);
+    border-radius: 30px;
+    background: rgb(112,80,81);
+    background: linear-gradient(90deg, rgba(112,80,81,1) 0%, rgba(161,125,127,1) 76%, rgba(60,43,44,1) 100%, rgba(230,11,11,1) 100%);
+    transform: translate(-50%, -50%);
+   }
+   #createnew{
+    position: absolute;
+    background-color: rgb(55, 31, 31);
+    left: 46rem;
+    top: 1rem;
+    color: #fff;
+   }
+   #createproduct_form{
+    padding: 30px;
+   }
+   #createproduct_form input ,select ,textarea{
+    background-color: rgb(70, 63, 63);
+    border: 2px solid rgb(83, 61, 61);
+    color: rgb(255, 255, 255);
+    margin-bottom: 2rem;
+    border-top-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    margin-left: 20px;
+    width: 300px;
+   }
+   #createproduct_form select{
+    margin-left: 2rem;
+     width: 300px;
+   }
+   #createproduct_form textarea{
+    margin-left: 1.2rem;
+     width: 300px;
+   }
+   .img_browsing{
+    position: absolute;
+    width: 384px;
+    height: 316px;
+    border-radius: 12px;
+    background-color: rgb(104 89 89);
+    right: 5rem;
+    top: 3rem;
+   }
+   .updoad_btn{
+    position: absolute;
+    transform: translate(149%, 88%);
+   }
+
+   #croppedImageContainer {
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    z-index: 12;
+    width: 378px;
+    height: 274px;
+    display: none;
+}
+#add_text{
+    margin-left: 20rem;
+    color: #fff;
+    text-shadow: 2px 2px 5px black;
+    text-decoration: underline;
+}
+
+  #save {
+    position: absolute;
+    height:41px;
+    bottom: .1rem;
+    width: 100%;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+
+  }
+  .animetion_div{
+    display: none;
+   }
+/* ================ */

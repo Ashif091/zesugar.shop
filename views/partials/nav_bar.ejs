@@ -1,0 +1,102 @@
+<nav class="navbar navbar-expand-md" id="navbar">
+    <!-- Brand -->
+    <a class="navbar-brand" href="/" id="logo"><img src="/image/logo.png" alt="" width="70px">ZESUGAR
+      PISTORS</a>
+
+    <!--collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span><img src="/image/menu.png" alt="" width="30px"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <!-- dropdown -->
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+            Category
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Chocolate Brownies</a>
+            <a href="#" class="dropdown-item">Fruit Brownies</a>
+            <a href="#" class="dropdown-item">Nuts Brownies</a>
+            <a href="#" class="dropdown-item">Cookie Brownies</a>
+            <a href="#" class="dropdown-item">Cup brownies</a>
+          </div>
+        </li>
+
+        <!-- dropdown end-->
+        <li class="nav-item">
+          <a class="nav-link" href="#">Galary</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+    <!-- nav bar links end -->
+    <!-- side logos -->
+    <div class="icons">
+
+      <img src="/image/heart.png" alt="" width="20px">
+      
+      <img src="/image/add.png" alt="" width="24px" onclick="cart()">
+    </div>
+    <!-- node -->
+    
+    <div class="profile_tag">
+     <div class="profile_img_tag">
+      <% if(userData.imagePath){ %>
+      <img src="/<%=userData.imagePath%>" alt="" >
+      <% }else{ %>
+      <img src="/image2/admin.png" alt="" >
+
+        <% } %>
+     </div>
+     
+    </div>
+    <p class="name_tag"><%= userData.name %></p>
+    <!-- side logo end -->
+    
+  </nav>
+  
+  <style>
+    .profile_img_tag{
+      width:40px;
+      height: 40px;
+      margin-left: 10px;
+      border-radius: 50%;
+      border:2px solid rgb(114, 6, 37);
+      overflow: hidden;
+    }
+    .profile_img_tag img{
+      width: 100%;
+    }
+    .profile_tag{
+      cursor: pointer;
+
+    }
+    .name_tag{
+      margin-top: 17px;
+      color: white;
+      cursor: pointer;
+    }
+    
+  </style>
+  <script>
+    const elements = ['.profile_tag', '.name_tag'];
+
+    elements.forEach(element => {
+    document.querySelector(element).addEventListener('click', function() {
+      window.location.href="/getprofile"
+    });
+    });
+
+  </script>
+  

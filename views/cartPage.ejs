@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZESUGAR PISTORS</title>
+  <link rel="shortcut icon" type="image" href="/image/logo.png">
+  <link rel="stylesheet" href="/cartpage.css">
+  <!-- bootstrap links -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- bootstrap links -->
+  <!-- fonts links -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Uchen&display=swap" rel="stylesheet">
+  <!-- fonts links -->
+  <!-- icons links -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <!-- icons links -->
+  <!-- animation links -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- animation links -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
+
+</head>
+
+<body style=" background: rgb(72, 20, 44);" id="body" data-items="<%=cart_items.length%>">
+  <div class="all-content">
+    <!-- navbar -->
+    <%-include("./partials/nav_bar") %>
+
+    <!-- navbar end -->
+
+    <div class="container" style="color: #fff;" id="main_container">
+      <div class="row">
+        <div class="scrollable-content col-9">
+          <div class="box">
+            <div class="col-9">
+              <%# for (let i=0; i < cart_items.length; i++) { %>
+              <%#const cartItem=cart_items[i];%>
+              <%#const productItem=products_data[i];%>
+              <%# let qty_product=productItem.product_qty%>
+              <!-- ==LEFT BAR=== -->
+              <% products_data.forEach((productItem)=>{%>
+              <% cart_items.forEach((cartItem)=>{%>
+              <%if(productItem._id.toString()==cartItem.product.toString()){%>
+              <% let qty_product=productItem.product_qty%>
+
+              <div class="outer_div">
+                <div class="cart_data_div single-<%=cartItem._id%>">
+                  <div class="img_product ">
+                    <img src="/<%=productItem.product_image_url[0] %>" alt="">
+                  </div>
+                  <div class="name_product">
+                    <p class="name">
+                      <%=productItem.product_name%><span class="price_tag">
+                        <%=cartItem.product_price%>,DHS
+                      </span>
+                    </p>
+                    <div class="description_div">
+                      <p class="description">
+                        <%=productItem.product_description%>
+                      </p>
+                    </div>
+
+
+
+                  </div>
+                  <!-- quantity meter -->
+                  <div class="quantity_meter" width="100px" height="30px">
+                    <div class="minus minus-<%=cartItem._id%>" onclick="decreaseValue('<%=cartItem._id%>')">-</div>
+                    <div class="value" id="value-<%=cartItem._id%>" data-id="<%=cartItem._id%>" data-qty="<%=qty_product%>">
+                      <%=cartItem.quantity%>
+                    </div>
+                    <div class="plus plus-<%=cartItem._id%>" onclick="increaseValue('<%=cartItem._id%>')" data-qty="<%=qty_product%>">+</div>
+                  </div>
+                  <p class="out_stock out_stock-<%=cartItem._id%>">Out of Stock</p>
+
+                  <!-- <div class="delete_btn_div">
+                            <button class="delete_btn" onclick="deleteproduct('<%=cartItem._id%>')">cancel</button>
+                        </div> -->
+
+
+
+
+                </div>
+                <div class="delete_btn_div">
+                  <button class="delete_btn" onclick="deleteproduct('<%=cartItem._id%>')">cancel</button>
+                </div>
+                <div class="out-of-stock out-of-stock-<%=cartItem._id%>">
+                  <p>Out of Stock</p>
+                </div>
+              </div>
+
+
+              <%}%>
+
+
+                <% }) %>
+              <% }) %>
+
+
+
+
+
+              <%#}%>
+            </div>
+          </div>
+        </div>
+        <!-- ==RIGHT BAR=== -->
+        <div class="col-3">
+          <div class="left_bar">
+            <div class="data_visible_div">
+              <h3>Price Details</h3>
+              <hr>
+              <div class="price_data_div">
+                <p class="quantity">Quantity: <strong class="qty">
+                    <%=isCart.totalQuantity %>
+                  </strong></p>
+                <p class="total_price">Total Price: <span class="price">
+                    <%=isCart.total%>
+                  </span>,DHS</p>
+                <p class="charge">Delivery Charge: <s>0.3,DHS</s><span style="color: rgb(49, 188, 49);"> Free</span>
+                </p>
+                <hr>
+              </div>
+              <p class="amount">Total Price: <span class="amountv">
+                  <%=isCart.total%>
+                </span>,DHS</p>
+              <button class="ckeckoutButton" id="check_out_btn" data-stock="<%=outOfStock %>">Check Out</button>
+
+
+
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+
+
+    <div class="cart_emty_div" style="display: none;">
+      <a href="/"><button class="btnshop"><i class="fa-regular fa-left-long" style="color: #b54fa2;"></i>Shop
+          now</button></a>
+      <div class="cart_emty">
+        <p id="ptagofanimathin"></p>
+        <!-- <img src="/image2/cart1.png" alt=""> -->
+        <h1>Your cart is empty</h1>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- footer -->
+  <%-include("./partials/footer.ejs") %>
+  <!-- ======= -->
+
+
+  </div>
+
+  <!-- Out Of Stock Model -->
+  <div class="div_model">
+    <div class="checkout-container" id="checkoutContainer">
+      <div class="checkout">
+        <div class="outofStock_items">
+          <p style="color: #fff;">Few items are unavailable for checkout</p>
+          <div class="scrolable_div">
+            <% products_data.forEach((productItem)=>{%>
+            <% cart_items.forEach((cartItem)=>{%>
+            <%if(productItem._id.toString()==cartItem.product.toString()){%>
+            <% let qty_product=productItem.product_qty%>
+            <% if(cartItem.quantity==0){ %>
+
+            <div class="out_stock_items">
+              <div class="img_out_stockproduct ">
+                <img src="/<%=productItem.product_image_url[0] %>" alt="!">
+              </div>
+              <div class="stock_data">
+                <p class="stockname">
+                  <%=productItem.product_name%><span class="price_tag">
+                    <%=cartItem.product_price%>,DHS
+                  </span>
+                </p>
+                <div class="description_div_out_stock">
+                  <p class="description_stock">
+                    <%=productItem.product_description%>
+                  </p>
+                  <p class="out_lebal" style="color: red;"> Out of Stock</p>
+                </div>
+              </div>
+
+            </div>
+
+
+            <% } %>
+
+
+            <%}%>
+
+
+          <% }) %>
+            <% }) %>
+          </div>
+        </div>
+        <div class="btn_div">
+          <button class="cls_ofs_btn" onclick="closecheckout()">CANCEL</button>
+          <button class="ckeckoutButton" id="check_out_cancel_btn">YES, CONTINUE</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ====ERROR PoP UP==== -->
+  <!-- <div id="alert-message" class="alert alert-danger" role="alert" style="display: block;">
+    Fail to connect database check your network !
+  </div> -->
+  <div class="errormsg" style="display: none;">
+    Fail to connect database check your network !
+  </div>
+
+  <!-- ==================== -->
+
+  <!-- ================== -->
+
+
+  <!-- /////////SCRIPT AREA///////// -->
+
+
+  <!--CHECK OUT fetch req section -->
+  <script>
+    const checkOutbtn = document.getElementById("check_out_btn")
+    checkOutbtn.addEventListener("click", (event) => {
+      const count = event.target.getAttribute("data-stock");
+      if (count <= 0) {
+        window.location.href = "/getcheckout"      
+      } else {
+        document.querySelector(".div_model").style.display = "block"
+
+      }
+
+
+
+    });
+
+    // model cancel
+    function closecheckout() {
+      document.querySelector(".div_model").style.display = "none"
+    }
+    //if the yes continue 
+    const checkWithCls = document.getElementById("check_out_cancel_btn")
+    checkWithCls.addEventListener("click", (btn) => {
+      fetch('/cartremove_outofstock')
+        .then(response => response.json())
+        .then(data => {
+          if (data.status) {
+            window.location.href = "/getcheckout"
+          } else {
+            document.querySelector(".div_model").style.display = "none"
+
+            // error msg
+            document.querySelector('.errormsg').style.display = "block"
+            document.querySelector('.errormsg').style.animationPlayState = 'running';
+
+            setTimeout(function() {
+              document.querySelector('.errormsg').style.animationPlayState = 'paused';
+              document.querySelector('.errormsg').style.animationName = "hide"
+              document.querySelector('.errormsg').style.animationPlayState = 'running';
+              setTimeout(() => {
+                window.location.reload()
+              }, 300);
+            }, 4000);
+
+          }
+
+        })
+        .catch(error => console.error('fetch req of removel of outofstock:', error));
+
+
+
+    });
+  </script>
+  <!-- ========================== -->
+
+  <!-- epmty cart animation div style  -->
+  <script>
+    let amount_items = document.getElementById("body").getAttribute("data-items")
+    if (amount_items == 0 || amount_items == "" || amount_items == undefined) {
+      document.getElementById("main_container").style.display = "none"
+      document.querySelector(".cart_emty_div").style.display = "block"
+    }
+  </script>
+  <!-- =============================== -->
+
+  <!-- qty plus and minus css while loading the page  -->
+  <script>
+    const valueElements = document.querySelectorAll('.value');
+    valueElements.forEach((valueElement) => {
+      const value = parseInt(valueElement.innerText);
+      let id = valueElement.getAttribute("data-id")
+      let qty = valueElement.getAttribute("data-qty")
+      console.log(value);
+      if (value <= 1) {
+        document.querySelector(".minus-" + id).setAttribute('disabled', true);
+      }
+      if (value >= qty) {
+        document.querySelector('.plus-' + id).setAttribute('disabled', true);
+        document.querySelector(".out_stock-" + id).style.display = "block"
+      }
+      if (value == 0) {
+        document.querySelector('.plus-' + id).setAttribute('disabled', true);
+        document.querySelector(".out_stock-" + id).style.display = "block"
+        document.querySelector(".single-" + id).style.opacity = ".5"
+        document.querySelector(".out-of-stock-" + id).style.display = "block"
+
+
+      }
+
+    });
+  </script>
+  <!-- ============================================== -->
+
+
+
+  <!-- cart add and remove action fetch requst  -->
+  <script>
+    //============================(-)========================================
+    function decreaseValue(id) {
+      var value = document.getElementById('value-' + id).innerText;
+      value = parseInt(value);
+      let qty = document.getElementById('value-' + id).getAttribute("data-qty")
+      if (value > 0) {
+        value--;
+        document.getElementById('value-' + id).innerText = value;
+
+
+        if (value <= 1) {
+          document.querySelector('.minus-' + id).setAttribute('disabled', true);
+        }
+      }
+      console.log(`the qty of product from pm${qty}`);
+      if (value < qty) {
+        document.querySelector('.plus-' + id).removeAttribute('disabled')
+        document.querySelector(".out_stock-" + id).style.display = "none"
+      }
+      // Fetch request
+      console.log(id);
+      fetch(`/cart_drop/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          document.querySelector(".amountv").innerHTML = `${data.isCart.total}`
+          document.querySelector(".qty").innerHTML = `${data.isCart.totalQuantity}`
+          document.querySelector(".price").innerHTML = `${data.isCart.total}`
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    //============================(+)========================================
+    function increaseValue(id) {
+      var value = document.getElementById('value-' + id).innerText;
+      value = parseInt(value);
+      value++;
+      document.getElementById('value-' + id).innerText = value;
+      let qty = document.getElementById('value-' + id).getAttribute("data-qty")
+      console.log(`the qty of product from pm${qty}`);
+      if (value > 1) {
+        document.querySelector('.minus-' + id).removeAttribute('disabled');
+      }
+      if (value >= qty) {
+        document.querySelector('.plus-' + id).setAttribute('disabled', true);
+        document.querySelector(".out_stock-" + id).style.display = "block"
+      }
+      // Fetch request
+      console.log(id);
+      fetch(`/cart_add/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          document.querySelector(".amountv").innerHTML = `${data.isCart.total}`
+          document.querySelector(".qty").innerHTML = `${data.isCart.totalQuantity}`
+          document.querySelector(".price").innerHTML = `${data.isCart.total}`
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+
+    //   delete fetch 
+    function deleteproduct(id) {
+      console.log(id);
+      fetch(`/cart_delete/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          window.location.href = "/cart"
+
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+
+  <!-- ======================================== -->
+
+  <!-- for aos animation  -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- ============ -->
+
+  <!-- page reback bug fix code -->
+  <script>
+    AOS.init();
+  </script>
+  <script>
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href);
+    }
+  </script>
+  <!-- ======================== -->
+
+
+  <!-- page reload -->
+  <script>
+    let cart = function cart() {
+      window.location.href = "/cart";
+
+    }
+  </script>
+  <!-- ========= -->
+
+
+  <!-- for json animation  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+  <script>
+    var animation = bodymovin.loadAnimation({
+      container: document.getElementById('ptagofanimathin'),
+      renderer: 'svg',
+      loop: false,
+      autoplay: true,
+      path: '/json/emptycart.json'
+    });
+  </script>
+  <!-- ============== -->
+
+</body>
+
+</html>

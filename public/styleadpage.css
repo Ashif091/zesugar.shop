@@ -1,0 +1,291 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url(./image2/bgimg.png); /* Replace with your background image URL */
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.container_main {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+}
+/* side bar */
+.sidebar {
+    width: 230px;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(100, 91, 91, 0.852);
+    color: white; 
+
+}
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.button {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 5px; 
+    text-align: center; 
+    background-color:rgb(136, 118, 118); 
+    color: #fff;
+    border: none; 
+    cursor: pointer; 
+    transition:background-color, .3s ;
+}
+#createnew{
+    background-color: transparent;
+    border: 2px solid rgb(68, 42, 42);
+    border-radius: 30px;
+    margin-left: 40%;
+    color: #fff;
+}
+.button:focus{
+    background-color: rgb(95, 75, 75);
+    border:1px solid rgb(255, 255, 255);
+    outline: none;
+}
+.profile_bar {
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*  */
+
+.circle {
+    width: 80%;
+    height: 90%;
+    border-radius: 300px;
+    background-color:rgb(98, 59, 59); 
+    border: 2px solid rgb(62, 30, 30);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.admintag{
+   position: absolute;
+   bottom: 0;
+}
+.circle img {
+    width: 100px;
+    height: auto; 
+    border-radius: 30px;
+}
+
+
+
+/* end of side bar */
+/* heading  section */
+.search-bar {
+    position: absolute;
+    right: 8rem;
+    top: 2rem;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+.search-bar h1{
+    margin-right: 10rem;
+    color: #fff;
+}
+#search-input {
+    width: 260px; 
+    padding: 5px;
+    padding-left: 10px;
+    border: 2px solid rgb(62, 30, 30);
+    background-color: rgba(100, 91, 91, 0.852);
+    color: #fff; 
+    border-radius: 30px;
+    outline: none;
+}
+
+#search-button {
+    background: none;
+    position: absolute;
+    right: 1rem;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+
+}
+#search-button:focus{
+    border: none;
+    outline: none;
+}
+
+
+#search-button img {
+    width: 20px; /* Adjust the size of the search icon */
+    height: 20px;
+}
+
+/*  */
+
+.scrollable-content {
+    width: 850px;
+    border-radius: 20px;
+    border:2px solid rgb(68, 30, 30);
+    height: 500px;
+    background-color: rgba(100, 91, 91, 0.852);
+    margin-top: 15vh;
+    padding: 20px;
+    margin-left: 24vw;
+    overflow: hidden;
+
+}
+.box::-webkit-scrollbar {
+    width: 0.5rem; /* Adjust as needed */
+    background-color: transparent; /* Hide the background of the scrollbar */
+}
+.box {
+    
+    margin-top: 50px;
+    width: 80%;
+    margin-left: 70px;
+    height: 400px; /* Total height of the 10 inner boxes (10 * 40px) */
+    overflow-y: scroll; /* Enable vertical scrolling for the box */
+    padding-bottom: 200px;
+    padding-right: 17px;
+   
+}
+.inner-box {
+   
+    height: 80px;
+    border-radius: 12px;
+    border: 1px solid rgb(68, 30, 30);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: rgb(151, 126, 126); 
+    box-shadow: 5px 5px 10px black;
+    /* grid */
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 2fr ; /* Defines the grid columns */
+    gap: 10px;
+     transition:  background-color 0.3s; 
+    
+}
+.inner-box:hover{
+    background-color: rgb(113, 88, 88); 
+}
+.item{
+    position: relative;
+    padding: 10px; /* Optional padding for items */
+    color: white;
+}
+.icons{
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr ;
+    transition: width, 0.3s;
+}
+.icons img:hover{
+  width: 34px;
+}
+
+.icons .unlockimg:hover{
+    width: 46px;
+}
+.icons .btn_icon {
+    background-color: transparent;
+    outline: none;
+    padding: 0;
+    border: none;
+  
+}
+.model{
+    position: absolute;
+    width: 100px;
+    height: 200px;
+    background-color: black;
+    color: #fff;
+    z-index: 12;
+}
+.modelstyle{
+   margin-top:30vh ; 
+   color: rgb(255, 255, 255);
+}
+.modelstyle .inner {
+    border:2px solid rgb(68, 30, 30);
+    background-color: rgb(100, 91, 91);
+    border-top-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+
+}
+.modeltext{
+    border-color: rgb(100, 91, 91);
+}
+#emailp{
+    margin-top: -15px;
+}
+#pname{
+    margin-left: 3.4rem;
+}
+#labelname{
+    position: absolute;
+}
+#name_user{
+    color: rgb(200, 35, 51);
+}
+#editModalLablel{
+    margin-left: 10.4rem;
+}
+#updateuser input{
+    background-color:rgb(70, 63, 63) ;
+    border:2px solid rgb(83, 61, 61);
+    color: rgb(255, 255, 255);
+    margin-bottom: 2rem;
+    border-top-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+.label{
+    font-size: 17px;
+    background: none;
+    color: rgb(68, 30, 30);
+    margin-left: 10.4rem;
+
+
+}
+#submit{
+    background-color: rgb(74, 58, 58);
+    border:2px solid rgb(52, 31, 31);
+
+}
+#signupForm input{
+    background-color:rgb(70, 63, 63) ;
+    border:2px solid rgb(83, 61, 61);
+    color: rgb(255, 255, 255);
+    margin-bottom: 2rem;
+    border-top-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+#logoutbtn{
+    background-color:transparent;
+    border: none;
+    outline: none;
+    width: 20px;
+    padding: 0;
+    position: absolute;
+    bottom: 1rem;
+    right: 3rem;
+}
+#logoutbtn img{
+    width: 20px;
+    border-radius:0px;
+   transition: width,.4s;
+
+
+
+}
+#logoutbtn img:hover{
+    width: 25px;
+}
+
+
+/* .inner  */

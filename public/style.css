@@ -1,0 +1,488 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Uchen', serif;
+}
+.btnclass{
+    position: absolute;
+    top: -32px;
+  
+}
+.btnclasscard{
+    position: absolute;
+    top: 0px;
+}
+.btnsub{
+    margin-left: 1149px;
+    background-color: transparent;
+    width: 90px;
+    border-radius: 20px;
+     
+    color: white;
+   
+}
+.all-content{
+    background: rgb(72, 20, 44);
+}
+/* navbar */
+#navbar{
+    background-color:rgb(72, 20, 44);
+    padding-left: 60px;
+    font-weight: bold;
+}
+#logo{
+    font-size: 23px;
+    color: white;
+}
+#logo img{
+    margin-bottom: 15px;
+}
+.navbar-nav{
+    margin-left: 10px;
+}
+.nav-link{
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    margin-left: 15px;
+    transition: 0.5s ease;
+}
+.nav-link:hover{
+    background-color: rgb(242, 93, 132);
+    color: white;
+    border-radius: 5px;
+}
+.icons{
+    margin-left: 30px;
+}
+.icons img{
+    margin-left: 10px;
+    transition:.5s ease ;
+    cursor: pointer;
+}
+.icons img:hover{
+    transform: translateY(-5px);
+    
+}
+@media screen and (max-width:330px){
+    #logo{
+        font-size: 15px;
+    }
+}
+/* navbar end */
+/* home section */
+.home{
+    width: 100%;
+    height: 88.5vh;
+    display: flex;
+    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(./image/background2.png);
+    background-size: cover;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 0;
+}
+.home .img{
+  flex: 400px;
+}
+.home .img img{
+    width: 80%;
+}
+.home .content{
+    flex: 400px;
+    
+    margin-left: 60px;
+}
+.content h3{
+    color: white;
+    font-size: 60px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+}
+.content h2{
+    font-size: 60px;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    font-weight: bold;
+}
+.changecontent::after{
+    content: ' ';
+    color: rgb(110, 30, 67);
+    animation: changetext 10s infinite linear;
+    
+    font-weight: bold;
+}
+ @keyframes changetext{
+    0%{content: "Chocolate Brownies";}
+    20%{content: "Fruit Brownies";}
+    50%{content: "Nuts Brownies";}
+    60%{content: "Cookie Brownies";}
+    100%{content: "Cup Brownies";}
+} 
+.content p{
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    
+}
+.btn{
+    width: 110px;
+    height: 38px;
+    background-color: rgb(241, 92, 132);
+    color: white;
+    box-shadow: 2px 2px 5px black;
+    transition:  .3s ease;
+}
+.btn:hover{
+    color: rgb(72, 20, 44);
+    background-color: antiquewhite;
+    border: 2px solid rgb(241, 92, 132);
+}
+/* media Q */
+@media screen and (max-width:800px){
+    .content h3{
+        font-size: 50px;
+    }
+}
+@media screen and (max-width:860px){
+    .home{
+        height: 140vh;
+    }
+}
+@media screen and (max-width:560px){
+    .home{
+        height: 120vh;
+    }
+}
+@media screen and (max-width:330px){
+    .content h2{
+        font-size: 30px;
+    }
+    .content h3{
+        font-size: 30px;
+    }
+}
+/* home section end */
+
+/* top cards */
+#box{
+    margin-top: 50px;
+}
+.card{
+    box-shadow: 0px 0px 5px black;
+    margin-top: 10px;
+    transition: 0.5s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.card:hover{
+    transform: translateY(-10px);
+}
+.out-of-stock-label {
+    position: absolute;
+    top: 40px;
+    left: 70px;
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+    transform: rotate(45deg);
+  }
+/* top cards end */
+/* banner */
+.banner{
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    background-image: linear-gradient(rgba(0,0,0,0.6),rgba(193, 110, 110, 0.6)), url(./image/banner2.png);
+    background-size: cover;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    box-shadow: 0px 0px 10px black;
+    margin-top: 50px;
+}
+.banner .img{
+    flex:400px;
+}
+.banner .img img{
+    width: 50%;
+    margin-left: 20% ;
+}
+.banner .content{
+    flex:400px;
+    margin-left: 60px;
+    margin-top: 60px;
+}
+.banner .content h3{
+    color: rgb(190, 71, 104);
+    font-weight: bold;
+    font-size: 50px;
+}
+.banner .content h2{
+    font-size: 50px;
+    color: rgb(190, 71, 104);
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+}
+.banner .content p{
+    color: rgb(190, 71, 104);
+}
+
+@media screen and (max-width:855px){
+    .banner{
+        height: 100vh;
+    }
+}
+/* banner end */
+/* product cards */
+#product-cards h1{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    color: rgb(190, 71, 104);
+    text-shadow: 1px 1px 1px black;
+    border-bottom: 2px solid rgb(190, 71, 104);
+}
+#product-cards .card{
+    background-color: rgb(190, 71, 104);
+    box-shadow: 0 0 3px black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.overlay{
+    display: block;
+    opacity: 0;
+    position: absolute;
+    top: 10%;
+    margin-left: 0;
+    width: 70px;
+}
+#product-cards .card:hover .overlay{
+    opacity: 1;
+    margin-left: 1%;
+    transition: 0.5s ease;
+}
+.overlay i img{
+    background-color: rgb(72, 20, 44);
+    height: 30px;
+    width: 30px;
+    font-size: 20px;
+    padding: 7px;
+    margin: -20%;
+    margin-bottom: 5%;
+    cursor: pointer;
+}
+.overlay .btn-side{
+    background:transparent;
+    border: none;
+    box-shadow: none;
+    margin: 5px;
+}
+#product-cards h3{
+    color: white;
+    text-shadow: 1px 1px 1px black;
+}
+.star .checked{
+     color: yellow;
+}
+#product-cards p{
+    color: rgb(72, 20, 44);
+    font-weight: bold;
+}
+#product-cards h6{ 
+    font-size: 20px;
+    color: rgb(72, 20, 44);
+    font-weight: bold;
+}
+#product-cards h6 span button{
+    width: 100px;
+    height: 26px;
+    font-size: 15px;
+    background: transparent;
+    letter-spacing: 3px;
+    border: 2px solid rgb(241, 92, 132);
+    border-radius: 5px;
+     float: right;
+    font-weight: bold;
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+#product-cards h6 span button:hover{
+    background-color: rgb(72, 20, 44);
+    color: white;
+}
+
+/* product cards end */
+
+/* gallary */
+#gallary{
+    margin-top: 50px;
+}
+#gallary h1{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    color: rgb(190, 71, 104);
+    text-shadow: 1px 1px 1px black;
+    border-bottom: 2px solid rgb(190, 71, 104);
+}
+#gallary .card{
+    box-shadow: 3px 3px 3px black;
+    cursor: pointer;
+}
+#gallary .textname{
+    opacity: 0;
+    width: 100%;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    position: absolute;
+    transition: 0.5s ease;
+}
+#gallary .card:hover .textname{
+    opacity: 1;
+    margin-top: 20%;
+    
+}
+/* gallary */
+
+/* about */
+#about{
+    margin-top: 50px;
+}
+#about h1{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    color: rgb(190, 71, 104);
+
+    text-shadow: 1px 1px 1px black;
+    border-bottom: 2px solid rgb(190, 71, 104);
+}
+#about .card{
+    background-color: rgb(190, 71, 104);
+    box-shadow: 0px 0px 5px black;
+}
+#about p{
+    color: rgb(190, 71, 104);
+    text-shadow: 1px 1px 1px black;
+    
+    font-weight: bold;
+}
+#bt button{
+    width: 150px;
+    height: 32px;
+    letter-spacing: 3px;
+
+    background-color: rgb(190, 71, 104);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+@media screen and (max-width:1000px){
+    #about p{
+        font-size: 10px;
+    }
+}
+@media screen and (max-width:760px){
+    #about p{
+        font-size: 20px;
+    }
+}
+/* about */
+
+/* contact */
+#contact{
+    margin-top: 100px;
+}
+#contact h1{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    color: rgb(190, 71, 104);
+    text-shadow: 1px 1px 1px black;
+    border-bottom: 2px solid rgb(110, 30, 67);
+}
+#contact input{
+    background-color: rgb(110, 30, 67);
+}
+#contact input::placeholder{
+    color: white;
+}
+#contact textarea{
+    background-color: rgb(110, 30, 67);
+}
+#contact textarea::placeholder{
+    color: white;
+}
+#messagebtn{
+    text-align: center;
+}
+#messagebtn button{
+    width: 200px;
+    height: 30px;
+    letter-spacing: 3px;
+    font-weight: bold;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    transition: 0.5s;
+    cursor: pointer;
+}
+#messagebtn button:hover{
+    background-color: rgb(110, 30, 67);
+}
+/* contact */
+
+/* footer */
+#footer{
+    width: 100%;    
+    background-color: rgb(110, 30, 67);
+    box-shadow: 0px 0px 5px black;
+    margin-top: 100px;
+}
+#footer h1{
+    color: white;
+    padding-top: 30px;
+}
+#footer p{
+    color: white;
+}
+.icons i{
+    background-color: white;
+    color: rgb(110, 30, 67);
+    border-radius: 50px;
+    padding: 6px;
+    font-size: 30px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.icons i:hover{
+    background-color: rgb(179, 50, 110);
+    color: white;
+}
+.copyright{
+    color: white;
+    margin-top: 20px;
+}
+.credite{
+    color: white;
+}
+/* footer */
+html{
+    scroll-behavior: smooth;
+}
+.arrow{
+    position: fixed;
+    background-color: rgb(190, 71, 104);
+    border-radius: 50px;
+    height: 50px;
+    bottom: 40px;
+    right: 50px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+}

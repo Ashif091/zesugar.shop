@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZESUGAR PISTORS</title>
+  <link rel="shortcut icon" type="image" href="/image/logo.png">
+  <link rel="stylesheet" href="/product_data.css">
+  <!-- bootstrap links -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- bootstrap links -->
+  <!-- fonts links -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Uchen&display=swap" rel="stylesheet">
+  <!-- fonts links -->
+  <!-- icons links -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <!-- icons links -->
+  <!-- animation links -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- animation links -->
+
+</head>
+
+<body>
+  <div class="all-content">
+    <!-- navbar -->
+    <%-include("./partials/nav_bar")  %>
+
+    <!-- navbar end -->
+
+    <div class="container">
+      <div class="row">
+        <div class="col-6 right_bar">
+          <div class="img_div row">
+            <div class="sub_imgs col-3">
+
+              <div class="mini_imgbtn">
+                <% productdata.product_image_url.forEach((url)=>{%>
+                <div class="img_min_div">
+                  <img src="/<%=url%>" alt="">
+                  <!-- Content of the first img_min_div -->
+                </div>
+                <%});%>
+
+              </div>
+
+            </div>
+            <div class="img_tag col-9">
+              <img class="imgtag_" id="zoom_04" src="/<%=productdata.product_image_url[0].replace(/\\/g, '/')%>" alt="">
+              <!-- full image  -->
+              <% if(productdata.product_status === false) { %>
+              <div class="out-of-stock-label">
+                Out of Stock
+              </div>
+              <% } %>
+            </div>
+
+
+          </div>
+          <!-- =====BUY BUTTON===== -->
+          <div class="buy_button_div">
+            <% if (cartstatus.includes(productId)) { %>
+            <button class="addToCart_btn" id="goToCart_btn" data-product-id="<%=productdata._id%>" onclick="cart()">Go to Cart</button>
+            <% }else{ %>
+            <button class="addToCart_btn" id="addToCart_btn" data-product-id="<%=productdata._id%>" onclick="onCartBtnClick()">Add TO Cart</button>
+            <% } %>
+
+            <% if(productdata.product_status === true) { %>
+            <button class="buyNow_btn">Buy Now</button>
+            <% }else{%>
+            <button class="buyNow_btn" style="cursor: not-allowed;">Buy Now</button>
+            <style>
+              .buyNow_btn:after {
+                opacity: .3;
+                background-image: linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+                cursor: not-allowed;
+              }
+            </style>
+            <% } %>
+
+          </div>
+
+          <!-- ==============img ZOOM=============  -->
+<!-- 
+
+
+          <script>
+            // let imgdiv = document.querySelector('.imgtag_')
+            // imgdiv.onmouseover = function() {
+
+            //   var img = document.querySelector('.imgtag_');
+            //   let resultdiv = document.querySelector(".img-zoom-result")
+            //   let zoom_div = document.querySelector(".zoom_div")
+            //   resultdiv.style.display = "block"
+            //   imageZoom(img, resultdiv);
+            // }
+            let imgdiv = document.querySelector('.imgtag_');
+            
+
+            imgdiv.onmouseover = function() {
+              let resultdiv = document.querySelector(".img-zoom-result");
+              resultdiv.style.display = "block";
+              imageZoom(imgdiv, resultdiv);
+            }
+
+
+
+
+
+
+            function imageZoom(img, result) {
+              var lens, cx, cy;
+
+              lens = document.createElement("DIV");
+              lens.setAttribute("class", "img-zoom-lens");
+              img.parentElement.insertBefore(lens, img);
+
+              cx = result.offsetWidth / lens.offsetWidth;
+              cy = result.offsetHeight / lens.offsetHeight;
+
+              result.style.backgroundImage = "url('" + img.src + "')";
+              result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+
+              lens.addEventListener("mousemove", moveLens);
+              img.addEventListener("mousemove", moveLens);
+
+              lens.addEventListener("touchmove", moveLens);
+              img.addEventListener("touchmove", moveLens);
+
+
+
+
+              function moveLens(e) {
+                var pos, x, y;
+                e.preventDefault();
+                pos = getCursorPos(e);
+                x = pos.x - (lens.offsetWidth / 2);
+                y = pos.y - (lens.offsetHeight / 2);
+
+                if (x > img.width - lens.offsetWidth) {
+                  x = img.width - lens.offsetWidth;
+                }
+                if (x < 0) {
+                  x = 0;
+                }
+                if (y > img.height - lens.offsetHeight) {
+                  y = img.height - lens.offsetHeight;
+                }
+                if (y < 0) {
+                  y = 0;
+                }
+
+                lens.style.left = x + "px";
+                lens.style.top = y + "px";
+
+                result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+                
+              }
+
+              function getCursorPos(e) {
+                var a, x = 0,
+                  y = 0;
+                e = e || window.event;
+                a = img.getBoundingClientRect();
+                x = e.pageX - a.left;
+                y = e.pageY - a.top;
+                x = x - window.pageXOffset;
+                y = y - window.pageYOffset;
+                return {
+                  x: x,
+                  y: y
+                };
+              }
+            }
+          </script> -->
+          <!-- ==============img ZOOM END=============  -->
+
+
+        </div>
+
+        <!-- =======LEFT BAR======== -->
+        <div class="col-6 left_bar">
+          <!-- ====================ZOOM DIV==================== -->
+          <!-- <div class="zoom_div" style="display: none;"> -->
+          <div class="img-zoom-result "></div>
+          <!-- </div> -->
+          <!-- ====================ZOOM DIV==================== -->
+
+          <div class="left_data_bar">
+            <h1><%=productdata.product_name%></h1>
+            <p class="categoryPtag"><%=productdata.product_category%></p>
+            <p class="descriptionPtag"><%=productdata.product_description%></p>
+            <div class="star">
+              <i class="bx bxs-star checked"></i>
+              <i class="bx bxs-star checked"></i>
+              <i class="bx bxs-star checked"></i>
+              <i class="bx bxs-star checked"></i>
+              <i class="bx bxs-star checked"></i>
+            </div>
+            <p class="pricePtag"><%=productdata.product_price%> DHS<span class="offerPtag">10%</span></p>
+            <div class="selectiondiv">
+              <select class="quantity-select">
+                <option value="" disabled selected hidden>Quantity</option>
+                <option value="1kg">1kg</option>
+                <option value="0.5kg">0.5kg</option>
+              </select>
+              <img src="/image/heart.png" alt="" width="20px">
+            </div>
+
+          </div>
+
+          <!-- Content of the left bar -->
+        </div>
+      </div>
+    </div>
+    <script>
+      document.querySelectorAll('.img_min_div').forEach(function(div) {
+        div.addEventListener('click', function() {
+          var imgSrc = div.querySelector('img').getAttribute('src');
+          document.querySelector('.img_tag img').setAttribute('src', imgSrc);
+        });
+      });
+    </script>
+
+
+    <%-include("./partials/footer.ejs")  %>
+
+
+  </div>
+
+  <script>
+    let onCartBtnClick = function onCartBtnClick() {
+      console.log("btn clicked");
+      const cartbtn = document.getElementById("addToCart_btn");
+      const productId = cartbtn.getAttribute('data-product-id');
+      console.log(productId);
+
+      fetch(`/productaddtocart/${productId}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          cartbtn.innerHTML = "Go to Cart";
+
+          window.location.reload();
+
+
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    //==========go to cart btn ================
+  </script>
+
+
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    AOS.init();
+  </script>
+  <script>
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href);
+    }
+  </script>
+
+  <script>
+    let cart = function cart() {
+      window.location.href = "/cart";
+
+    }
+  </script>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
+<script>
+  $(document).ready(function() {
+    $("#zoom_04").ezPlus();
+  });
+</script>
+
+</body>
+
+</html>

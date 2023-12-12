@@ -1,0 +1,436 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Uchen', serif;
+}
+.btnclass{
+    position: absolute;
+    top: -32px;
+  
+}
+.btnclasscard{
+    position: absolute;
+    top: 0px;
+}
+.btnsub{
+    margin-left: 1149px;
+    background-color: transparent;
+    width: 90px;
+    border-radius: 20px;
+     
+    color: white;
+   
+}
+.all-content{
+    background: rgb(72, 20, 44);
+}
+#navbar{
+    background-color:rgb(72, 20, 44);
+    padding-left: 60px;
+    font-weight: bold;
+}
+#logo{
+    font-size: 23px;
+    color: white;
+}
+#logo img{
+    margin-bottom: 15px;
+}
+.navbar-nav{
+    margin-left: 10px;
+}
+.nav-link{
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    margin-left: 15px;
+    transition: 0.5s ease;
+}
+.nav-link:hover{
+    background-color: rgb(242, 93, 132);
+    color: white;
+    border-radius: 5px;
+}
+.icons{
+    margin-left: 30px;
+}
+.icons img{
+    margin-left: 10px;
+    transition:.5s ease ;
+    cursor: pointer;
+}
+.icons img:hover{
+    transform: translateY(-5px);
+    
+}
+@media screen and (max-width:330px){
+    #logo{
+        font-size: 15px;
+    }
+}
+/* navbar end */
+
+
+/* footer */
+#footer{
+    width: 100%;    
+    background-color: rgb(110, 30, 67);
+    box-shadow: 0px 0px 5px black;
+    margin-top: 100px;
+}
+#footer h1{
+    color: white;
+    padding-top: 30px;
+}
+#footer p{
+    color: white;
+}
+.icons i{
+    background-color: white;
+    color: rgb(110, 30, 67);
+    border-radius: 50px;
+    padding: 6px;
+    font-size: 30px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.icons i:hover{
+    background-color: rgb(179, 50, 110);
+    color: white;
+}
+.copyright{
+    color: white;
+    margin-top: 20px;
+}
+.credite{
+    color: white;
+}
+/* footer */
+html{
+    scroll-behavior: smooth;
+}
+.arrow{
+    position: fixed;
+    background-color: rgb(190, 71, 104);
+    border-radius: 50px;
+    height: 50px;
+    bottom: 40px;
+    right: 50px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+}
+
+/* ===================OTHER UPDATE=============== */
+
+.img_div{
+    height: 20rem;
+    width: 80%;
+    display: flex;
+    overflow: hidden;
+}
+.img_tag{
+    width: 70%;
+    height: 14rem;
+    border-radius: 12px;
+    background-color: rgb(80, 63, 63);
+    border: 2px solid rgb(72, 28, 28);
+    margin-top: 2rem;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+
+}
+.img_tag img{
+    width:20rem;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    margin-left: -.9rem;
+    object-fit: cover;
+}
+.mini_imgbtn {
+    margin-top: 2rem;
+    width: 4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.img_min_div {
+    width: 100%;
+    border-radius: 6px;
+    border: 2px solid rgb(72, 28, 28);
+    height: 60px;
+    background-color: rgb(93, 71, 71);
+    margin: auto;
+    overflow: hidden;
+    
+
+    
+}
+.img_min_div img {
+    width:5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+.out-of-stock-label {
+    position: absolute;
+    top: 2.3rem;
+    left: 7rem;
+    width: 20rem;
+    background-color: red;
+    color: white;
+    text-align: center;
+    transform: rotate(45deg);
+}
+
+/* =========LEFT BAR============ */
+.left_bar h1{
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+}
+.categoryPtag{
+    color: #fff;
+    font-size: 20px;
+ 
+}
+.left_data_bar{
+    margin-top: 3rem;
+}
+.star .checked{
+    color: yellow;
+}
+.pricePtag{
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+}
+.offerPtag{
+    margin-left: 2rem;
+    font-weight: lighter;
+    font-size: 16px;
+
+}
+.descriptionPtag{
+    margin-top: -1rem;
+    color: #fff;
+    font-size: 17px;
+}
+.quantity-select{
+    background-color: rgb(160, 79, 102);
+    border: 2px solid rgb(40, 22, 22);
+    color: #010101;
+    border-radius: 8px;
+}
+
+/* =========buy button======== */
+.buy_button_div{
+   margin-left: 8rem;
+}
+.addToCart_btn{
+    margin-right: 1.5rem;
+    padding: 5px;
+    border-radius: 12px;
+}
+.buyNow_btn{
+    padding: 5px;
+    border-radius: 12px;
+}
+
+/* CSS ==============================BTN*/
+
+.addToCart_btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #18181a;
+  color: #18181a;
+  display: inline-block;
+  font-size: 15px;
+  line-height: 15px;
+  padding: 10px 10px;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: rgb(255, 77, 109);
+  border: 2px solid rgb(136, 51, 67);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.addToCart_btn span:first-child {
+  position: relative;
+  transition: color 600ms cubic-bezier(0.48, 0, 0.12, 1);
+  z-index: 10;
+}
+
+.addToCart_btn span:last-child {
+  color: rgb(255, 255, 255);
+  display: block;
+  position: absolute;
+  bottom: 0;
+  transition: all 500ms cubic-bezier(0.48, 0, 0.12, 1);
+  z-index: 100;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translateY(225%) translateX(-50%);
+  height: 14px;
+  line-height: 13px;
+}
+
+.addToCart_btn:after {
+    align-items: center;
+  content: "hurry!";
+  position: absolute;
+  bottom: -50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(255, 117, 143);
+  transform-origin: bottom center;
+  transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
+  transform: skewY(9.3deg) scaleY(0);
+  z-index: 50;
+}
+
+
+
+
+
+  /* addtocart */
+
+
+/* CSS */
+.buyNow_btn {
+    align-items: center;
+    appearance: none;
+    background-clip: padding-box;
+    background-color: initial;
+    background-image: none;
+    border-style: none;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    flex-direction: row;
+    flex-shrink: 0;
+    font-family: Eina01,sans-serif;
+    font-size: 16px;
+    justify-content: center;
+    line-height: 24px;
+    margin: 0;
+    outline: none;
+    overflow: visible;
+    pointer-events: auto;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    word-break: keep-all;
+    z-index: 0;
+}
+
+@media (min-width: 768px) {
+  .buyNow_btn {
+    padding: 8px 10px;
+  }
+}
+
+.buyNow_btn:before,
+.buyNow_btn:after {
+    border-radius: 12px;
+}
+
+.buyNow_btn:before {
+  background-color: rgb(160, 79, 102);
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -2;
+}
+
+.buyNow_btn:after {
+  background-color: initial;
+  background-image: linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+  bottom: 4px;
+  content: "";
+  display: block;
+  left: 4px;
+  overflow: hidden;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  transition: all 100ms ease-out;
+  z-index: -1;
+}
+
+.buyNow_btn:hover:not(:disabled):after {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  transition-timing-function: ease-in;
+}
+
+.buyNow_btn:active:not(:disabled) {
+  color: #ccc;
+}
+
+.buyNow_btn:active:not(:disabled):after {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  top: 4px;
+}
+
+.buyNow_btn:disabled {
+  cursor: default;
+  opacity: .24;
+}
+/* CSS ==============================BTN*/
+
+/* ==============img ZOOM============= */
+.img-zoom-container {
+    position: relative;
+ }
+ 
+ .img-zoom-lens {
+    position: absolute;
+    
+    width: 100px;
+    height: 100px;
+ }
+
+ .img-zoom-result {
+    position: absolute;
+    margin-top: -102px;
+    width: 302px;
+    height: 300px;
+    top: 134px;
+    left: 0;
+    border-radius: 12px;
+    border: 1.2px solid rgb(40, 22, 22);
+    box-shadow: 0 0 20px #94295a;
+    display: none;
+
+}
+
+
+/* ==============img ZOOM END============= */
+
+
+

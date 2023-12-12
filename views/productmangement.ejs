@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/productadppage.css">
+  <title>admin page</title>
+  <!-- bootstrap link -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!--  -->
+  <!-- Import bootstrap cdn -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <!-- Import jquery cdn -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
+  </script>
+  <!--  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
+  <!-- cropperjs -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+
+</head>
+
+<body>
+  <div class="container_main ">
+    <%-include("./partials/left_bar_admin")  %>
+    <form class="search-bar" action="/admin/usermanagement/search" method="get">
+      <h1>Product Mangement </h1>
+
+      <input type="text" name="key" id="search-input" placeholder="Search...">
+      <button type="submit" id="search-button">
+        <img src="/image2/search.png" width="30px" alt="Search Icon">
+      </button>
+    </form>
+
+
+    <!-- Your scrollable content goes here -->
+
+    <div class="scrollable-content">
+
+
+
+      <div class="labelbar row">
+        <p class="lebel col-6">products</p>
+        <p class="lebel col-2">product Id</p>
+        <p class="lebel col-2">qty
+        </p>
+        <p class="lebel col-2"></p>
+      </div>
+      <div class="underline"></div> <!-- Add this line for the underline -->
+
+
+      <button id="myBtn" type="button" data-bs-toggle="modal" data-bs-target="#createproduct">new</button>
+
+
+
+      <div class="box">
+        <%let count=1%>
+
+        <% productlist.forEach(product=> { %>
+
+
+
+        <div class="inner-box pid_hide" data-status="<%=product.product_status%>">
+          <div class="brownline"></div>
+          <div class="item">
+            <p style="margin-top: 50%;">
+              <%=count%>
+            </p>
+          </div>
+
+          <div class="item imgtext ">
+            <div class="imgdiv_product" onclick="showModal(this)" data-product="<%=product.product_name%>" data-product-images='<%= JSON.stringify(product.product_image_url) %>'>
+              <img src="/<%=product.product_image_url[0]%>" alt="!">
+            </div>
+
+            <div class="discription">
+
+              <p><strong>
+                  <%=product.product_name%>
+                </strong><br><span style="font-size: 13px;">
+                  <%=product.product_description%> <br> <span style="font-size: 8px; color: rgb(52, 12, 12); font-weight: bold;">(<%=product.product_category%>) </span>
+                </span></p>
+            </div>
+
+
+          </div>
+
+          <div class="item">
+            <p style="font-size: 13px ; " class="">
+              <%=product._id%>
+            </p>
+
+          </div>
+          <div class="item">
+            <%=product.product_qty%>
+
+
+          </div>
+          <div class="item ">
+            <!-- delete tuggle btn -->
+            <button data-id="<%= product._id %>" data-product="<%=product.product_name%>" id="clsbtn" type="button" class="btn_icon " data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@mdo ">
+              <img src="/image2/delete.png" width="23px" alt="">
+            </button>
+
+            <!--  -->
+
+            <button data-id="<%= product._id %>" data-product="<%=product.product_name%>" data-status="<%=product.product_status%>" id="list_btn" type="button" class="btn_icon ">
+
+              <%if(product.product_status===true){%>
+              list
+              <%}else{%>
+              unlist
+              <% } %>
+
+            </button>
+
+
+            <button class='edit_btn ' data-id="<%= product._id %>" data-product="<%=product.product_name%>" data-product_description="<%=product.product_description%>" data-product_price="<%=product.product_price%>" data-product_category="<%=product.product_category%>" data-product_qty="<%=product.product_qty%>" id="editModal_btn" type="button" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-whatever="@mdo ">EDIT</button>
+          </div>
+        </div>
+        <% count++ %>
+        <%})%>
+
+
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+  </div>
+
+  <script>
+    //script for list btn
+    let list_btns = document.querySelectorAll("#list_btn");
+    list_btns.forEach(function(list_btn) {
+      list_btn.addEventListener("click", function(event) {
+        let button = event.target;
+        let id = button.getAttribute("data-id");
+        let current_status = button.getAttribute("data-status")
+        let data = {
+          id,
+          current_status,
+        }
+        console.log(data);
+        const url = '/admin/productstatus';
+        // The status request
+        fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.st === true) {
+              button.innerHTML = data.msg;
+              button.setAttribute("data-status", `${data.current_st}`);
+              if (data.current_st === false) {
+                button.closest('.inner-box').style.backgroundColor = "rgba(240, 62, 62, 0.681)";
+                button.closest('.inner-box').style.border = "1px solid rgb(61, 2, 2)";
+                button.closest('.inner-box').style.boxShadow = "5px 4px 10px red";
+              } else {
+                button.closest('.inner-box').style.backgroundColor = "rgb(151, 126, 126";
+                button.closest('.inner-box').style.border = "1px solid rgb(68, 30, 30)";
+                button.closest('.inner-box').style.boxShadow = "5px 5px 10px black";
+              }
+
+
+            } else {
+              window.location.href = "/admin/productmangement"
+            }
+          })
+          .catch((error) => console.error('Error:', error));
+      });
+    });
+
+    //backgrundcolor  of inner-box (render) ==========================
+    let inner_box = document.querySelectorAll(".inner-box");
+    inner_box.forEach(function(x) {
+      let status = x.getAttribute("data-status")
+      if (status === 'false') {
+        x.style.backgroundColor = "rgba(240, 62, 62, 0.681)";
+        x.style.border = "1px solid rgb(61, 2, 2)";
+        x.style.boxShadow = "5px 4px 10px red";
+      }
+    });
+  </script>
+
+
+  <script>
+    function showModal(element) {
+      var productImages = JSON.parse(element.getAttribute('data-product-images'));
+      var productname = element.getAttribute('data-product');
+      var modal = document.getElementById('imageModal');
+      var modalBody = modal.querySelector('.modal_img_div');
+      modalBody.innerHTML = ''; // Clear the modal body
+      document.getElementById("img_edit_product").innerHTML = productname
+      // Create a container div for the images
+      var container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.flexDirection = 'row';
+      container.style.justifyContent = 'space-between';
+      container.style.width = '100%';
+
+      var idCount = 0; // Counter for unique id
+
+      productImages.forEach(function(imageUrl) {
+        var div = document.createElement('div'); // Create a new div for each image
+        div.id = 'imageDiv' + idCount; // Set a unique id for each div
+        // div.onclick = function() { document.getElementById('fileInput' + idCount).click(); }; // Set onclick event
+
+
+
+        var img = document.createElement('img');
+        img.src = `/${imageUrl}`;
+        img.style.width = '60px';
+        div.appendChild(img); // Append the image to the div
+
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.id = 'fileInput' + idCount; // Set a unique id for each input
+        input.style.display = 'none';
+        input.onchange = function() {
+          previewImage(this);
+        }; // Set onchange event
+        // input.setAttribute('multiple', '');
+        // input.setAttribute('accept', 'image/*');
+
+
+        div.appendChild(input); // Append the input to the div
+
+        container.appendChild(div); // Append the div to the container
+
+        idCount++; // Increment the counter
+      });
+
+      modalBody.appendChild(container); // Append the container to the modal body
+      $(modal).modal('show'); // Show the modal
+
+
+
+      //give file input for all div
+      for (let i = 0; i < productImages.length; i++) {
+        document.getElementById('imageDiv' + i).onclick = function() {
+          var inputElement = document.getElementById('fileInput' + i);
+          if (inputElement) {
+            inputElement.click();
+          } else {
+            console.error('Element with id fileInput' + i + ' does not exist');
+          }
+        };
+      }
+    }
+    //================
+
+
+    function previewImage(input) {
+      console.log('previewImage function called with input:', input);
+
+      if (input.files && input.files[0]) {
+
+        var reader = new FileReader();
+        let id = input.id.replace('fileInput', 'imageDiv');
+        reader.onload = function(e) {
+          console.log('File read as:', e.target.result);
+
+          let image = document.getElementById(`${id}`)
+          let img = image.querySelector('img'); // Select the img element inside the div
+
+          if (img) {
+            img.src = e.target.result; // Set the src of the img to the selected file
+          } else {
+            console.log("Image element does not exist");
+          }
+        }
+
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        console.log('No file selected');
+      }
+    }
+  </script>
+
+
+  <!-- img medit model  -->
+
+
+  <div class="modal fade modelstyle" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog  ">
+      <div class="modal-content inner">
+        <div class="modal-header modeltext">
+          <h1 class="modal-title fs-5">Edit_img_ <span id="img_edit_product">img</span>_product
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body modeltext">
+
+          <span style="color: red;">Warning</span>: This data is Edited permanently from the database.
+        </div>
+        <form action="/admin/productmangement" method="post" id="signupForm" enctype="multipart/form-data">
+          <div class="modal_img_div">
+
+            <!-- Images will be inserted here -->
+          </div>
+          <div class="modal-footer modeltext">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger " id="Edit_img_model" data-bs-dismiss="modal" value="">SAVE</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('Edit_img_model').addEventListener('click', function() {
+      var formData = new FormData();
+      // Get all file inputs
+      var fileInputs = document.querySelectorAll(".modal_img_div input[type='file']");
+      console.log(fileInputs.files);
+      fileInputs.forEach(function(fileInput) {
+        for (var i = 0; i < fileInput.files.length; i++) {
+          formData.append('image', fileInput.files[i]);
+        }
+      });
+      // Array.from(productimg.files).forEach((file, i) => {
+      //   data.append(`image`, file);
+      // });
+      console.log(formData);
+      // Send the form data to the server
+      fetch('/admin/img_edit', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+    });
+  </script>
+
+  <!-- end  -->
+
+  <!-- Model  of creaing model  -->
+  <!-- Trigger/Open The Modal -->
+  
+
+  <!-- The Modal -->
+  <div id="myModal" class="creatimgmd_main">
+    <!-- Modal content -->
+    <div class="md_msg_div">
+      <span class="close">&times;</span>
+      <h4 id="add_text">ADD PRODUCT</h4>
+
+
+      <!-- =======form======== -->
+      <form action="/admin/productmangement" method="post" id="createproduct_form" enctype="multipart/form-data">
+        <div class="modal_body">
+          <div class="container_input">
+            <!--  -->
+            <div class="input_div mb-3">
+              <input type="text" id="productname" placeholder="productname" name="productname">
+              <div id="productname-error" class="error-message"></div>
+
+            </div>
+            <!--  -->
+            <div class="input_div mb-3">
+              <input type="file" id="productimg" name="image" multiple accept="image/*" hidden>
+
+            </div>
+            <!--  -->
+            <div class="input_div mb-3">
+              <textarea type="text" cols="30" rows="2" id="description" placeholder="Description" name="description"></textarea>
+              <div id="description_error" class="error-message"></div>
+            </div>
+            <!--  -->
+            <div class="input_div mb-3 row">
+              <select id="category_create" name="category" required>
+                <% result.forEach(function(item) { %>
+                <option value="" disabled selected hidden>Category</option>
+                <option><%= item._id %></option>
+                <% }); %>
+              </select>
+              <div id="category-error" class="error-message"></div>
+
+            </div>
+            <!--  -->
+            <div class="input_div mb-3">
+              <input type="text" id="productprice" placeholder="Price (USD)" name="productprice">
+              <div id="productprice-error" class="error-message"></div>
+            </div>
+            <!--  -->
+            <div class="input_div mb-3">
+              <input type="text" id="quantity" placeholder="Quantity" name="quantity">
+              <div id="quantity-error" class="error-message"></div>
+            </div>
+            <!--  -->
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="submit">Save changes</button>
+        </div>
+
+      </form>
+      <!-- =================== -->
+
+      <div id="alert-message" class="alert alert-danger" role="alert" style="display: none;">
+        This is an error message!
+      </div>
+
+
+      <div class="img_browsing">
+        <div class="updoad_btn">
+          <img id="upload_img_tag" src="/image2/update.png" width="100px" alt="">
+          <div id="anime_div" style="width: 300px; top: 5px; left: 48px; position: absolute; display: block;">
+            <p id="uploaded_animetion"></p>
+          </div>
+        </div>
+
+
+
+        <div id="croppedImageContainer" class=" overflow-auto"></div>
+        <button type="button" id="save" style="display: none;">Save</button>
+
+      </div>
+    </div>
+  </div>
+  <!-- validtion script -->
+  <script>
+    let check = false
+    document.getElementById('productname').addEventListener('input', function() {
+      var productNameInput = this.value.trim()
+      var errorElement = document.getElementById('productname-error');
+
+      // Validate product name
+      if (productNameInput.length <= 4) {
+        errorElement.textContent = 'Product name must be minimum 4 characters.';
+        check = false
+      } else if (productNameInput.toLowerCase() === productNameInput) {
+        errorElement.textContent = 'Product name must be in capital letters.';
+        check = false
+      } else if (productNameInput.length > 15) {
+        errorElement.textContent = 'Product name must be maximum 15 characters.';
+        check = false
+      } else {
+        errorElement.textContent = '';
+        check = true
+      }
+    });
+
+    // discription validation
+
+    document.getElementById('description').addEventListener('input', function() {
+      var description = this.value.trim()
+      var errorElement = document.getElementById('description_error');
+
+      // Validate product name
+      if (description.length <= 4) {
+        errorElement.textContent = 'description must be minimum 4 characters.';
+        check = false
+      } else if (description[0].toLowerCase() === description[0]) {
+        errorElement.textContent = 'first letter must be in capital letters.';
+        check = false
+      } else if (description.length > 100) {
+        errorElement.textContent = 'description must be maximum 100 characters.';
+        check = false
+      } else {
+        errorElement.textContent = '';
+        check = true
+      }
+    });
+
+    document.getElementById('category_create').addEventListener("input", (e) => {
+      var categoryError = document.getElementById('category-error');
+      if (this.value) {
+        categoryError.textContent = '';
+        check = true
+
+      }
+
+    })
+
+    // price input validation =-====
+    var productPriceError = document.getElementById('productprice-error');
+    document.getElementById('productprice').addEventListener('input', function() {
+      var categorySelect = document.getElementById('category_create');
+      var categoryError = document.getElementById('category-error');
+
+      // Validate category selection
+      if (categorySelect.value === "") {
+        categoryError.textContent = 'Please choose a category.';
+        check = false
+        event.preventDefault(); // Prevent form submission
+      } else {
+        categoryError.textContent = '';
+      }
+      // Ensure the input is a number
+      if (isNaN(this.value)) {
+        this.value = '';
+
+        return;
+      }
+
+      // Convert the input to a number
+      var price = Number(this.value);
+
+      // Check if the price is greater than 999999
+      if (price > 999999) {
+        alert('Maximum price exceeded');
+        this.value = '';
+        check = false
+        return;
+      }
+
+      // Convert the price to the desired format
+      var formattedPrice;
+      if (price >= 100000) {
+        formattedPrice = (price / 1000).toFixed(1) + 'k';
+        check = true
+      } else if (price >= 1000) {
+        formattedPrice = (price / 1000).toFixed(2) + 'k';
+        check = true
+      } else {
+        formattedPrice = price;
+        check = true
+      }
+
+      // Update the input value
+      this.value = formattedPrice;
+    });
+
+    //quantity of 
+    document.getElementById('quantity').addEventListener('input', function() {
+      var quantityInput = this.value;
+      var quantityError = document.getElementById('quantity-error');
+
+      // Validate quantity
+      if (!/^\d+$/.test(quantityInput)) {
+        check = false
+        quantityError.textContent = 'Please enter a valid quantity (numeric only).';
+      } else {
+        quantityError.textContent = '';
+        check = true
+      }
+    });
+  </script>
+
+  <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal 
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    // click the upaload img it activating the file input
+    document.querySelector('.updoad_btn').addEventListener('click', function() {
+      document.getElementById('productimg').click();
+      document.getElementById('croppedImageContainer').style.display = "block"
+    });
+    console.log("THE CHECK IS", check);
+  </script>
+
+
+  <!-- =============== -->
+
+
+
+  <script>
+    // Get references to elements
+    const fileInput = document.getElementById('productimg');
+    const croppedImageContainer = document.getElementById('croppedImageContainer');
+    let animation;
+
+
+    // Initialize Cropper.js for multiple images
+    let croppers = [];
+    const selectedFiles = [];
+    fileInput.addEventListener('change', (e) => {
+      const files = e.target.files;
+
+      // Loop through selected files
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        // Ensure the file is an image
+        if (file.type.startsWith('image/')) {
+          // Create a new FileReader to read the selected image
+          const reader = new FileReader();
+
+          reader.onload = (e) => {
+            // Create an image element and set its source to the selected file
+            const img = new Image();
+            img.src = e.target.result;
+
+            // Append the image to the container
+            croppedImageContainer.appendChild(img);
+
+            // Initialize Cropper.js on the image
+            const cropper = new Cropper(img, {
+
+              aspectRatio: 1.4848, // Set the aspect ratio as needed
+              viewMode: 1, // Set the view mode as needed
+            });
+
+            // Store the cropper instance in the croppers array
+            croppers.push(cropper);
+          };
+
+          reader.readAsDataURL(file);
+        }
+      }
+
+      document.getElementById('save').style.display = "block"
+
+
+
+    });
+
+
+
+
+    // Add a save button for the cropped images
+    let saveButton = document.getElementById('save');
+    saveButton.onclick = function() {
+      // Loop through the croppers and save each cropped image
+      croppers.forEach((cropper, index) => {
+        let canvas = cropper.getCroppedCanvas({
+          fillColor: 'transparent' // Set the fill color to transparent
+        });
+        canvas.toBlob(function(blob) {
+          // Create a new blob URL for the cropped image
+          let croppedImageUrl = URL.createObjectURL(blob);
+          let fileName = `cropped_${index}.png`;
+
+          const file = new File([blob], fileName, {
+            type: 'image/png'
+          });
+          selectedFiles.push(file)
+          // Create a new FormData object and append the Blob
+          let formData = new FormData();
+          formData.append(`croppedImage_${index}`, file);
+
+        }, 'image/png');
+      });
+      const dataTransfer = new DataTransfer();
+      selectedFiles.forEach(file => {
+        dataTransfer.items.add(file);
+
+      });
+      fileInput.files = dataTransfer.files;
+      if (fileInput.files.length > 0) {
+        console.log("condition true");
+        document.getElementById('croppedImageContainer').style.display = "none"
+        document.getElementById('save').style.display = "none"
+        document.getElementById('upload_img_tag').style.display = "none"
+        document.getElementById('anime_div').style.display = "block"
+        animation = bodymovin.loadAnimation({
+          container: document.getElementById('uploaded_animetion'),
+          loop: false,
+          autoplay: true,
+          path: '/json/uploaded.json',
+        });
+        animation.setSpeed(3);
+
+      }
+
+    };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+  <!-- <script>
+    var animation = bodymovin.loadAnimation({
+      container: document.getElementById('uploaded_animetion'),
+      loop: false,
+      autoplay: true,
+      path: '/json/uploaded.json',
+    });
+  </script> -->
+
+  <!-- end  -->
+  <!-- delete model  -->
+  <!-- Modal for deleting the user -->
+  <div class="modal fade modelstyle" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog  ">
+      <div class="modal-content inner">
+        <div class="modal-header modeltext">
+          <h1 class="modal-title fs-5" id="deleteModalLabel">Delete_ <span id="productname_model"></span>_From Data
+            Base
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="CNFcls" style="display: none;"></div>
+        <div class="modal-body modeltext">
+          Do you really want to delete this user ?<br>
+          <span style="color: red;">Warning</span>: This data is deleted permanently from the database.
+        </div>
+        <div class="modal-footer modeltext">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger delete-button" id="deleteBtn_model" data-bs-dismiss="modal" value="">DELETE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- end model -->
+
+  <!-- edit data on product -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modelstyle ">
+      <div class="modal-content inner">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/admin/productmangement" method="post" id="signupForm">
+          <div class="modal-body">
+            <div class="container-fluid">
+              <!--  -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="productname_update" placeholder="name" name="productname">
+                <label for="newUsername">productname</label>
+              </div>
+              <!--  -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="description_update" placeholder="name" name="description">
+                <label for="newUsername">Description</label>
+              </div>
+              <!--  -->
+              <div class="form-floating mb-3 row">
+                <p class="col-3">category</p>
+                <select class="col-6" id="category_update" name="category" required>
+                  <% result.forEach(function(item) { %>
+                  <option><%= item._id %></option>
+                  <% }); %>
+                </select>
+
+              </div>
+              <!--  -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="productprice_update" placeholder="productprice" name="productprice">
+                <label for="newUsername">Price (USD)</label>
+              </div>
+              <!--  -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="quantity_update" placeholder="productprice" name="quantity">
+                <label for="newUsername">Quantity</label>
+              </div>
+              <!--  -->
+              <input type="text" class="form-control" hidden id="productid_update" name="productid">
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="submit_edit">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    const submit_edit = document.getElementById("submit_edit")
+
+    submit_edit.addEventListener("click", (event) => {
+      event.preventDefault();
+      var productid = document.getElementById("productid_update")
+      var quantity = document.getElementById("quantity_update")
+      var productprice = document.getElementById("productprice_update")
+      var description = document.getElementById("description_update")
+      var productname = document.getElementById("productname_update")
+      var category = document.getElementById("category_update")
+
+
+
+      // Create a new FormData object
+      var data = {
+        quantity: quantity.value,
+        productprice: productprice.value,
+        description: description.value,
+        productname: productname.value,
+        productid: productid.value,
+        category: category.value
+      }
+
+
+
+      console.log(data);
+
+      fetch(`/admin/productmangement/edit`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+          window.location.href = "/admin/productmangement"
+
+        })
+        .catch(error => alert("error"));
+    })
+
+    let editmodel = document.getElementById('editModal');
+    editmodel.addEventListener('show.bs.modal', function(event) {
+      // Button that triggered the modal
+      let button = event.relatedTarget;
+      let productid = button.getAttribute('data-id');
+      let productName = button.getAttribute('data-product');
+      let product_qty = button.getAttribute('data-product_qty');
+      let product_category = button.getAttribute('data-product_category');
+      let product_price = button.getAttribute('data-product_price');
+      let product_description = button.getAttribute('data-product_description');
+
+
+
+
+      let Uid = editmodel.querySelector('#productid_update');
+      Uid.value = productid;
+
+
+      let productname_update = editmodel.querySelector('#productname_update');
+      productname_update.value = productName;
+
+      let description_update = editmodel.querySelector('#description_update');
+      description_update.value = product_description;
+
+      let productprice_update = editmodel.querySelector('#productprice_update');
+      productprice_update.value = product_price;
+
+      let quantity_update = editmodel.querySelector('#quantity_update');
+      quantity_update.value = product_qty;
+
+      let category_update = editmodel.querySelector('#category_update');
+      category_update.value = product_category;
+    })
+  </script>
+  <!--  -->
+
+
+
+
+
+  <script>
+    document.getElementById('toggleButton').addEventListener('click', function() {
+      var x = document.getElementById('usermanagementdiv');
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    });
+
+    // ==========fetchreq===============
+
+
+    const submitbtn = document.getElementById("submit")
+
+    submitbtn.addEventListener("click", (event) => {
+      console.log("the data saving ...");
+      console.log("THE CHECK IS", check);
+      if (check) {
+
+        console.log("condition is true");
+        event.preventDefault();
+
+        var quantity = document.getElementById("quantity")
+        var productprice = document.getElementById("productprice")
+        var description = document.getElementById("description")
+        // var productimg = document.getElementById("productimg")
+        var productname = document.getElementById("productname")
+        var category = document.getElementById("category_create")
+        if (quantity.value == null || productprice.value == null || description.value == null || productname.value == null || category.value == null || quantity.value == null) {
+          document.getElementById("alert-message").textContent = "Pleace Fill all data"
+          document.getElementById("alert-message").style.display = 'block';
+          console.log("condithin is true");
+          setTimeout(function() {
+            document.getElementById("alert-message").style.display = 'none';
+          }, 4000);
+        } else if (fileInput.files.length == 0) {
+          document.getElementById("alert-message").textContent = "photo is mandatory"
+          document.getElementById("alert-message").style.display = 'block';
+
+          setTimeout(function() {
+            document.getElementById("alert-message").style.display = 'none';
+          }, 4000);
+
+        } else {
+
+          var x = document.getElementById('checkdiv');
+
+          // Create a new FormData object
+          var data = new FormData();
+
+          // Append the form data
+          data.append('quantity', quantity.value);
+          data.append('productprice', productprice.value);
+          data.append('description', description.value);
+          data.append('productname', productname.value);
+          data.append('category', category.value);
+
+
+          Array.from(fileInput.files).forEach((file, i) => {
+            console.log(file);
+            data.append(`image`, file);
+          });
+
+          fetch(`/admin/productmangement`, {
+              method: 'POST',
+              body: data,
+            })
+            .then(response => response.json())
+            .then(data => {
+              window.location.href = "/admin/productmangement"
+
+            })
+            .catch(error => alert("error"));
+        }
+
+
+      } else {
+
+        event.preventDefault();
+        console.log("validation Error");
+        document.getElementById("alert-message").textContent = "Pleace Fill all data"
+        document.getElementById("alert-message").style.display = 'block';
+
+        setTimeout(function() {
+          document.getElementById("alert-message").style.display = 'none';
+        }, 4000);
+        return false;
+
+      }
+
+    })
+
+
+    //=====================delete fetch req =======
+    document.getElementById("deleteBtn_model").addEventListener("click", (event) => {
+
+
+      let id = document.getElementById("CNFcls").innerHTML
+
+
+      const url = '/admin/deleteProduct/' + id;
+      // The DELETE request
+      fetch(url, {
+          method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.st === true) {
+            let elements = document.getElementsByClassName("pid_hide")
+            for (let i = 0; i < elements.length; i++) {
+              if (elements[i].innerHTML.indexOf(data.id) !== -1) {
+                elements[i].style.display = "none"
+                break;
+              }
+            }
+          } else {
+            window.location.href = "/admin/productmangement"
+          }
+        })
+        .catch((error) => console.error('Error:', error));
+
+
+
+    })
+
+
+
+    let deleteModel = document.getElementById('deleteModal');
+    deleteModel.addEventListener('show.bs.modal', function(event) {
+      // Button that triggered the modal
+      let button = event.relatedTarget;
+      let productid = button.getAttribute('data-id');
+      let productName = button.getAttribute('data-product');
+      let Uid = deleteModal.querySelector('#CNFcls');
+      Uid.innerHTML = productid;
+      // Set the product._id value to the name_product element
+      let nameproductElement = document.getElementById('productname_model');
+      nameproductElement.textContent = productName;
+    });
+  </script>
+
+  <!-- for croping ===== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+
+</body>
+
+</html>
