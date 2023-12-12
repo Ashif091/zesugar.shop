@@ -28,8 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
  
 
-app.use('/',require("./routes/entryrouter")) 
-app.use('/admin',require("./routes/admin"))
+app.use('/',require("./routes/userRoutes")) 
+app.use('/admin',require("./routes/adminRoutes"))
 app.get("*", (req, res) => {
   const error = `path error ,Enter http://localhost:${PORT}`;
   return res.status(404).render("404page", { error });

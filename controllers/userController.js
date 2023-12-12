@@ -3,10 +3,10 @@ const OTP = require("../models/otpModel")
 const asyncHandler = require("express-async-handler")
 const nodemailer = require('nodemailer')
 const bcrypt = require("bcrypt")
-const Cart = require('../models/cartSchema');
+const Cart = require('../models/cartModel');
 // ================
-const product = require("../models/productSchema")
-const category = require("../models/category")
+const product = require("../models/productModel")
+const category = require("../models/categoryModel")
 // ============
 module.exports = {
     login: ((req, res) => {
