@@ -1,6 +1,6 @@
-const Cart = require('../models/cartModel');
+const Cart = require('../models/cartSchema');
 const users = require("../models/userModel")
-const product = require("../models/productModel")
+const product = require("../models/productSchema")
 
 
 module.exports = {

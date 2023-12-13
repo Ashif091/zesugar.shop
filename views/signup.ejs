@@ -19,6 +19,26 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- animation links -->
 
+  <style>
+    .error-message {
+      color: red;
+      font-size: 12px;
+    }
+    input{
+      margin: 5px 0 5px 0 ;
+      
+    }
+    input::placeholder {
+      color: #f4e7e7; /* Set the color of the placeholder text */
+      font-style: italic; /* Set the font style of the placeholder text */
+
+    }
+    #submitBtn:disabled {
+      cursor: not-allowed;
+      opacity: .3;
+    }
+  </style>
+
 </head>
 
 <body style="background-color: rgb(127, 127, 127);">
@@ -34,26 +54,26 @@
           ZESUGAR PISTORS
         </h3>
 
-
         <div class="form">
           <h1>sign up</h1>
-          <form action="/signup" method="post">
+          <form action="/signup" method="post" onsubmit="return validateForm()">
             <div>
-              <label for="name">Name</label>
-              <input type="text" name="name" id="name" >
+              <input type="text" name="name" id="name" oninput="validateName()" placeholder="Name">
+              <span id="name-error" class="error-message"></span>
             </div>
             <div>
-              <label for="email">Email</label>
-              <input type="email" name="email" id="email" >
-
+              <input type="email" name="email" id="email" oninput="validateEmail()" placeholder="Email">
+              <span id="email-error" class="error-message"></span>
             </div>
             <div>
-              <label for="password">Password</label>
-              <input type="password" name="password" id="password" >
-
+              <input type="password" name="password" id="password" oninput="validatePassword()" placeholder="Password">
+              <span id="password-error" class="error-message"></span>
             </div>
-            <button class="sub" type="submit">Sign Up</button>
-
+            <div>
+              <input type="password" name="cpassword" id="cpassword" oninput="validateConfirmPassword()" placeholder="Confirm Password">
+              <span id="cpassword-error" class="error-message"></span>
+            </div>
+            <button class="sub" type="submit" id="submitBtn" disabled>Sign Up</button>
           </form>
           <a href="/login">Login</a>
           <div class="error" style="color: red;"> 
@@ -72,6 +92,93 @@
 
 
 
+  <!-- =======validation========== -->
+  <script>
+    function validateName() {
+      const nameInput = document.getElementById('name');
+      const nameError = document.getElementById('name-error');
+      const nameRegex = /^[a-zA-Z]{4,}$/;
+
+      if (!nameRegex.test(nameInput.value)) {
+        nameError.textContent = 'Name must be at least 4 letters, no numbers allowed.';
+      } else {
+        nameError.textContent = '';
+      }
+
+      validateSubmitButton();
+    }
+
+    function validateEmail() {
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('email-error');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(emailInput.value)) {
+        emailError.textContent = 'Invalid email format.';
+      } else {
+        emailError.textContent = '';
+      }
+
+      validateSubmitButton();
+    }
+
+    function validatePassword() {
+      const passwordInput = document.getElementById('password');
+      const passwordError = document.getElementById('password-error');
+      const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
+
+      if (!passwordRegex.test(passwordInput.value)) {
+        passwordError.textContent = 'Password must be at least 6 characters with at least one letter and one number.';
+      } else {
+        passwordError.textContent = '';
+      }
+
+      validateSubmitButton();
+    }
+
+    function validateConfirmPassword() {
+      const passwordInput = document.getElementById('password');
+      const cpasswordInput = document.getElementById('cpassword');
+      const cpasswordError = document.getElementById('cpassword-error');
+
+      if (passwordInput.value !== cpasswordInput.value) {
+        cpasswordError.textContent = 'Passwords do not match.';
+      } else {
+        cpasswordError.textContent = '';
+      }
+
+      validateSubmitButton();
+    }
+
+    function validateSubmitButton() {
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const cpasswordInput = document.getElementById('cpassword');
+    let passwordOk = false;
+    if(cpasswordInput.value === passwordInput.value  ){
+      passwordOk = true;
+    }
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = !nameInput.value || !emailInput.value || !passwordInput.value || !cpasswordInput.value || !passwordOk;
+    
+  }
+
+
+    function validateForm() {
+      validateName();
+      validateEmail();
+      validatePassword();
+      validateConfirmPassword();
+
+      // Only allow form submission if all errors are empty
+      return document.querySelectorAll('.error-message').every(error => error.textContent === '');
+    }
+  </script>
+
+
+  <!-- =========================== -->
 
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

@@ -3,17 +3,17 @@ const OTP = require("../models/otpModel")
 const asyncHandler = require("express-async-handler")
 const nodemailer = require('nodemailer')
 const bcrypt = require("bcrypt")
-const Cart = require('../models/cartModel');
+const Cart = require('../models/cartSchema');
 // ================
-const product = require("../models/productModel")
-const category = require("../models/categoryModel")
+const product = require("../models/productSchema")
+const category = require("../models/category")
 // ============
 module.exports = {
     login: ((req, res) => {
         res.status(208).redirect('/');
     }),
     home: (async (req, res) => {
-        const user = req.session.username;
+        const user = req.session.username; 
         if(!user){
          res.status(208).redirect('/');
         }
