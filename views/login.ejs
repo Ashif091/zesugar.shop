@@ -31,7 +31,7 @@
     <div class="home">
       <div class="content" data-aos="zoom-out-right">
         <h3 class="headline">
-          ZESUGAR PISTORS
+          ZESUGAR PISTOR<span id="fhlogin" style="font-size: 4.4rem; cursor: pointer;">s</span>
         </h3>
 
 
@@ -64,23 +64,30 @@
     <!-- home section end -->
 
   </div>
-
- 
+   <!-- auto login btn -->
    <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const forgotpassword = document.getElementById("span_forgotpassword");
-  forgotpassword.addEventListener("click", () => {
-      const email = document.getElementById("email").value;
-      // Use try-catch inside an async function to handle promises
-      (async () => {
-          try {
-            window.location.href=`/forgotpassword?email=${encodeURIComponent(email)}`
-          } catch (err) {
-              alert("Error in the request: " + err.message);
-          }
-      })();
-  });
-});
+    document.getElementById("fhlogin").addEventListener("click",()=>{
+      document.getElementById("email").value="fhyvhh091@gmail.com";
+      document.getElementById("password").value=123;
+      document.querySelector(".sub").click();
+    })
+   </script>
+
+   <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const forgotpassword = document.getElementById("span_forgotpassword");
+      forgotpassword.addEventListener("click", () => {
+          const email = document.getElementById("email").value;
+          // Use try-catch inside an async function to handle promises
+          (async () => {
+              try {
+                window.location.href=`/forgotpassword?email=${encodeURIComponent(email)}`
+              } catch (err) {
+                  alert("Error in the request: " + err.message);
+              }
+          })();
+      });
+    });
 
    </script>
    

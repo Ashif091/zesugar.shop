@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZESUGAR PISTORS</title>
+  <link rel="shortcut icon" type="image" href="/image/logo.png">
+  <link rel="stylesheet" href="/profilePage.css">
+  <!-- bootstrap links -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- bootstrap links -->
+  <!-- fonts links -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Uchen&display=swap" rel="stylesheet">
+  <!-- fonts links -->
+  <!-- icons links -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <!-- icons links -->
+  <!-- animation links -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- animation links -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
+  <style>
+    .profile_uploaded_img img {
+
+      /* Full height */
+      height: 135%;
+
+      /* Center and scale the image nicely */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
+
+
+
+</head>
+
+
+<body style=" background: rgb(72, 20, 44);" id="body">
+  <div class="all-content">
+    <!-- navbar -->
+    <%-include("../partials/nav_bar") %>
+
+    <!-- navbar end -->
+
+
+    <div class="main_div">
+      <!-- ==========LEFT BAR====== -->
+      <div class="left_bar">
+        <div class="action_div">
+          <a href="/getprofile">
+            <div class="form_div profile_btn">
+              <p>Profile</p>
+            </div>
+          </a>
+          <a href="/getprofile_wallet">
+            <div class="form_div">
+              <p>Wallet</p>
+            </div>
+          </a>
+          <a href="/getprofile_address">
+            <div class="form_div address_btn">
+              <p>Address</p>
+            </div>
+          </a>
+        </div>
+
+      </div>
+      <!-- =====RIGHT BAR========== -->
+      <div class="right_bar">
+        <div class="vertical_line"></div>
+        <!-- address data  -->
+
+        <div class="data_display_div address_data">
+          <!-- ADD ADDRESS BTN BAR -->
+          <div class="add_address_btn">
+            &#43; ADD A NEW ADDRESS
+          </div>
+          <!-- ADD ADDRESS FORM -->
+          <div class="add_address_div ">
+            <p id="text_add_address">ADD A NEW ADDRESS</p>
+            <form action="/getprofile_address" method="post">
+              <div class="top_input_tags">
+                <div class="input-container top_input">
+                  <input type="text" id="name" name="name" placeholder="">
+                  <label for="name">Name</label>
+                </div>
+
+                <div class="input-container top_input">
+                  <input type="number" id="phone_number" name="phone_number" placeholder="">
+                  <label for="phone_number">Phone Number</label>
+                </div>
+
+                <div class="input-container top_input">
+                  <input type="number" id="pincode" name="pincode" placeholder="">
+                  <label for="pincode">Pincode</label>
+                </div>
+
+                <div class="input-container top_input">
+                  <input type="text" id="locality" name="locality" placeholder="">
+                  <label for="locality">Locality</label>
+                </div>
+              </div>
+
+              <div class="input-container textarea_tag">
+                <textarea id="address" name="address" placeholder="Address"></textarea>
+
+              </div>
+              <!-- ===========bottom inputs tags========== -->
+              <div class="bottom_input_tags">
+                <div class="input-container bottom_tag">
+                  <input type="text" id="city" name="city" placeholder="">
+                  <label for="city">City</label>
+                </div>
+
+                <div class="input-container bottom_tag">
+                  <select id="state" name="state" placeholder="">
+                    <option value="kerala">Kerala</option>
+                    <option value="karnataka">Karnataka</option>
+                  </select>
+                </div>
+
+                <div class="input-container bottom_tag">
+                  <input type="text" id="landmark" name="landmark" placeholder="">
+                  <label for="landmark">Landmark:</label>
+                </div>
+
+                <div class="input-container bottom_tag">
+                  <input type="number" id="alternate_phone" name="alternate_phone" placeholder="">
+                  <label for="alternate_phone">Alternate Phone (optional)</label>
+                </div>
+              </div>
+
+              <div class="input-container typeOfAddressTag">
+                <label>Address Type:</label>
+              </div>
+              <div class="address_type_tag">
+                <input type="radio" id="home" name="address_type" value="home">
+                <label for="home">Home</label>
+                <input type="radio" id="work" name="address_type" value="work">
+                <label for="work">Work</label>
+                <input type="text" name="id" id="id" hidden>
+              </div>
+              <div class="form_action_div">
+                <button class="submit_btn" type="submit">SAVE</button>
+                <div class="cancel_add_btn">
+                  CANCEL
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- ========address display div========= -->
+          <div class="address_display">
+            <% userAddress.forEach(address => {%>
+            <div class="data_div address_dly_div-<%= address.id%>">
+              <div class="address_type">
+                <%= address.address_type %>
+              </div>
+              <!-- edit action -->
+              <div class="editimg_div">
+                <img src="../image2/ico_edit_pencil-icon.png" alt="" width="20px" id="edit_img">
+                <div class="actionHover_div">
+                  <div class="edit_action editbtn" onclick="editAddress('<%= JSON.stringify(address) %>')">Edit</div>
+                  <div class="delete_action editbtn" onclick="deleteAddress('<%=address._id%>')">Delete</div>
+                </div>
+              </div>
+              <!-- =========== -->
+
+              <div class="nameandPhone">
+                <%=address.name %> &nbsp; <%=address.phone_number %>
+              </div>
+              <div class="address_text">
+                <%=address.address%>,<%=address.city %>,<%=address.state %>&nbsp;-<strong><%=address.pincode %></strong>
+              </div>
+            </div>
+            <!--     ========Edit Div=======    -->
+            <div class="edit_address_div edit_form-<%=address.id%>">
+              <form action="/edit_address" id="edit_address_form-<%=address.id%>" method="post">
+
+                <div class="top_input_tags">
+                  <div class="input-container top_input">
+                    <input type="text" id="edited_name" name="name" placeholder="">
+                    <label for="edited_name">Name</label>
+                  </div>
+
+                  <div class="input-container top_input">
+                    <input type="number" id="edited_phone_number" name="phone_number" placeholder="">
+                    <label for="edited_phone_number">Phone Number</label>
+                  </div>
+
+                  <div class="input-container top_input">
+                    <input type="number" id="edited_pincode" name="pincode" placeholder="" >
+                    <label for="edited_pincode">Pincode</label>
+                  </div>
+
+                  <div class="input-container top_input">
+                    <input type="text" id="edited_locality" name="locality" placeholder="">
+                    <label for="edited_locality">Locality</label>
+                  </div>
+                </div>
+
+                <div class="input-container textarea_tag">
+                  <textarea id="edited_address" name="address" placeholder="Address"></textarea>
+
+                </div>
+                <!-- ===========bottom inputs tags========== -->
+                <div class="bottom_input_tags">
+                  <div class="input-container bottom_tag">
+                    <input type="text" id="edited_city" name="city" placeholder="">
+                    <label for="edited_city">City</label>
+                  </div>
+
+                  <div class="input-container bottom_tag">
+                    <select id="edited_state" name="state" placeholder="">
+                      <option value="kerala">Kerala</option>
+                      <option value="karnataka">Karnataka</option>
+                    </select>
+                  </div>
+
+                  <div class="input-container bottom_tag">
+                    <input type="text" id="edited_landmark" name="landmark" placeholder="">
+                    <label for="edited_landmark">Landmark:</label>
+                  </div>
+
+                  <div class="input-container bottom_tag">
+                    <input type="number" id="edited_alternate_phone" name="alternate_phone" placeholder="">
+                    <label for="edited_alternate_phone">Alternate Phone (optional)</label>
+                  </div>
+                </div>
+
+                <div class="input-container typeOfAddressTag">
+                  <label>Address Type:</label>
+                </div>
+                <div class="address_type_tag">
+                  <input type="radio" id="edited_home" name="address_type" value="home">
+                  <label for="edited_home">Home</label>
+                  <input type="radio" id="edited_work" name="address_type" value="work">
+                  <label for="edited_work">Work</label>
+                  <input type="text" name="id" id="edited_id" hidden>
+                </div>
+                <div class="form_action_div">
+                  <button class="submit_btn" type="submit">SAVE</button>
+                  <div class="cancel_btn_edit">
+                    CANCEL
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!--  ______________________________-->
+            <% }); %>
+          </div>
+          <!-- ==================================== -->
+
+
+
+
+
+        </div>
+        <!-- order history -->
+        <!--  -->
+
+      </div>
+
+    </div>
+
+
+    <!-- ========Warning Msg=========== -->
+    <div class="div_model">
+      <div class="delete-container" id="deleteContainer">
+        <div class="delete">
+          <p style="color: #fff; user-select: none;">Are you sure you want to delete this address?</p>
+          <div class="btn_div">
+            <button class="cls_ofs_btn">CANCEL</button>
+            <button class="deleteButton" id="delete_btn">YES, CONTINUE</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- ============================== -->
+
+
+
+
+    <!-- ====ERROR PoP UP==== -->
+    <div class="errormsg" style="display: none;">
+      Fail to connect database check your network !
+    </div>
+
+
+    <!-- footer -->
+
+    <%-include("../partials/footer.ejs")%>
+    <!-- ======= -->
+
+
+  </div>
+
+
+
+
+
+  <!-- ================== -->
+
+
+  <!-- /////////SCRIPT AREA///////// -->
+  <!-- add ADDRESS BTN ACTION  -->
+  <script>
+    const addBtn = document.querySelector(".add_address_btn");
+    addBtn.addEventListener("click", (event) => {
+      addBtn.style.display = "none";
+      document.querySelector(".add_address_div").style.display = "block";
+      let contentElements = document.querySelectorAll('.edit_address_div');
+      let data_div = document.querySelectorAll('.data_div');
+
+      contentElements.forEach(function(element) {
+        element.style.display = 'none';
+      });
+      data_div.forEach(function(element) {
+        element.style.display = 'block';
+      });
+
+      // cancel
+      document.querySelector(".cancel_add_btn").addEventListener("click",()=>{
+        addBtn.style.display = "block";
+        document.querySelector(".add_address_div").style.display = "none";
+
+      })
+
+
+
+    })
+  </script>
+  <!-- _______________________ -->
+  <!-- ===============edit address fetch req================= -->
+  <script>
+    function editAddress(address) {
+      const addressData = JSON.parse(address);
+
+      const form = document.querySelector(".edit_form-" + addressData._id);
+
+      form.querySelector("#edited_name").value = addressData.name;
+      form.querySelector("#edited_phone_number").value = addressData.phone_number;
+      form.querySelector("#edited_pincode").value = addressData.pincode;
+      form.querySelector("#edited_locality").value = addressData.locality;
+      form.querySelector("#edited_address").value = addressData.address;
+      form.querySelector("#edited_city").value = addressData.city;
+      form.querySelector("#edited_state").value = addressData.state;
+      form.querySelector("#edited_landmark").value = addressData.landmark;
+      form.querySelector("#edited_alternate_phone").value = addressData.alternate_phone;
+      form.querySelector("#edited_id").value = addressData._id;
+
+      // _____  OTHER DIVS HIDDING CODE _______
+      let contentElements = document.querySelectorAll('.edit_address_div');
+      let data_div = document.querySelectorAll('.data_div');
+
+      contentElements.forEach(function(element) {
+        element.style.display = 'none';
+      });
+      // hide the add address form & display the add div
+        document.querySelector(".add_address_div").style.display = "none";
+        document.querySelector(".add_address_btn").style.display="block"
+
+      // _______________________________________________
+
+
+      data_div.forEach(function(element) {
+        element.style.display = 'block';
+      });
+
+      // __________________________________
+
+      form.style.display = "block";
+      document.querySelector(".address_dly_div-" + addressData._id).style.display = "none";
+
+
+      // =============================
+      const formData = document.getElementById("edit_address_form-" + addressData._id);
+      formData.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = new FormData(formData);
+
+        fetch("/edit_address", {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(Object.fromEntries(data)),
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (!data.status) {
+              //   ERROR MSG 
+              document.querySelector('.errormsg').textContent = data.message;
+              document.querySelector('.errormsg').style.display = "block";
+              document.querySelector('.errormsg').style.animationPlayState = 'running';
+
+              setTimeout(function() {
+                document.querySelector('.errormsg').style.animationPlayState = 'paused';
+                document.querySelector('.errormsg').style.animationName = "hide"
+                document.querySelector('.errormsg').style.animationPlayState = 'running';
+                setTimeout(() => {
+                  window.location.reload()
+                }, 150);
+              }, 2000);
+              // ______________
+            } else {
+              window.location.reload();
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      });
+
+
+
+    }
+
+    // _______ CANCEL BTN_________
+
+    let cancel_div = document.querySelectorAll('.cancel_btn_edit');
+
+    cancel_div.forEach(function(button) {
+      button.addEventListener("click", () => {
+        let contentElements = document.querySelectorAll('.edit_address_div');
+        let data_div = document.querySelectorAll('.data_div');
+
+        contentElements.forEach(function(element) {
+          element.style.display = 'none';
+        });
+
+        data_div.forEach(function(element) {
+          element.style.display = 'block';
+        });
+      });
+    });
+
+
+
+
+    // ___________________________
+  </script>
+  <!-- ====================================================== -->
+
+  <!-- =========edit hover action img ============ -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var editimgDivs = document.querySelectorAll('.editimg_div');
+
+      editimgDivs.forEach(function(editimgDiv) {
+        editimgDiv.addEventListener('mouseover', function() {
+          var actionHoverDiv = this.querySelector('.actionHover_div');
+          actionHoverDiv.style.display = 'block';
+        });
+
+        editimgDiv.addEventListener('mouseout', function() {
+          var actionHoverDiv = this.querySelector('.actionHover_div');
+          actionHoverDiv.style.display = 'none';
+        });
+      });
+    });
+  </script>
+
+  <!-- =========================================== -->
+
+  <!-- =======DELETE function ============== -->
+  <script>
+    function deleteAddress(id) {
+      document.querySelector(".div_model").style.display = "block"
+      // cancel this fuction
+      document.querySelector(".cls_ofs_btn").addEventListener("click", () => {
+        document.querySelector(".div_model").style.display = "none"
+      })
+      // continue the action
+      document.querySelector(".deleteButton").addEventListener("click", () => {
+        fetch(`/edit_address/${id}`, {
+            method: 'DELETE',
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status) {
+              document.querySelector('.errormsg').style.background = "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(36,233,5,1) 100%)"
+              document.querySelector('.errormsg').style.color = "rgb(0, 100, 0)"
+            }
+            //   ERROR MSG 
+            document.querySelector('.errormsg').textContent = data.message;
+            document.querySelector('.errormsg').style.display = "block";
+            document.querySelector('.errormsg').style.animationPlayState = 'running';
+
+            setTimeout(function() {
+              document.querySelector('.errormsg').style.animationPlayState = 'paused';
+              document.querySelector('.errormsg').style.animationName = "hide"
+              document.querySelector('.errormsg').style.animationPlayState = 'running';
+              setTimeout(() => {
+                window.location.reload()
+              }, 150);
+            }, 2000);
+            // ______________
+
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+
+      })
+
+
+    }
+  </script>
+  <!-- ==================================== -->
+
+
+
+  <!-- for aos animation  -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- ============ -->
+
+  <!-- page reback bug fix code -->
+  <script>
+    AOS.init();
+  </script>
+  <script>
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href);
+    }
+  </script>
+  <!-- ======================== -->
+
+
+  <!-- page reload -->
+  <script>
+    let cart = function cart() {
+      window.location.href = "/cart";
+
+    }
+  </script>
+  <!-- ========= -->
+
+
+</body>
+
+</html>

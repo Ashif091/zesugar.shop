@@ -27,6 +27,19 @@
   <!-- animation links -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 
+  <style>
+    .profile_uploaded_img img {
+
+      /* Full height */
+      height: 135%;
+
+      /* Center and scale the image nicely */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
+
 
 
 </head>
@@ -43,28 +56,34 @@
     <div class="main_div">
       <div class="left_bar">
         <div class="action_div">
-          <div class="form_div">
-            <p>Profile</p>
-          </div>
-          <div class="form_div">
-            <p>Wallet</p>
-          </div>
-          <div class="form_div">
-            <p>Address</p>
-          </div>
+          <a href="/getprofile">
+            <div class="form_div profile_btn">
+              <p>Profile</p>
+            </div>
+          </a>
+          <a href="/getprofile_wallet">
+            <div class="form_div">
+              <p>Wallet</p>
+            </div>
+          </a>
+          <a href="/getprofile_address">
+            <div class="form_div address_btn">
+              <p>Address</p>
+            </div>
+          </a>
         </div>
 
       </div>
       <div class="right_bar">
         <div class="vertical_line"></div>
-        <div class="data_display_div">
+        <!-- profile data -->
+        <div class="data_display_div profile_data">
           <div class="logout_div">
             <form action="/logout" method="get">
               <button class="logoutbtn" type="submit">logout</button>
             </form>
           </div>
           <div class="profile">
-
 
             <% if(!imgUrl){%>
             <div class="profile_img">
@@ -75,27 +94,42 @@
               </div>
             </div>
             <% }else{ %>
-            <div class="profile_img">
-              <img class="user_pic" src="/<%=imgUrl %>" alt="" width="100%">
+            <div class="profile_img profile_uploaded_img">
+              <img class="user_pic" src="/<%=imgUrl %>" alt="">
               <input type="file" id="profile_img_file" name="image" style="display:none;" accept="image/png, image/jpeg">
             </div>
             <img src="/image2/ico_edit_pencil-icon.png" class="edit_img" width="30px" alt="">
 
             <% } %>
 
-            
+
 
 
           </div>
           <div class="id_div">
             <p class="nameUser"><%= user.name %></p>
             <p class="nameUser"><%= user.email %></p>
-              
+
           </div>
         </div>
+        
       </div>
 
     </div>
+
+
+    <script>
+      document.querySelector(".address_btn").addEventListener("click", () => {
+        document.querySelector(".profile_data").style.display = "none"
+        document.querySelector(".address_data").style.display = "block"
+
+      })
+      document.querySelector(".profile_btn").addEventListener("click", () => {
+        document.querySelector(".profile_data").style.display = "block"
+        document.querySelector(".address_data").style.display = "none"
+
+      })
+    </script>
 
 
 

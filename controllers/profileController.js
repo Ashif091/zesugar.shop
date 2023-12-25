@@ -1,4 +1,5 @@
 const userdata = require("../models/userModel");
+const addressCollections = require("../models/addressModel");
 const path = require('path');
 const fs = require('fs');
 const sharp = require('sharp');
@@ -9,16 +10,16 @@ module.exports = {
     profile: async (req, res) => {
         try {
             const user = req.session.username;
-            if(!user){
-             res.status(208).redirect('/');
+            if (!user) {
+                res.status(208).redirect('/');
             }
             let userData = await userdata.findById(user._id);
             const imgUrl = userData.imagePath
             if (imgUrl) {
-                console.log("hi",userData);
-                return res.render("./userSide/profilePage", { imgUrl,user,userData})
+                console.log("hi", userData);
+                return res.render("./userSide/profilePage", { imgUrl, user, userData })
             } else {
-                return res.render("./userSide/profilePage", { imgUrl: false,user,userData})
+                return res.render("./userSide/profilePage", { imgUrl: false, user, userData })
             }
 
         } catch (error) {
@@ -77,7 +78,7 @@ module.exports = {
             const status = await userDocument.save();
 
             // ========croping===========
-        
+
             // =========================
 
             fs.unlink(previousPath, (err) => {
@@ -102,6 +103,137 @@ module.exports = {
 
         }
     }
+    ,
+    profileAddress: async (req, res) => {
+        try {
+            const user = req.session.username;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            const userData = await userdata.findById(user._id);
+
+            const Address = await addressCollections.find({ userId: userData._id });
+
+            const userAddress = Address.map(address => address);
+
+            console.log(`the address of user ${typeof (userAddress)}`);
+
+            return res.render("./userSide/profileAddress", { user, userData, userAddress })
+
+
+        } catch (error) {
+            console.log(`server Error with (profile GET) `);
+            return res.render("404page", { error })
+        }
+
+    },
+    newAddress: async (req, res) => {
+        try {
+            const userData = req.session.username;
+            const {
+                name,
+                phone_number,
+                pincode,
+                locality,
+                address,
+                city,
+                state,
+                landmark,
+                alternate_phone,
+                address_type
+            } = req.body;
+
+            if (!userData) {
+                return res.redirect('/');
+            }
+
+            let addressData = await addressCollections.findOne({ userId: userData._id });
+            addressData = new addressCollections({
+                userId: userData._id,
+                name,
+                phone_number,
+                pincode,
+                locality,
+                address,
+                city,
+                state,
+                landmark,
+                alternate_phone,
+                address_type
+            });
+            await addressData.save();
+            res.status(202).redirect("back")
+
+        } catch (error) {
+            console.log(`server Error with (newAddress POST) `);
+            return res.render("404page", { error })
+        }
+
+    },
+    editAddress: async (req, res) => {
+        try {
+            console.log(req.body);
+            const {
+                name,
+                phone_number,
+                pincode,
+                locality,
+                address,
+                city,
+                state,
+                landmark,
+                alternate_phone,
+                address_type,
+                id,
+            } = req.body;
+            console.log(`the id is ${id}`);
+            const result = await addressCollections.findOneAndUpdate(
+                { _id: id },
+                {
+                    name,
+                    phone_number,
+                    pincode,
+                    locality,
+                    address,
+                    city,
+                    state,
+                    landmark,
+                    alternate_phone,
+                    address_type,
+                }
+            )
+            if (result.matchedCount === 0) {
+                res.json({ message: 'No document matches the provided query.', status: false });
+
+            } else {
+                res.json({ message: 'Address updated successfully', status: true ,editedData:req.body});
+
+            }
+
+
+        } catch (error) {
+            console.log(`server Error with (edit Address PUT) ${error} `);
+            return res.json({ status: false, error, message: 'Fail to update, server Error !' });
+        }
+    },
+    delete_address: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const result = await addressCollections.findOneAndDelete({ _id: id });
+
+            if (result.deletedCount === 0) {
+                res.json({ message: 'No document matches the provided query.', status: false })
+            }
+
+            res.json({ message: 'Address deleted successfully', status: true });
+        } catch (error) {
+            console.log(`server Error with (edit Address DELETE)${error} `);
+            return res.json({ status: false, error, message: 'Fail to Delete, server Error !' });
+        }
+    },
+
+
+
 
 
 };

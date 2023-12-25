@@ -1,13 +1,13 @@
-const Cart = require('../models/cartSchema');
+const Cart = require('../models/cartModel');
 const users = require("../models/userModel")
-const product = require("../models/productSchema")
+const product = require("../models/productModel")
 
 
 module.exports = {
     addToCart: async (req, res) => {
         console.log("add to cart");
         const productId = req.params.id;
-        let user = req.session.username;
+        const user = req.session.username;
         console.log("add to id", productId);
 
         try {
@@ -55,15 +55,6 @@ module.exports = {
                     value = 1;
                 }
                 // =================================
-                // userCart.items.push({
-                //     product: productId,
-                //     quantity: value,
-                //     product_price: productData.product_price,
-                // });
-                // if(value== 1){
-                //     userCart.total += productData.product_price;
-                //     userCart.totalQuantity += 1;
-                // }
                 await Cart.updateOne(
                     { userId: userData._id },
                     {
@@ -94,7 +85,6 @@ module.exports = {
 
 
             let data = productId;
-            console.log("res send ", data);
 
             res.json(data);
         } catch (error) {
@@ -116,9 +106,8 @@ module.exports = {
             let isCart = await Cart.findOne({ userId: userData._id })
             if (isCart) {
                 let productIds = isCart.items.map(product => product.product);
-                console.log(productIds);
                 let cart_items = isCart.items.map(product => product);
-                console.log(cart_items);
+                // console.log(cart_items);
 
                 const products_data = await product.find({
                     _id: {

@@ -32,7 +32,7 @@ app.use('/',require("./routes/userRoutes"))
 app.use('/admin',require("./routes/adminRoutes"))
 app.get("*", (req, res) => {
   const error = `path error ,Enter http://localhost:${PORT}`;
-  return res.status(404).render("404page", { error });
+  return res.status(404).render("404page", { error});
 });
 
 

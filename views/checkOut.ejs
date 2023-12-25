@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZESUGAR PISTORS</title>
   <link rel="shortcut icon" type="image" href="/image/logo.png">
-  <link rel="stylesheet" href="/cartpage.css">
+  <link rel="stylesheet" href="/checkOut.css">
   <!-- bootstrap links -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -27,24 +27,7 @@
   <!-- animation links -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 
-  <style>
-    #navbar {
-      background-color: rgb(72, 20, 44);
-      padding: 30px 0 0 60px;
-      font-weight: bold;
-      position: fixed;
-      z-index: 200000;
-      width: 100%;
-      height: 60px;
 
-    }
-
-    .data_visible_div {
-      position: fixed;
-      top: 7.5rem;
-      height: 14rem;
-    }
-  </style>
 
 
 </head>
@@ -57,51 +40,459 @@
 
     <!-- navbar end -->
 
-    <div class="container" style="color: #fff;" id="main_container">
-      <div class="row">
-        <div class="scroll_main_div col-9">
 
-          <div class="data">#</div>
-          <div class="data">#</div>
-          <div class="data">#</div>
-          <div class="data">#</div>
+    <div class="main_container_div">
+      <!-- ==============LEFT BAR================ -->
+      <div class="scroll_main_div left_bar">
+        <!-- /////////////////  LOGIN   //////////////////// -->
+        <div class="action_method_div">
+          <div class="confirm_div">
+            <div class="confirm_text_top_bar">
+              <div class="confirm_div_num">1</div>
+              <div class="confirm_div_text">LOGIN</div>
+              <img src="../image2/icons8-tick.svg" alt="" width="15px">
+            </div>
+            <div class="confirm_text_bottom_bar">
+              <p class="name_login_user"><%=userData.name  %></p>&nbsp;
+              <p class="email_login_user lower_text"><%=userData.email  %></p>
+            </div>
+
+          </div>
+          <div class="data_display_div data_display_div_login"></div>
+        </div>
+        <!-- /////////////////  ADDRESS  //////////////////// -->
+
+        <div class="action_method_div">
+          <!-- ==========choose address div========== -->
+          <div class="choose_address_action_div">
+            <div class="data_action_div">
+              <div class="active_div_num">2</div>
+              DELIVERY ADDRESS
+            </div>
+            <div class="data_display_div data_display_div_address">
+              <!--      foreach      -->
+              <% let no = 0;%>
+              <% userAddress.forEach(address => {%>
+              <% no++ ;%>
+
+              <div class="single_address_div single_address_div<%=address._id%> " onclick="selectAddress('<%=address._id,no%>','<%=no%>')">
+                <input type="radio" class="address_radio_action address_radio-<%=address._id%>">
+                <p class="edit_action edit_btn-<%=address._id%>" onclick="editAddress('<%= JSON.stringify(address) %>')">EDIT</p>
+                <div class="user_mainData">
+                  <p class="edited_name<%=address._id%>"></p><%=address.name%>&nbsp;&nbsp;<div class="address_type address_type<%=address._id%>"><%= address.address_type %></div><%=address.phone_number %>
+                </div>
+                <div class="user_address_text_div">
+                  <%=address.locality%>,<%=address.landmark%>-,<%=address.address%>,<%=address.city %>,<%=address.state %>&nbsp;-<strong><%=address.pincode %></strong>
+                </div>
+                <button class="address_select_btn address_select_btn<%=address._id%>" onclick="deliverAddress('<%= JSON.stringify(address) %>')">Deliver Here</button>
+              </div>
+              <!-- _________________ -->
+              <div class="edit_address_div edit_form-<%=address._id%>">
+                <p id="text_add_address">EDIT THE ADDRESS</p>
+                <form action="/edit_address" id="edit_address_form-<%=address.id%>" method="post">
+
+                  <div class="top_input_tags">
+                    <div class="input-container top_input">
+                      <input type="text" id="edited_name" name="name" placeholder="">
+                      <label for="edited_name">Name</label>
+                    </div>
+
+                    <div class="input-container top_input">
+                      <input type="number" id="edited_phone_number" name="phone_number" placeholder="">
+                      <label for="edited_phone_number">Phone Number</label>
+                    </div>
+
+                    <div class="input-container top_input">
+                      <input type="number" id="edited_pincode" name="pincode" placeholder="">
+                      <label for="edited_pincode">Pincode</label>
+                    </div>
+
+                    <div class="input-container top_input">
+                      <input type="text" id="edited_locality" name="locality" placeholder="">
+                      <label for="edited_locality">Locality</label>
+                    </div>
+                  </div>
+
+                  <div class="input-container textarea_tag">
+                    <textarea id="edited_address" name="address" placeholder="Address"></textarea>
+
+                  </div>
+                  <!-- ===========bottom inputs tags========== -->
+                  <div class="bottom_input_tags">
+                    <div class="input-container bottom_tag">
+                      <input type="text" id="edited_city" name="city" placeholder="">
+                      <label for="edited_city">City</label>
+                    </div>
+
+                    <div class="input-container bottom_tag">
+                      <select id="edited_state" name="state" placeholder="">
+                        <option value="kerala">Kerala</option>
+                        <option value="karnataka">Karnataka</option>
+                      </select>
+                    </div>
+
+                    <div class="input-container bottom_tag">
+                      <input type="text" id="edited_landmark" name="landmark" placeholder="">
+                      <label for="edited_landmark">Landmark:</label>
+                    </div>
+
+                    <div class="input-container bottom_tag">
+                      <input type="number" id="edited_alternate_phone" name="alternate_phone" placeholder="">
+                      <label for="edited_alternate_phone">Alternate Phone (optional)</label>
+                    </div>
+                  </div>
+
+                  <div class="input-container typeOfAddressTag">
+                    <label>Address Type:</label>
+                  </div>
+                  <div class="address_type_tag">
+                    <input type="radio" id="edited_home" name="address_type" value="home">
+                    <label for="edited_home">Home</label>
+                    <input type="radio" id="edited_work" name="address_type" value="work">
+                    <label for="edited_work">Work</label>
+                    <input type="text" name="id" id="edited_id" hidden>
+                  </div>
+                  <div class="form_action_div">
+                    <button class="submit_btn" type="submit">SAVE</button>
+                    <div class="cancel_btn_edit">
+                      CANCEL
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <% }) %>
+              <!-- _________________ -->
+              <!--      ADD ADDRESS  FORM       -->
+              <div class="add_address_form_div">
+                &plus; Add a new address
+              </div>
+              <div class="add_address_div ">
+                <p id="text_add_address">ADD A NEW ADDRESS</p>
+                <form action="/getprofile_address" method="post">
+                  <div class="top_input_tags">
+                    <div class="input-container top_input">
+                      <input type="text" id="name" name="name" placeholder="">
+                      <label for="name">Name</label>
+                    </div>
+
+                    <div class="input-container top_input">
+                      <input type="number" id="phone_number" name="phone_number" placeholder="">
+                      <label for="phone_number">Phone Number</label>
+                    </div>
+
+                    <div class="input-container top_input">
+                      <input type="number" id="pincode" name="pincode" placeholder="">
+                      <label for="pincode">Pincode</label>
+                    </div>
+
+                    <div class="input-container top_input">
+                      <input type="text" id="locality" name="locality" placeholder="">
+                      <label for="locality">Locality</label>
+                    </div>
+                  </div>
+
+                  <div class="input-container textarea_tag">
+                    <textarea id="address" name="address" placeholder="Address"></textarea>
+
+                  </div>
+                  <!-- ===========bottom inputs tags========== -->
+                  <div class="bottom_input_tags">
+                    <div class="input-container bottom_tag">
+                      <input type="text" id="city" name="city" placeholder="">
+                      <label for="city">City</label>
+                    </div>
+
+                    <div class="input-container bottom_tag">
+                      <select id="state" name="state" placeholder="">
+                        <option value="kerala">Kerala</option>
+                        <option value="karnataka">Karnataka</option>
+                      </select>
+                    </div>
+
+                    <div class="input-container bottom_tag">
+                      <input type="text" id="landmark" name="landmark" placeholder="">
+                      <label for="landmark">Landmark:</label>
+                    </div>
+
+                    <div class="input-container bottom_tag">
+                      <input type="number" id="alternate_phone" name="alternate_phone" placeholder="">
+                      <label for="alternate_phone">Alternate Phone (optional)</label>
+                    </div>
+                  </div>
+
+                  <div class="input-container typeOfAddressTag">
+                    <label>Address Type:</label>
+                  </div>
+                  <div class="address_type_tag">
+                    <input type="radio" id="home" name="address_type" value="home">
+                    <label for="home">Home</label>
+                    <input type="radio" id="work" name="address_type" value="work">
+                    <label for="work">Work</label>
+                    <input type="text" name="id" id="id" hidden>
+                  </div>
+                  <div class="form_action_div">
+                    <button class="submit_btn" type="submit">SAVE</button>
+                    <div class="cancel_add_btn">
+                      CANCEL
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- ____________________________ -->
+
+            </div>
+          </div>
+
+          <!-- ==========Address confirm div========== -->
+          <div class=" confirm_action_div">
+            <div class="confirm_text_top_bar">
+              <div class="confirm_div_num">2</div>
+              <div class="confirm_div_text">DELIVERY ADDRESS </div>
+              <img src="../image2/icons8-tick.svg" alt="" width="15px">
+            </div>
+            <div class="confirm_text_bottom_bar">
+              <p class="confirm_address_name"></p>&nbsp;
+              <p class="confirm_address_locality lower_text"></p>,
+              <p class="confirm_address_address lower_text"></p>,
+              <p class="confirm_address_city lower_text"></p>,
+              <p class="confirm_address_state lower_text"></p>-
+              <p class="confirm_address_pincode"></p>
+            </div>
+
+            <button class="Change_address_btn">
+              Change
+            </button>
+
+          </div>
+
+
 
         </div>
 
-        <!-- ==RIGHT BAR=== -->
-        <div class="col-3">
-          <div class="left_bar">
-            <div class="data_visible_div">
-              <h3>Price Details</h3>
-              <hr>
-              <div class="price_data_div">
-                <p class="quantity">Quantity: <strong class="qty">
-                    <%=isCart.totalQuantity %>
-                  </strong></p>
-                <p class="total_price">Total Price: <span class="price">
-                    <%=isCart.total%>
-                  </span>,DHS</p>
-                <p class="charge">Delivery Charge: <s>0.3,DHS</s><span style="color: rgb(49, 188, 49);"> Free</span>
-                </p>
-                <hr>
+
+
+        <!-- //////////////  ORDER SUMMARY  ///////////////// -->
+
+
+        <div class="action_method_div">
+          <!-- order summary !confirm -->
+          <div class="order_summary_notconfirmdiv confirm_div">
+            <div class="confirm_text_top_bar">
+              <div class="confirm_div_num">3</div>
+              <div class="confirm_div_text">ORDER SUMMARY</div>
+            </div>
+          </div>
+          <!-- order summary -->
+          <div class="oder_summary_action_div ">
+            <div class="data_action_div">
+              <div class="active_div_num">3</div>
+              Order Summary
+            </div>
+            <div class="data_display_div  data_display_div_order_summary">
+              <% products_data.forEach((productItem)=>{%>
+              <% cart_items.forEach((cartItem)=>{%>
+              <%if(productItem._id.toString()==cartItem.product.toString()){%>
+
+              <div class="single_item_data_div">
+                <div class="item_image_preview_div">
+                  <div class="img_display_tag">
+                    <img class="img_tag" src="/<%=productItem.product_image_url[0] %>" width="130px" alt="">
+                  </div>
+                </div>
+                <div class="item_data_preview_div">
+                  <div class="top_text_data_preview_div">
+                    <p class="name_data_text_preview"><%=productItem.product_name%>&nbsp;</p>
+                    <p class="price_data_text_preview"><%=cartItem.product_price%> DHS</p>
+                    <% if(cartItem.quantity>1){ %>
+                    <p class="qty_data_text_preview">&nbsp;(&cross;<%=cartItem.quantity%>)</p>
+                    <% }%>
+                  </div>
+                  <div class="bottom_text_data_preview_div">
+                    <p class="product_description_data_text_preview"><%=productItem.product_description%></p>
+                  </div>
+                </div>
+                <div class="item_delivery_preview_div">
+                  <p class="delivery_charge_data_p">Delivery Charge: <s>0.3,DHS</s><span style="color: rgb(49, 188, 49);"> Free</span>
+                </div>
               </div>
-              <p class="amount">Total Price: <span class="amountv">
-                  <%=isCart.total%>
-                </span>,DHS</p>
 
 
+              <%}%>
+
+                <% }) %>
+              <% }) %>
+              <div class="cofirm_order_summary_action_div">
+                <p class="text_confirm_order_mail">Order confirmation email will be sent to &nbsp;</p>
+                <p class="email_user_text"><%= userData.email %></p>
+                <button class="btn_continue_confirm_order_summary ">continue</button>
+              </div>
+            </div>
+          </div>
+          <!-- confirm_div  -->
+          <div class="confirm_div confirm_order_summary_div" style="display: none;">
+            <div class="confirm_text_top_bar">
+              <div class="confirm_div_num">3</div>
+              <div class="confirm_div_text">ORDER SUMMARY</div>
+              <img src="../image2/icons8-tick.svg" alt="" width="15px">
+            </div>
+            <div class="confirm_text_bottom_bar">
+              <p class="confirm_order_summery_items">(<%=itemCount%>) Items</p>
+            </div>
+            <button class="view_order_summary_btn">View</button>
+          </div>
+        </div>
+
+        <!-- ________________________ -->
 
 
+        <!-- //////////////    Payment   ///////////////// -->
+
+        <div class="action_method_div">
+          <!-- order summary !confirm -->
+          <div class="payment_notconfirmdiv confirm_div">
+            <div class="confirm_text_top_bar">
+              <div class="confirm_div_num">4</div>
+              <div class="confirm_div_text">PAYMENT</div>
+            </div>
+
+          </div>
+          <!-- payment data div -->
+          <div class="payment_action_div ">
+            <div class="data_action_div">
+              <div class="active_div_num">4</div>
+              payment
+            </div>
+
+            <div class="data_display_div  data_display_div_payment">
+              <!-- loding animation -->
+              <div class="loding_btn_main_data_div">
+                <div class="loding_animation_for_btn">
+                  <div class="loading_btn_div">
+
+                  </div>
+                  <div class="loading_text">Loading...</div>
+                </div>
+
+              </div>
+              <!-- payment method -->
+              <div class="payment_method_selection_div">
+
+                <div class="upi_payment_method_radio_div radio_pament_selection_div">
+                  <div class="top_data_payment_method_action">
+                    <input type="radio" class="radio_btn radio_btn_upi">
+                    <img src="./image2/razorpay.png" alt="" width="100px">
+                    <p>Net banking</p>
+                  </div>
+                  <div class="bottom_data_payment_method_action_upi">
+                    <button class="upi_pay_btn proceed_pay_rozerpay">CONTINUE</button>
+                  </div>
+                </div>
+
+                <div class="cod_payment_method_radio_div radio_pament_selection_div">
+                  <div class="top_data_payment_method_action">
+                    <input type="radio" class="radio_btn radio_btn_cod">
+                    <p>Cash on Delivery</p>
+                  </div>
+                  <div class="bottom_data_payment_method_action_cod">
+
+                    <button class="cod_pay_btn">CONTINUE</button>
+                  </div>
+                </div>
+
+              </div>
 
             </div>
 
           </div>
+          <!--  -->
 
         </div>
+
       </div>
 
+      <script>
+        // Select the div
+        // _________________-PAYMENT-UPI-____________________
+        let upiDiv = document.querySelector('.upi_payment_method_radio_div');
+        let codDiv = document.querySelector('.cod_payment_method_radio_div');
+
+        upiDiv.addEventListener('click', function() {
+          let radios = document.querySelectorAll('.radio_btn');
+          radios.forEach(function(radio) {
+            radio.checked = false;
+          });
+          upiDiv.style.backgroundColor = "rgb(199, 158, 177)";
+          codDiv.style.backgroundColor = "rgb(141, 104, 121)";
+          let upiRadio = document.querySelector('.radio_btn_upi');
+          upiRadio.checked = true;
+          document.querySelector(".bottom_data_payment_method_action_upi").style.display = "block"
+          document.querySelector(".bottom_data_payment_method_action_cod").style.display = "none"
+
+          // ___________payment method to form_________________
+          document.querySelector(".payment_method_input").value = "UPI";
+        });
+        // _________________-PAYMENT-COD-____________________
+
+
+        codDiv.addEventListener('click', function() {
+          let radios = document.querySelectorAll('.radio_btn');
+          radios.forEach(function(radio) {
+            radio.checked = false;
+          });
+
+          upiDiv.style.backgroundColor = "rgb(141, 104, 121)";
+          codDiv.style.backgroundColor = "rgb(199, 158, 177)";
+
+
+          let codRadio = document.querySelector('.radio_btn_cod');
+          codRadio.checked = true;
+          document.querySelector(".bottom_data_payment_method_action_upi").style.display = "none"
+          document.querySelector(".bottom_data_payment_method_action_cod").style.display = "block"
+
+          // ___________payment method to form_________________
+          document.querySelector(".payment_method_input").value = "COD";
+
+        });
+      </script>
+      <!-- ==============LEFT BAR================ -->
+
+      <!-- ==================RIGHT BAR============== -->
+      <div class=" right_bar">
+
+        <div class="data_visible_div">
+          <h3>Price Details</h3>
+          <hr>
+          <div class="price_data_div">
+            <p class="quantity">Quantity: <strong class="qty">
+                <%=isCart.totalQuantity %>
+              </strong></p>
+            <p class="total_price">Price (<%=itemCount%> items) :<span class="price">
+                <%=isCart.total%>
+              </span>,DHS</p>
+            <p class="charge">Delivery Charge: <s>0.3,DHS</s><span style="color: rgb(49, 188, 49);"> Free</span>
+            </p>
+            <hr>
+          </div>
+          <p class="amount">Total Price: <span class="amountv">
+              <%=isCart.total%>
+            </span>,DHS</p>
+
+        </div>
+
+
+
+      </div>
+      <!-- ==================RIGHT BAR============== -->
 
     </div>
+
+
+    <form action="/proceedToPayment" class="form_for_confirmOrder">
+      <input type="text" name="id_address" class="id_address_input">
+      <input type="text" name="payment_method" class="payment_method_input">
+    </form>
+
 
 
 
@@ -112,6 +503,16 @@
 
 
   </div>
+  <!-- loaging div -->
+
+  <div class="loading_model">
+    <div class="loadingDiv">
+      <div class="lootieanimation"></div>
+      <div class="loading_text">Loading...</div>
+
+    </div>
+  </div>
+  <!-- __________ -->
 
 
   <!-- ====ERROR PoP UP==== -->
@@ -132,7 +533,7 @@
     if (!(amount_items == 0 || amount_items == "" || amount_items == undefined)) {
 
       // error msg
-      document.querySelector('.errormsg').textContent =`${amount_items} products are removed from cart`
+      document.querySelector('.errormsg').textContent = `${amount_items} products are removed from cart`
       document.querySelector('.errormsg').style.display = "block"
       document.querySelector('.errormsg').style.animationPlayState = 'running';
 
@@ -141,14 +542,369 @@
         document.querySelector('.errormsg').style.animationName = "hide"
         document.querySelector('.errormsg').style.animationPlayState = 'running';
         setTimeout(() => {
-         document.querySelector('.errormsg').style.display = "none"
+          document.querySelector('.errormsg').style.display = "none"
         }, 300);
       }, 4000);
-       fetch("/cls_removel_msg-checkout")
-       .catch(error => console.log(`error with cls_removel_msg-checkout ${error}`))
+      fetch("/cls_removel_msg-checkout")
+        .catch(error => console.log(`error with cls_removel_msg-checkout ${error}`))
     }
   </script>
   <!-- =============================== -->
+
+  <!--            order Summary Confirm action & razorpay confirmation req  && view buttton        -->
+  <script>
+    document.querySelector(".btn_continue_confirm_order_summary").addEventListener("click", () => {
+      document.querySelector(".oder_summary_action_div").style.display = "none";
+      document.querySelector(".confirm_order_summary_div").style.display = "block";
+      document.querySelector(".payment_action_div").style.display = "block";
+      document.querySelector(".payment_notconfirmdiv").style.display = "none";
+      // Define the URL
+
+      let data = {
+        price: 34
+      };
+
+      let options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      };
+
+      // loding data on payment div
+      document.querySelector(".payment_method_selection_div").style.display = "none";
+      document.querySelector(".loding_btn_main_data_div").style.display = "block";
+      document.querySelector('.upi_payment_method_radio_div').click()
+
+
+      // _________________________
+
+      fetch("/razorpay_payment_req", options)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+
+
+          document.querySelector(".loding_btn_main_data_div").style.display = "none";
+          document.querySelector(".payment_method_selection_div").style.display = "block";
+
+
+          var options = {
+            "key": "rzp_test_DMGbn7AEeBDC31",
+            "amount": data.order.amount / 100,
+            "currency": "INR",
+            "name": "ZESUGAR PISTORS",
+            "description": "Test Transaction",
+            "order_id": data.order.id,
+            handler: function(response) {
+              const form = document.querySelector('.form_for_confirmOrder');
+              const form_data = new FormData(form);
+
+              const req_data = {
+                method: "POST",
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Object.fromEntries(form_data))
+              };
+
+              fetch("/confirmOrder", req_data)
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                  }
+                  return response.json();
+                })
+                .then(result => {
+
+                })
+                .catch(error => console.log('Error:', error));
+
+
+            },
+            "prefill": {
+              "name": data.userData.name,
+              "email": data.userData.email,
+              "contact": ""
+            },
+            "notes": {
+              "address": "Razorpay Corporate Office"
+            },
+
+
+          };
+          var rzp1 = new Razorpay(options);
+          document.querySelector('.proceed_pay_rozerpay').onclick = function(e) {
+            rzp1.open();
+            e.preventDefault();
+
+          }
+
+
+
+
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+
+
+    })
+    document.querySelector(".view_order_summary_btn").addEventListener("click", () => {
+      document.querySelector(".oder_summary_action_div").style.display = "block";
+      document.querySelector(".confirm_order_summary_div").style.display = "none";
+      document.querySelector(".payment_action_div").style.display = "none";
+      document.querySelector(".payment_notconfirmdiv").style.display = "block";
+
+    })
+  </script>
+  <!-- _______________________________________________  -->
+  <!--               action of confirm ad div writer                   -->
+  <script>
+    function deliverAddress(address) {
+      event.stopPropagation();
+      const addressData = JSON.parse(address);
+
+      document.querySelector(".choose_address_action_div").style.display = "none"
+      document.querySelector(".confirm_action_div").style.display = "block"
+
+      // giving data
+      document.querySelector(".confirm_address_name").textContent = addressData.name + ",";
+      document.querySelector(".confirm_address_pincode").textContent = addressData.pincode;
+      document.querySelector(".confirm_address_locality").textContent = addressData.locality;
+      document.querySelector(".confirm_address_address").textContent = addressData.address;
+      document.querySelector(".confirm_address_city").textContent = addressData.city;
+      document.querySelector(".confirm_address_state").textContent = addressData.state;
+      // change butoon action
+      document.querySelector(".Change_address_btn").addEventListener("click", () => {
+        document.querySelector(".choose_address_action_div").style.display = "block"
+        document.querySelector(".confirm_action_div").style.display = "none"
+
+        // __________-ORDER SUMMARY hide-_________
+        document.querySelector(".oder_summary_action_div").style.display = "none";
+        document.querySelector(".confirm_order_summary_div").style.display = "block";
+        // _______________________________________
+
+        //__________payment div hide& show______
+        document.querySelector(".payment_action_div").style.display = "none";
+        document.querySelector(".payment_notconfirmdiv").style.display = "block";
+        // _____________________________________
+
+
+      })
+
+      // __________-ORDER SUMMARY hide-_________
+      document.querySelector(".oder_summary_action_div").style.display = "block";
+      document.querySelector(".confirm_order_summary_div").style.display = "none";
+      document.querySelector(".order_summary_notconfirmdiv").style.display = "none";
+      // _______________________________________
+
+
+    }
+  </script>
+  <!-- ____________________________________________________________ -->
+
+
+  <!--            Fetch req of edit_address        -->
+  <script>
+    function editAddress(address) {
+      const addressData = JSON.parse(address);
+      event.stopPropagation();
+
+      const form = document.querySelector(".edit_form-" + addressData._id);
+
+      form.querySelector("#edited_name").value = addressData.name;
+      form.querySelector("#edited_phone_number").value = addressData.phone_number;
+      form.querySelector("#edited_pincode").value = addressData.pincode;
+      form.querySelector("#edited_locality").value = addressData.locality;
+      form.querySelector("#edited_address").value = addressData.address;
+      form.querySelector("#edited_city").value = addressData.city;
+      form.querySelector("#edited_state").value = addressData.state;
+      form.querySelector("#edited_landmark").value = addressData.landmark;
+      form.querySelector("#edited_alternate_phone").value = addressData.alternate_phone;
+      form.querySelector("#edited_id").value = addressData._id;
+
+      // _____  OTHER DIVS HIDDING CODE _______
+      let contentElements = document.querySelectorAll('.edit_address_div');
+      let data_div = document.querySelectorAll('.single_address_div');
+
+      contentElements.forEach(function(element) {
+        element.style.display = 'none';
+      });
+
+
+      data_div.forEach(function(element) {
+        element.style.display = 'block';
+      });
+
+      // _________________________________
+      document.querySelector(".add_address_div").style.display = "none"; //for dismiss the add address form
+      document.querySelector(".add_address_form_div").style.display = "block";
+      // __________________
+      form.style.display = "block";
+      document.querySelector(".single_address_div" + addressData._id).style.display = "none";
+
+
+      // =============================
+      const formData = document.getElementById("edit_address_form-" + addressData._id);
+      formData.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = new FormData(formData);
+
+        fetch("/edit_address", {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(Object.fromEntries(data)),
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (!data.status) {
+              //   ERROR MSG 
+              document.querySelector('.errormsg').textContent = data.message;
+              document.querySelector('.errormsg').style.display = "block";
+              document.querySelector('.errormsg').style.animationPlayState = 'running';
+
+              setTimeout(function() {
+                document.querySelector('.errormsg').style.animationPlayState = 'paused';
+                document.querySelector('.errormsg').style.animationName = "hide"
+                document.querySelector('.errormsg').style.animationPlayState = 'running';
+                setTimeout(() => {
+                  window.location.reload()
+                }, 150);
+              }, 2000);
+              // ______________
+            } else {
+              //              if response is okay
+              window.location.href = "/getcheckout"
+              // ________________________________________________
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      });
+
+
+
+    }
+
+
+    // _______ CANCEL BTN_________
+
+    let cancel_div = document.querySelectorAll('.cancel_btn_edit');
+
+    cancel_div.forEach(function(button) {
+      button.addEventListener("click", () => {
+        let contentElements = document.querySelectorAll('.edit_address_div');
+        let data_div = document.querySelectorAll('.single_address_div');
+
+        contentElements.forEach(function(element) {
+          element.style.display = 'none';
+        });
+
+        data_div.forEach(function(element) {
+          element.style.display = 'block';
+        });
+      });
+    });
+
+    // ___________________________
+  </script>
+  <!-- ___________________________________________ -->
+
+  <!--       action of edit and normal  address div        -->
+  <script>
+    function selectAddress(addressId, no) {
+      // Unselect all radio buttons
+      event.stopPropagation();
+      document.querySelectorAll('.address_radio_action').forEach(function(radio) {
+        radio.checked = false;
+      });
+      document.querySelectorAll('.edit_action').forEach(function(btn) {
+        btn.style.display = "none";
+      });
+      document.querySelectorAll('.address_select_btn').forEach(function(btn) {
+        btn.style.display = "none";
+      });
+      document.querySelectorAll('.single_address_div').forEach(function(div) {
+        div.style.backgroundColor = "rgb(114, 65, 88)"
+      });
+      // Select the radio button with the given id
+      // ______form dismiss _____
+
+      let contentElements = document.querySelectorAll('.edit_address_div');
+      let data_div = document.querySelectorAll('.single_address_div');
+
+      contentElements.forEach(function(element) {
+        element.style.display = 'none';
+      });
+      //          display of data divs  
+      data_div.forEach(function(element) {
+        element.style.display = 'block';
+      });
+      // ____________________________________________
+
+      // __________-ORDER SUMMARY hide and payment- _________
+      document.querySelector(".oder_summary_action_div").style.display = "none";
+      document.querySelector(".payment_action_div").style.display = "none";
+
+      // _______________________________________
+
+
+      // -_______________________
+      var radio = document.querySelector('.address_radio-' + addressId);
+      if (radio) {
+        radio.checked = true;
+      }
+      document.querySelector(".id_address_input").value = addressId;
+      document.querySelector(".edit_btn-" + addressId).style.display = "block"
+      document.querySelector(".address_select_btn" + addressId).style.display = "block"
+      document.querySelector(".single_address_div" + addressId).style.backgroundColor = "rgb(155, 113, 133)"
+
+
+
+    }
+  </script>
+  <!-- _________________________________________ -->
+
+
+
+  <!-- add ADDRESS BTN ACTION  -->
+  <script>
+    const addBtn = document.querySelector(".add_address_form_div");
+    addBtn.addEventListener("click", (event) => {
+      addBtn.style.display = "none";
+      document.querySelector(".add_address_div").style.display = "block";
+      let contentElements = document.querySelectorAll('.edit_address_div');
+      let data_div = document.querySelectorAll('.single_address_div');
+
+      contentElements.forEach(function(element) {
+        element.style.display = 'none';
+      });
+      data_div.forEach(function(element) {
+        element.style.display = 'block';
+      });
+
+      // cancel
+      document.querySelector(".cancel_add_btn").addEventListener("click", () => {
+        addBtn.style.display = "block";
+        document.querySelector(".add_address_div").style.display = "none";
+
+      })
+
+
+
+    })
+  </script>
+  <!-- _______________________ -->
 
 
   <!-- for aos animation  -->
@@ -165,7 +921,47 @@
     }
   </script>
   <!-- ======================== -->
+  <!-- ========ON LOAD THE PAGE ======= -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.8/lottie.min.js"></script>
 
+  <script>
+    window.onload = function() {
+
+      document.querySelector('.single_address_div').click()
+      document.querySelector('.loading_model').style.display = 'none';
+      //
+
+
+    };
+  </script>
+  <!-- ________________________________ -->
+
+  <!-- ________loging animathion__________ -->
+  <script>
+    // Show the loading div when the page starts to load
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.loading_model').style.display = 'block';
+      let container = document.querySelector('.lootieanimation');
+      let animation = lottie.loadAnimation({
+        container: container,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: './json/reload.json'
+      });
+      // ________btn loding animation _____
+      let container_btn_loder = document.querySelector('.loading_btn_div');
+      let animation_for_BTN = lottie.loadAnimation({
+        container: container_btn_loder,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: './json/reload.json'
+      });
+    });
+  </script>
+
+  <!-- __________________________________ -->
 
   <!-- page reload -->
   <script>
@@ -175,6 +971,10 @@
     }
   </script>
   <!-- ========= -->
+
+  <!-- razorpay script -->
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
 </body>

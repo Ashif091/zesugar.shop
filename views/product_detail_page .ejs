@@ -26,6 +26,8 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- animation links -->
 
+
+
 </head>
 
 <body>
@@ -69,7 +71,8 @@
             <% if (cartstatus.includes(productId)) { %>
             <button class="addToCart_btn" id="goToCart_btn" data-product-id="<%=productdata._id%>" onclick="cart()">Go to Cart</button>
             <% }else{ %>
-            <button class="addToCart_btn" id="addToCart_btn" data-product-id="<%=productdata._id%>" onclick="onCartBtnClick()">Add TO Cart</button>
+            <button class="addToCart_btn" id="addToCart_btn" data-product-id="<%=productdata._id%>" onclick="onCartBtnClick()">Add TO Cart <p style="display:none;" id="reload"></p></button>
+            <button class="addToCart_btn" id="goToCart_btn" data-product-id="<%=productdata._id%>" onclick="cart()" style="display: none;">Go to Cart</button>
             <% } %>
 
             <% if(productdata.product_status === true) { %>
@@ -87,100 +90,7 @@
 
           </div>
 
-          <!-- ==============img ZOOM=============  -->
-<!-- 
 
-
-          <script>
-            // let imgdiv = document.querySelector('.imgtag_')
-            // imgdiv.onmouseover = function() {
-
-            //   var img = document.querySelector('.imgtag_');
-            //   let resultdiv = document.querySelector(".img-zoom-result")
-            //   let zoom_div = document.querySelector(".zoom_div")
-            //   resultdiv.style.display = "block"
-            //   imageZoom(img, resultdiv);
-            // }
-            let imgdiv = document.querySelector('.imgtag_');
-            
-
-            imgdiv.onmouseover = function() {
-              let resultdiv = document.querySelector(".img-zoom-result");
-              resultdiv.style.display = "block";
-              imageZoom(imgdiv, resultdiv);
-            }
-
-
-
-
-
-
-            function imageZoom(img, result) {
-              var lens, cx, cy;
-
-              lens = document.createElement("DIV");
-              lens.setAttribute("class", "img-zoom-lens");
-              img.parentElement.insertBefore(lens, img);
-
-              cx = result.offsetWidth / lens.offsetWidth;
-              cy = result.offsetHeight / lens.offsetHeight;
-
-              result.style.backgroundImage = "url('" + img.src + "')";
-              result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-
-              lens.addEventListener("mousemove", moveLens);
-              img.addEventListener("mousemove", moveLens);
-
-              lens.addEventListener("touchmove", moveLens);
-              img.addEventListener("touchmove", moveLens);
-
-
-
-
-              function moveLens(e) {
-                var pos, x, y;
-                e.preventDefault();
-                pos = getCursorPos(e);
-                x = pos.x - (lens.offsetWidth / 2);
-                y = pos.y - (lens.offsetHeight / 2);
-
-                if (x > img.width - lens.offsetWidth) {
-                  x = img.width - lens.offsetWidth;
-                }
-                if (x < 0) {
-                  x = 0;
-                }
-                if (y > img.height - lens.offsetHeight) {
-                  y = img.height - lens.offsetHeight;
-                }
-                if (y < 0) {
-                  y = 0;
-                }
-
-                lens.style.left = x + "px";
-                lens.style.top = y + "px";
-
-                result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
-                
-              }
-
-              function getCursorPos(e) {
-                var a, x = 0,
-                  y = 0;
-                e = e || window.event;
-                a = img.getBoundingClientRect();
-                x = e.pageX - a.left;
-                y = e.pageY - a.top;
-                x = x - window.pageXOffset;
-                y = y - window.pageYOffset;
-                return {
-                  x: x,
-                  y: y
-                };
-              }
-            }
-          </script> -->
-          <!-- ==============img ZOOM END=============  -->
 
 
         </div>
@@ -220,14 +130,7 @@
         </div>
       </div>
     </div>
-    <script>
-      document.querySelectorAll('.img_min_div').forEach(function(div) {
-        div.addEventListener('click', function() {
-          var imgSrc = div.querySelector('img').getAttribute('src');
-          document.querySelector('.img_tag img').setAttribute('src', imgSrc);
-        });
-      });
-    </script>
+
 
 
     <%-include("./partials/footer.ejs")  %>
@@ -235,20 +138,53 @@
 
   </div>
 
+  <!-- ====ERROR PoP UP==== -->
+
+  <div class="errormsg" style="display: none;">
+    Product added successfully
+  </div>
+
+  <!-- ==================== -->
+
+  <!-- ============ADD TO CART FETCH REQ================ -->
+
   <script>
     let onCartBtnClick = function onCartBtnClick() {
       console.log("btn clicked");
       const cartbtn = document.getElementById("addToCart_btn");
+      const reload = document.getElementById("reload");
+      const goToCart_btn = document.getElementById("goToCart_btn");
       const productId = cartbtn.getAttribute('data-product-id');
+
       console.log(productId);
+      cartbtn.disabled = true;
+      reload.style.display = "block"
+
+
+
 
       fetch(`/productaddtocart/${productId}`)
         .then(response => response.json())
         .then(data => {
-          console.log(data);
-          cartbtn.innerHTML = "Go to Cart";
+          if (data) {
+            cartbtn.style.display = "none"
+            goToCart_btn.style.display = "block"
+            // error msg
+            document.querySelector('.errormsg').style.display = "block"
+            document.querySelector('.errormsg').style.animationPlayState = 'running';
 
-          window.location.reload();
+            setTimeout(function() {
+              document.querySelector('.errormsg').style.animationPlayState = 'paused';
+              document.querySelector('.errormsg').style.animationName = "hide"
+              document.querySelector('.errormsg').style.animationPlayState = 'running';
+              setTimeout(() => {
+              document.querySelector('.errormsg').style.display = "none"
+                
+              }, 300);
+            }, 3000);
+          } else {
+            window.location.reload()
+          }
 
 
         })
@@ -256,7 +192,29 @@
     }
     //==========go to cart btn ================
   </script>
+  <!-- ================================================== -->
 
+
+  <!-- =======IMAGE CHANGING ACTION======= -->
+  <script>
+    document.querySelectorAll('.img_min_div').forEach(function(div) {
+      div.addEventListener('click', function() {
+        var imgSrc = div.querySelector('img').getAttribute('src');
+        document.querySelector('.img_tag img').setAttribute('src', imgSrc);
+      });
+    });
+  </script>
+  <!-- =================================== -->
+
+  <!-- lootie animation file -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.8/lottie.min.js"></script>
+  <script>
+    bodymovin.loadAnimation({
+      container: document.getElementById('reload'),
+      path: '/json/reload.json',
+    });
+  </script>
+  <!-- lootie animation file -->
 
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -278,13 +236,13 @@
   </script>
 
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
-<script>
-  $(document).ready(function() {
-    $("#zoom_04").ezPlus();
-  });
-</script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#zoom_04").ezPlus();
+    });
+  </script>
 
 </body>
 

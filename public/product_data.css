@@ -229,16 +229,21 @@ html{
 
 /* =========buy button======== */
 .buy_button_div{
+    width: 300px;
    margin-left: 8rem;
+   display: flex;
 }
 .addToCart_btn{
+    position: relative;
     margin-right: 1.5rem;
     padding: 5px;
     border-radius: 12px;
+    flex: 1;
 }
 .buyNow_btn{
     padding: 5px;
     border-radius: 12px;
+    flex: 1;
 }
 
 /* CSS ==============================BTN*/
@@ -432,5 +437,43 @@ html{
 
 /* ==============img ZOOM END============= */
 
+/* relod div */
+#reload{
+ width:45px;
+ position: absolute;
+ top: -4px;
+ left: 34px;
+}
+/* ======== */
 
-
+/* ==========ERROR MSG============= */
+.errormsg{
+    height: 70px;
+    width: 100px;
+    position: absolute;
+    border: 2px solid #e18383;
+    color: #fff;
+    background: rgb(210,159,190);
+    background: linear-gradient(90deg, rgba(210,159,190,1) 0%, rgba(254,86,135,1) 100%);
+    padding: 10px;
+    border-radius: 8px;
+    bottom: 40px;
+    right: 80px;
+    overflow: hidden;
+   }
+   @keyframes expand {
+    from {width: 0;}
+    to {width: 300px;}
+   }
+   @keyframes hide {
+    from {width: 300px;}
+    to {width: 0;}
+   }
+   .errormsg {
+    animation-name: expand;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+   }
+   
+/* ================================ */
