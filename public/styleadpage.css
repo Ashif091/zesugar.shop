@@ -185,13 +185,9 @@ body {
     grid-template-columns: 1fr 1fr 2fr ;
     transition: width, 0.3s;
 }
-.icons img:hover{
-  width: 34px;
-}
 
-.icons .unlockimg:hover{
-    width: 46px;
-}
+
+
 .icons .btn_icon {
     background-color: transparent;
     outline: none;
@@ -289,3 +285,31 @@ body {
 
 
 /* .inner  */
+.errormsg{
+    height: 70px;
+    width: 100px;
+    position: absolute;
+    border: 2px solid #e18383;
+    color: #fff;
+    background: rgb(255,255,255);
+    background: linear-gradient(148deg, rgba(255,255,255,0.6056547619047619) 0%, rgba(244,2,2,0.7401085434173669) 29%, rgba(252,0,0,0.7401085434173669) 63%, rgba(244,244,244,0.6532738095238095) 100%);
+    padding: 10px;
+    border-radius: 8px;
+    bottom: 40px;
+    right: 80px;
+    overflow: hidden;
+   }
+   @keyframes expand {
+    from {width: 0;}
+    to {width: 300px;}
+   }
+   @keyframes hide {
+    from {width: 300px;}
+    to {width: 0;}
+   }
+   .errormsg {
+    animation-name: expand;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+   }

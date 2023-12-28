@@ -411,50 +411,7 @@
 
       </div>
 
-      <script>
-        // Select the div
-        // _________________-PAYMENT-UPI-____________________
-        let upiDiv = document.querySelector('.upi_payment_method_radio_div');
-        let codDiv = document.querySelector('.cod_payment_method_radio_div');
 
-        upiDiv.addEventListener('click', function() {
-          let radios = document.querySelectorAll('.radio_btn');
-          radios.forEach(function(radio) {
-            radio.checked = false;
-          });
-          upiDiv.style.backgroundColor = "rgb(199, 158, 177)";
-          codDiv.style.backgroundColor = "rgb(141, 104, 121)";
-          let upiRadio = document.querySelector('.radio_btn_upi');
-          upiRadio.checked = true;
-          document.querySelector(".bottom_data_payment_method_action_upi").style.display = "block"
-          document.querySelector(".bottom_data_payment_method_action_cod").style.display = "none"
-
-          // ___________payment method to form_________________
-          document.querySelector(".payment_method_input").value = "UPI";
-        });
-        // _________________-PAYMENT-COD-____________________
-
-
-        codDiv.addEventListener('click', function() {
-          let radios = document.querySelectorAll('.radio_btn');
-          radios.forEach(function(radio) {
-            radio.checked = false;
-          });
-
-          upiDiv.style.backgroundColor = "rgb(141, 104, 121)";
-          codDiv.style.backgroundColor = "rgb(199, 158, 177)";
-
-
-          let codRadio = document.querySelector('.radio_btn_cod');
-          codRadio.checked = true;
-          document.querySelector(".bottom_data_payment_method_action_upi").style.display = "none"
-          document.querySelector(".bottom_data_payment_method_action_cod").style.display = "block"
-
-          // ___________payment method to form_________________
-          document.querySelector(".payment_method_input").value = "COD";
-
-        });
-      </script>
       <!-- ==============LEFT BAR================ -->
 
       <!-- ==================RIGHT BAR============== -->
@@ -488,7 +445,7 @@
     </div>
 
 
-    <form action="/proceedToPayment" class="form_for_confirmOrder">
+    <form action="/proceedToPayment" class="form_for_confirmOrder" style="display: none;">
       <input type="text" name="id_address" class="id_address_input">
       <input type="text" name="payment_method" class="payment_method_input">
     </form>
@@ -526,6 +483,24 @@
 
 
   <!-- /////////SCRIPT AREA///////// -->
+  <!--          ERROR MSG         -->
+  <script>
+    function errorMsg() {
+      document.querySelector('.errormsg').textContent = data.message;
+      document.querySelector('.errormsg').style.display = "block";
+      document.querySelector('.errormsg').style.animationPlayState = 'running';
+
+      setTimeout(function() {
+        document.querySelector('.errormsg').style.animationPlayState = 'paused';
+        document.querySelector('.errormsg').style.animationName = "hide"
+        document.querySelector('.errormsg').style.animationPlayState = 'running';
+        setTimeout(() => {
+          window.location.reload()
+        }, 150);
+      }, 2000);
+    }
+  </script>
+  <!--           _______          -->
 
   <!-- cart item REMOVEL notification  -->
   <script>
@@ -550,6 +525,86 @@
     }
   </script>
   <!-- =============================== -->
+
+  <!--           order pement method  confirm btn && fetch req of cod  -->
+  <script>
+    // Select the div
+    // _________________-PAYMENT-UPI-____________________
+    let upiDiv = document.querySelector('.upi_payment_method_radio_div');
+    let codDiv = document.querySelector('.cod_payment_method_radio_div');
+
+    upiDiv.addEventListener('click', function() {
+      let radios = document.querySelectorAll('.radio_btn');
+      radios.forEach(function(radio) {
+        radio.checked = false;
+      });
+      upiDiv.style.backgroundColor = "rgb(199, 158, 177)";
+      codDiv.style.backgroundColor = "rgb(141, 104, 121)";
+      let upiRadio = document.querySelector('.radio_btn_upi');
+      upiRadio.checked = true;
+      document.querySelector(".bottom_data_payment_method_action_upi").style.display = "block"
+      document.querySelector(".bottom_data_payment_method_action_cod").style.display = "none"
+
+      // ___________payment method to form_________________
+      document.querySelector(".payment_method_input").value = "UPI";
+    });
+    // _________________-PAYMENT-COD-____________________
+
+
+    codDiv.addEventListener('click', function() {
+      let radios = document.querySelectorAll('.radio_btn');
+      radios.forEach(function(radio) {
+        radio.checked = false;
+      });
+
+      upiDiv.style.backgroundColor = "rgb(141, 104, 121)";
+      codDiv.style.backgroundColor = "rgb(199, 158, 177)";
+
+
+      let codRadio = document.querySelector('.radio_btn_cod');
+      codRadio.checked = true;
+      document.querySelector(".bottom_data_payment_method_action_upi").style.display = "none"
+      document.querySelector(".bottom_data_payment_method_action_cod").style.display = "block"
+
+      // ___________payment method to form_________________
+      document.querySelector(".payment_method_input").value = "COD";
+
+    });
+    //cod fetch confirm req__________
+    document.querySelector(".cod_pay_btn").addEventListener("click", () => {
+      const form = document.querySelector('.form_for_confirmOrder');
+      const form_data = new FormData(form);
+
+      const req_data = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(Object.fromEntries(form_data))
+      };
+
+      fetch("/confirmOrder", req_data)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(result => {
+          if (result.status === true) {
+            const orderdata = result.orderdata;
+            window.location.href = `/orderSuccess/${orderdata._id}`
+          } else {
+            errorMsg();
+          }
+
+        })
+        .catch(error => console.log('Error:', error));
+
+    })
+  </script>
+  <!-- ______________________________________________________________ -->
 
   <!--            order Summary Confirm action & razorpay confirmation req  && view buttton        -->
   <script>
@@ -622,7 +677,12 @@
                   return response.json();
                 })
                 .then(result => {
-
+                  if (result.status === true) {
+                    const orderdata = result.orderdata;
+                    window.location.href = `/orderSuccess/${orderdata._id}`
+                  } else {
+                    errorMsg();
+                  }
                 })
                 .catch(error => console.log('Error:', error));
 
@@ -768,18 +828,7 @@
           .then(data => {
             if (!data.status) {
               //   ERROR MSG 
-              document.querySelector('.errormsg').textContent = data.message;
-              document.querySelector('.errormsg').style.display = "block";
-              document.querySelector('.errormsg').style.animationPlayState = 'running';
-
-              setTimeout(function() {
-                document.querySelector('.errormsg').style.animationPlayState = 'paused';
-                document.querySelector('.errormsg').style.animationName = "hide"
-                document.querySelector('.errormsg').style.animationPlayState = 'running';
-                setTimeout(() => {
-                  window.location.reload()
-                }, 150);
-              }, 2000);
+              errorMsg()
               // ______________
             } else {
               //              if response is okay

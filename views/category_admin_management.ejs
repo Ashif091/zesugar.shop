@@ -25,7 +25,24 @@
 
 <body>
   <div class="container_main ">
-    <%-include("./partials/left_bar_admin") %>
+       <!-- left bar  -->
+       <div class="sidebar">
+        <!-- Your sidebar content goes here -->
+    
+        <div class="profile_bar">
+          <form class="circle" action="/logout" method="get">
+            <img src="/image2/admin.png" alt="Profile Image">
+            <p class="admintag">admin </p>
+            <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
+          </form>
+        </div>
+        <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">User Management</button></a>
+        <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Product Mangement</button></a>
+        <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(69, 45, 45); ">Category</button></a>  
+        <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Order Management</button></a>
+
+      </div>
+      <!--  -->
     <form class="search-bar" action="/admin/usermanagement/search" method="get">
       <h1>category Management</h1>
 

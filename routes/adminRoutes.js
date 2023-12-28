@@ -20,16 +20,13 @@ const storage = multer.diskStorage({
   
 
 const {logout,
-    adlogin,
     usercls,
     updateuser,
     createuser,
     search,
     admincheck,
-    usermanagementall,
+    usermanagement,
     userstatus,
-    blockedusers,
-    usermanagementblock,
     createProduct,
     createProductDisplay,
     productmangement,
@@ -41,20 +38,20 @@ const {logout,
     editcategory,
     productstatus,
     deletecategory,
+    ordermanagement,
     
 }=require("../controllers/adminController")
 router.route("/logout").get(logout)
-router.route("/").get( adminAuthenticate,adlogin).post(admincheck)
+router.route("/").get( adminAuthenticate,usermanagement).post(admincheck)
 
 
 
 // ___________________User Management_______________________-    
 
-router.route('/usermanagement').get(adminAuthenticate,usermanagementall);
+router.route('/usermanagement').get(usermanagement).post(userstatus)
 router.route("/usermanagement/search").get(search)
-router.route("/usermanagementblock/:userId").get(usermanagementblock).post(blockedusers)
 router.route("/usermanagementcreate").post(createuser)
-router.route("/usermanagement/:userId").post(userstatus).put(updateuser).delete(usercls)
+router.route("/usermanagement/:userId").put(updateuser).delete(usercls)
 
 //_____________________product Management__________________
 
@@ -76,6 +73,10 @@ const single_upload = multer({ storage: storage }).single('image');
 router.route("/categorymanagement").get(categoryGET).post(single_upload,categoryPOST)
 router.route('/categorymanagement/edit').get(categoryGET).post(editcategory)
 router.route('/deletecategory/:id').delete(deletecategory)
+
+// _____________________orderManagment_admin_management________________________
+
+router.route("/ordermanagement").get(ordermanagement).post(single_upload,categoryPOST)
 
 
 

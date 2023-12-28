@@ -28,7 +28,8 @@ const { addToCart,
 const { getcheckout,
   cls_removel_msg,
   razorpay_payment_req,
-  confirmOrder } = require("../controllers/checkOutController")
+  confirmOrder,
+  orderSuccesspage} = require("../controllers/checkOutController")
 //_____________________profile controller_____________________
 const { profile,
   imgupload,
@@ -36,7 +37,10 @@ const { profile,
   newAddress,
   profileAddress,
   editAddress,
-  delete_address, } = require("../controllers/profileController")
+  delete_address,
+  orderHistory,
+  orderdetails,
+  orderCancel,} = require("../controllers/profileController")
 
 
 router.route('/login').get(authenticateUser, login).post(check)
@@ -78,16 +82,21 @@ const storage = multer.diskStorage({
 const single_upload = multer({ storage: storage }).single('image');
 
 router.route('/getprofile').get(userstatus, profile).post(userstatus, single_upload, imgupload).patch(userstatus, single_upload, imgEdit)
-router.route('/getprofile_address').get(profileAddress).post(newAddress)
-router.route('/edit_address').put(editAddress)
-router.route('/edit_address/:id').delete(delete_address)
+router.route('/getprofile_address').get(userstatus,profileAddress).post(newAddress)
+router.route('/edit_address').put(userstatus,editAddress)
+router.route('/edit_address/:id').delete(userstatus,delete_address)
+router.route('/getprofile_order').get(userstatus,orderHistory)
+router.route('/orderdetails/:id').get(userstatus,orderdetails)
 
 
 //============CHECK OUT ===========
 router.route('/getcheckout').get(userstatus, getcheckout)
-router.route('/cls_removel_msg-checkout').get(cls_removel_msg)
-router.route('/razorpay_payment_req').post(razorpay_payment_req)
-router.route('/confirmOrder').post(confirmOrder)
+router.route('/cls_removel_msg-checkout').get(userstatus,cls_removel_msg)
+router.route('/razorpay_payment_req').post(userstatus,razorpay_payment_req)
+router.route('/confirmOrder').post(userstatus,confirmOrder)
+router.route('/orderSuccess/:id').get(userstatus,orderSuccesspage)
+router.route('/orderCancel/:id').get(userstatus,orderCancel)
+
 //============================================
 
 

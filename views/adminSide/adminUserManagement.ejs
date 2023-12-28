@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styleadpage.css">
+  <title>admin page</title>
+  <!-- bootstrap link -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!--  -->
+  <!-- Import bootstrap cdn -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <!-- Import jquery cdn -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
+  </script>
+  <!--  -->
+
+</head>
+
+<body>
+  <div class="container_main ">
+    <!-- left bar  -->
+    <div class="sidebar">
+      <!-- Your sidebar content goes here -->
+  
+      <div class="profile_bar">
+        <form class="circle" action="/logout" method="get">
+          <img src="/image2/admin.png" alt="Profile Image">
+          <p class="admintag">admin </p>
+          <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
+        </form>
+      </div>
+      <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(69, 45, 45); ">User Management</button></a>
+      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Product Mangement</button></a>
+      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Category</button></a>  
+      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Order Management</button></a>
+
+    </div>
+    <!--  -->
+
+
+    <form class="search-bar" action="/admin/usermanagement/search" method="get">
+      <h1>All users</h1>
+      <input type="text" name="key" id="search-input" placeholder="Search...">
+      <button type="submit" id="search-button">
+        <img src="/image2/search.png" width="30px" alt="Search Icon">
+      </button>
+    </form>
+
+    <!-- Your scrollable content goes here -->
+
+    <div class="scrollable-content">
+      <div class="box">
+        <% userslist.forEach(user=> { %>
+
+
+        <%if(user.user==1){%>
+        <div class="inner-box " style="position: relative;">
+          <% }else{ %>
+          <div class="inner-box " style="position: relative; background-color: rgba(238, 140, 140, 0.585); box-shadow:2px 2px 8px rgb(217, 126, 126);">
+            <% } %>
+
+            <div class="item">
+              <img src="/image2/user.png" width="50px" alt="!">
+            </div>
+            <div class="item">
+              <label for="p" id="labelname">NAME :</label>
+              <p id="pname">
+                <%=user.name%>
+              </p>
+              <p id="emailp"> Email:<%=user.email%>
+              </p>
+            </div>
+            <div class="item"></div>
+
+
+            <div class="item icons pageonload_data" style=" position: absolute; right:0; top:1rem;">
+              <%if(user.user==1){%>
+              <img src="/image2/unlock.png" class="status_img_tag<%=user._id%>" onclick="bockingReq('<%=user._id%>')" data-userid="<%= user._id %>" width="30px" alt="!" style="margin-right: -1.1rem; cursor: pointer;">
+              <% }else{ %>
+              <img src="/image2/lock.png" class="status_img_tag<%=user._id%>" onclick="unBockingReq('<%=user._id%>')" data-userid="<%= user._id %>" width="30px" alt="" style="margin-right: -1.1rem; cursor: pointer;">
+              <% } %>
+            </div>
+
+          </div>
+          <%})%>
+          <!-- Pagination -->
+          <div class="container mt-4">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                <% if (hasPreviousPage) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= previousPage %>"><%= previousPage %></a>
+                </li>
+                <% } %>
+                <li class="page-item active">
+                  <a class="page-link" href="?page=<%= currentPage %>"><%= currentPage %></a>
+                </li>
+                <% if (hasNextPage) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= nextPage %>"><%= nextPage %></a>
+                </li>
+                <% } %>
+              </ul>
+            </nav>
+          </div>
+          <!-- ... -->
+
+
+        </div>
+
+      </div>
+
+
+    </div>
+    <!-- Modal for deleting the user -->
+    <div class="modal fade modelstyle" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog  ">
+        <div class="modal-content inner">
+          <div class="modal-header modeltext">
+            <h1 class="modal-title fs-5" id="deleteModalLabel">Delete_ <span id="name_user"></span>_From Data
+              Base
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body modeltext">
+            Do you really want to delete this user ?<br>
+            <span style="color: red;">Warning</span>: This data is deleted permanently from the database.
+          </div>
+          <div class="modal-footer modeltext">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger delete-button" id="CNFcls" value="">DELETE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- upadate user -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLablel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modelstyle">
+        <div class="modal-content inner">
+          <div class="modal-header">
+            <h1 style="color: rgb(200, 35, 51);" class="modal-title fs-5" id="editModalLablel">UPDATE USER</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="updateuser">
+            <div class="modal-body">
+              <div class="container-fluid">
+                <label class="label">User Name</label>
+                <input type="text" class="form-control" id="username" placeholder="name" name="username" value="" required>
+
+                <label class="label" style="margin-left: 10rem;">Email address</label>
+
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" value="">
+
+                <input type="hidden" name="Uid" id="Uid" value="">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="submit" data-userId="" data-bs-target="#updateuser">Save
+                changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- end   -->
+    <!-- Modal FOR creating new User -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modelstyle ">
+        <div class="modal-content inner">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Create New User</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="/admin/usermanagementcreate" method="post" id="signupForm">
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="newUsername" placeholder="name" name="name">
+                  <label for="newUsername">username</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+                  <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating">
+                  <input type="password" class="form-control" id="newPassword" placeholder="Password" name="password">
+                  <label for="newPassword">Password</label>
+                </div>
+                <div class="form-floating">
+                  <input type="password" class="form-control" id="Cpassword" placeholder="confirmPassword" name="Cpassword">
+                  <label for="Cpassword">Confirm Password</label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="submit">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- end  -->
+
+
+
+    <!-- ////////////////////////SCRIPT AREA/////////////////////////////// -->
+    <script>
+      function bockingReq(id) {
+        document.querySelector('.status_img_tag' + id).src = "/image2/unlock.png";
+        fetch(`/admin/usermanagement?id=${id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (!data.status) {
+              // ERROR MSG 
+              errorMsg()
+              // ______________
+            } else {
+              // if response is okay
+              window.location.reload()
+              // ________________________________________________
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }
+
+
+      function unBockingReq(id) {
+        fetch(`/admin/usermanagement?id=${id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (!data.status) {
+              // ERROR MSG 
+              errorMsg()
+              // ______________
+            } else {
+              // if response is okay
+              window.location.reload()
+              // ________________________________________________
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }
+
+
+    </script>
+
+    <script src="/main.js"></script>
+    <script>
+      document.getElementById('toggleButton').addEventListener('click', function() {
+        var x = document.getElementById('usermanagementdiv');
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+      });
+    </script>
+
+    <!--          ERROR MSG         -->
+    <script>
+      function errorMsg() {
+        document.querySelector('.errormsg').textContent = data.message;
+        document.querySelector('.errormsg').style.display = "block";
+        document.querySelector('.errormsg').style.animationPlayState = 'running';
+
+        setTimeout(function() {
+          document.querySelector('.errormsg').style.animationPlayState = 'paused';
+          document.querySelector('.errormsg').style.animationName = "hide"
+          document.querySelector('.errormsg').style.animationPlayState = 'running';
+          setTimeout(() => {
+            window.location.reload()
+          }, 150);
+        }, 2000);
+      }
+    </script>
+    <!--           _______          -->
+
+    <div class="errormsg" style="display: none;">
+      Fail to connect database check your network !
+    </div>
+
+
+
+</body>
+
+</html>

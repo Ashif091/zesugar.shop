@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema({
 
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'userCollection',
+        ref: 'user',
     },
 
     items: [
@@ -19,7 +19,6 @@ const orderSchema = new mongoose.Schema({
         },
     ],
 
-    orderNumber: String,
 
     orderDate: {
         type: Date,
@@ -30,12 +29,12 @@ const orderSchema = new mongoose.Schema({
     totalPrice: {
         type: Number,
     },
+    balance_amount:{
+        type: String,
+    },
     shippingAddress: {
-        username: String,
-        city: String,
-        state: String,
-        postalCode: String,
-        address_tag: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address',
     },
     phoneNumber: String,
     email: String,

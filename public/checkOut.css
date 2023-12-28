@@ -1426,6 +1426,8 @@ select {
     cursor: pointer;
     user-select: none;
     position: relative;
+    display: flex;
+    gap: 10px;
 }
 .radio_pament_selection_div{
     width: 100%;
@@ -1436,10 +1438,7 @@ select {
     user-select: none;
     position: relative;
 }
-.single_item_data_div {
-    display: flex;
-    gap: 10px;
-}
+
 
 .item_image_preview_div {
     flex: 0 0 15%;

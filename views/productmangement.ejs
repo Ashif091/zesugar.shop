@@ -29,7 +29,24 @@
 
 <body>
   <div class="container_main ">
-    <%-include("./partials/left_bar_admin")  %>
+        <!-- left bar  -->
+        <div class="sidebar">
+          <!-- Your sidebar content goes here -->
+      
+          <div class="profile_bar">
+            <form class="circle" action="/logout" method="get">
+              <img src="/image2/admin.png" alt="Profile Image">
+              <p class="admintag">admin </p>
+              <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
+            </form>
+          </div>
+          <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">User Management</button></a>
+          <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(69, 45, 45); ">Product Mangement</button></a>
+          <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Category</button></a>  
+          <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Order Management</button></a>
+
+        </div>
+        <!--  -->
     <form class="search-bar" action="/admin/usermanagement/search" method="get">
       <h1>Product Mangement </h1>
 
@@ -61,7 +78,7 @@
 
 
       <div class="box">
-        <%let count=1%>
+        <%let count=countData%>
 
         <% productlist.forEach(product=> { %>
 
@@ -129,7 +146,30 @@
         <%})%>
 
 
+        <!-- pagination controller div  -->
 
+        <!-- Pagination -->
+        <div class="container "  style="margin:3rem 0 0 0 ;">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <% if (hasPreviousPage) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= previousPage %>&count=<%=count%>"><%= previousPage %></a>
+              </li>
+              <% } %>
+              <li class="page-item active">
+                <a class="page-link" href="?page=<%= currentPage %>&count=<%=count%>"><%= currentPage %></a>
+              </li>
+              <% if (hasNextPage) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= nextPage %>&count=<%=count%>"><%= nextPage %></a>
+              </li>
+              <% } %>
+            </ul>
+          </nav>
+        </div>
+        <!-- ... -->
+        <!--  pagination end  -->
 
       </div>
     </div>
@@ -353,10 +393,10 @@
 
   <!-- Model  of creaing model  -->
   <!-- Trigger/Open The Modal -->
-  
+
 
   <!-- The Modal -->
-  <div id="myModal" class="creatimgmd_main">
+  <div id="myModal" class="creatimgmd_main" style="display: none;">
     <!-- Modal content -->
     <div class="md_msg_div">
       <span class="close">&times;</span>

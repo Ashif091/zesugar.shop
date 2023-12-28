@@ -8,6 +8,9 @@ const path = require('path');
 
 const bcrypt = require("bcrypt")
 
+const addressCollections = require("../models/addressModel");
+const UserOrder = require("../models/orderModel");
+
 module.exports = {
 
 
@@ -34,30 +37,40 @@ module.exports = {
 
 
     }),
-    adlogin: asyncHandler(async (req, res) => {
-        const block = 0;
-        const userslist = await users.find({ user: 1 })
-        res.render("admin-user-all.ejs", { userslist, block })
+
+    usermanagement: asyncHandler(async (req, res) => {
+        try {
+            const ITEMS_PER_PAGE = 5; // Define the number of items per page
+            const page = +req.query.page || 1; // Get the current page number
+            const totalDoc = await users.countDocuments();
+            const totalPages = Math.ceil(totalDoc / ITEMS_PER_PAGE);
+
+
+            const userslist = await users.find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+
+
+
+
+            res.render("./adminSide/adminUserManagement.ejs", {
+                userslist,
+                currentPage: page,
+                hasNextPage: page < totalPages,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1,
+            })
+        } catch (error) {
+            console.log("server ERROR - orderSuccesspage ", error);
+            return res.render("404page", { error })
+        }
 
 
     }),
-    usermanagementall: asyncHandler(async (req, res) => {
-        const block = 0;
-        const userslist = await users.find({ user: 1 })
-        res.render("admin-user-all.ejs", { userslist, block })
 
-
-    }),
-    usermanagementblock: asyncHandler(async (req, res) => {
-        const block = 0;
-        const userslist = await users.find({ user: 0 })
-        res.render("admin-user-block.ejs", { userslist, block })
-
-
-    }),
-    blockedusers: asyncHandler(async (req, res) => {
-        console.log("USERSTATUSblock");
-        const userId = req.params.userId;
+    userstatus: asyncHandler(async (req, res) => {
+        const userId = req.query.id;
         console.log(userId);
 
         try {
@@ -65,45 +78,66 @@ module.exports = {
             const existingUser = await users.findById(userId);
 
             if (!existingUser) {
-                return res.status(404).json({ error: 'User not found' });
+                return res.status(404).json({ status: true, error: 'User not found' });
             }
 
             // Update the user's status
+            if (existingUser.user == 0) {
+                existingUser.user = 1;
+            } else {
+                existingUser.user = 0;
+            }
 
-            existingUser.user = 1;
+            await existingUser.save();
+            res.json({ status: true })
 
 
-
-            const updatedUser = await existingUser.save();
-
-            console.log(updatedUser);
-
-            res.json(updatedUser);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            res.json({ status: false, error: 'Internal Server Error' });
         }
     })
 
     ,
     // =======================productmangement=======================
+
     productmangement: (async (req, res) => {
         console.log("productmangement requst got as the get");
         try {
 
+            const ITEMS_PER_PAGE = 5; // Define the number of items per page
+            const page = +req.query.page || 1; // Get the current page number
+            const totalDoc = await product.countDocuments();
+            const totalPages = Math.ceil(totalDoc / ITEMS_PER_PAGE);
+
+
             const productlist = await product.find()
+                .sort({ product_publishDate: -1 })
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+
             let result = await category.aggregate([{ $group: { _id: "$category_name" } }, { $project: { _id: 1 } }])
 
-            // let result = data.map(item => );
+            const countData = (page - 1) * ITEMS_PER_PAGE + 1;
 
-            res.render("productmangement.ejs", { productlist, result })
+            res.render("productmangement.ejs", {
+                productlist, result, currentPage: page,
+                hasNextPage: page < totalPages,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1,
+                countData,
+            })
         } catch (error) {
-            res.send("error with data ")
+            console.log(`server crash......due to productmangement ${error}`);
+            res.status(404).render("404page", { error })
         }
 
 
 
     }),
+
+
 
 
 
@@ -116,7 +150,6 @@ module.exports = {
             quantity,
             category,
         } = req.body;
-        console.log("/xxx", req.body);
         try {
             if (!req.files || req.files.length === 0) {
                 return res.status(400).send('No files uploaded.');
@@ -128,7 +161,7 @@ module.exports = {
                     imagePath = imagePath.replace('public\\', '');
                 } else if (imagePath.includes('public/')) {
                     imagePath = imagePath.replace('public/', '');
-                } 
+                }
                 return imagePath;
             });
 
@@ -165,8 +198,8 @@ module.exports = {
             };
             res.json(data);
         } catch (error) {
-            console.error('Error creating user:', error);
-            res.status(500).send('Internal Server Error');
+            console.log(`server crash......due to createProduct ${error}`);
+            res.status(404).render("404page", { error })
         }
     }
     ,
@@ -185,37 +218,7 @@ module.exports = {
         }
     })
     ,
-    userstatus: asyncHandler(async (req, res) => {
-        console.log("USERSTATUS");
-        const userId = req.params.userId;
-        console.log(userId);
 
-        try {
-            // Find the user by ID
-            const existingUser = await users.findById(userId);
-
-            if (!existingUser) {
-                return res.status(404).json({ error: 'User not found' });
-            }
-
-            // Update the user's status
-
-            existingUser.user = 0;
-
-
-
-            const updatedUser = await existingUser.save();
-
-            console.log(updatedUser);
-
-            res.json(updatedUser);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    })
-
-    ,
 
     updateuser: asyncHandler(async (req, res) => {
 
@@ -594,7 +597,7 @@ module.exports = {
                         { '$set': { 'items.$.quantity': 1 } },
                         { 'multi': true }
                     )
-                    isCart.total += productInCart.product_price ;
+                    isCart.total += productInCart.product_price;
                     isCart.totalQuantity += 1;
                     await isCart.save()
 
@@ -657,7 +660,44 @@ module.exports = {
         } catch (err) {
             res.status(500).send({ st: false });
         }
-    }
+    },
+
+
+    ordermanagement: (async (req, res) => {
+        console.log("ordermanagement requst got as the get");
+        try {
+
+
+            const ITEMS_PER_PAGE = 4; // Define the number of items per page
+            const page = +req.query.page || 1; // Get the current page number
+
+            const totalOrders = await UserOrder.countDocuments();
+            const totalPages = Math.ceil(totalOrders / ITEMS_PER_PAGE);
+
+            const orderData = await UserOrder.find()
+                .sort({ orderDate: -1 })
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+                .populate(['items.product', 'shippingAddress']);
+
+            return res.render("./adminSide/orderManagement", {
+                orderData,
+                currentPage: page,
+                hasNextPage: page < totalPages,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1
+            });
+
+        } catch (error) {
+            console.log(`server Error with (edit Address DELETE)${error} `);
+            return res.render("404page", { error })
+        }
+
+
+
+    }),
+
 
 
 

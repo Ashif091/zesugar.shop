@@ -102,12 +102,11 @@ module.exports = {
             if (!userData) {
                 return res.redirect('/');
             }
-
+            
             let isCart = await Cart.findOne({ userId: userData._id })
             if (isCart) {
                 let productIds = isCart.items.map(product => product.product);
                 let cart_items = isCart.items.map(product => product);
-                // console.log(cart_items);
 
                 const products_data = await product.find({
                     _id: {

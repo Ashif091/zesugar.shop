@@ -2,7 +2,9 @@ const users = require("../models/userModel");
 const product = require("../models/productModel");
 const Cart = require('../models/cartModel');
 const addressCollections = require("../models/addressModel");
-const Razorpay = require("razorpay")
+const UserOrder = require("../models/orderModel");
+const Razorpay = require("razorpay");
+const { render } = require("ejs");
 
 module.exports = {
     getcheckout: async (req, res) => {
@@ -97,7 +99,7 @@ module.exports = {
                     order: order,
                     userData,
                 };
-                
+
                 console.log(`the order data ${JSON.stringify(orderDetails)}`);
                 res.json(orderDetails);
             });
@@ -108,29 +110,112 @@ module.exports = {
 
         }
     },
-    confirmOrder:async (req,res)=>{
+    confirmOrder: async (req, res) => {
         try {
             console.log("req :(fetch post) for confirmOder");
-            const {id_address,payment_method} =req.body;
+            const { id_address, payment_method } = req.body;
             const user = req.session.username;
 
             let userData = await users.findById(user._id);
             if (!userData) {
                 return res.redirect('/');
             }
-            
-            const isCart = await Cart.findOne({ userId: userData._id })
 
+            const isCart = await Cart.findOne({ userId: userData._id })
+            let cartitems = isCart.items
+            //address
+            const Address = await addressCollections.findById(id_address);
+            //_______
+            let balance_amount = "";
+            if (payment_method == "UPI") {
+                balance_amount = "Paid"
+            } else {
+                balance_amount = `${isCart.total}`
+            }
+            let newOrderItems = cartitems.map(item => ({
+                product: item.product,
+                orderPrice: item.product_price,
+                quantity: item.quantity,
+                priceOfTotalQTy: item.quantity * item.product_price
+            }));
+
+            let newOrder = new UserOrder({
+                userId: userData._id,
+                items: newOrderItems,
+                shippingAddress: id_address,
+                phoneNumber: Address.phone_number,
+                email: userData.email,
+                paymentMethod: payment_method,
+                balance_amount: balance_amount,
+            });
+
+            await newOrder.save();
+            // make cart empty.
+            await Cart.updateOne(
+                { userId: userData._id },
+                { $set: { items: [], total: 0, totalQuantity: 0 } }
+            );
+            //remove qty from product manegment
+            const productIds = newOrderItems.map(item => item.product);
+            console.log(`the ids of items ${productIds}`);
+
+
+            for (let item of newOrderItems) {
+                console.log(`the upadata data :- ${item.quantity}`);
+
+                await product.updateOne(
+                    { "_id": item.product },
+                    { $inc: { product_qty: - item.quantity } }
+                );
+
+
+            }
+            // upadating stock 
+            const productCollection = await product.find({ "_id": { $in: productIds } }).exec();
+            console.log(`ITEMS:-${productCollection}`);
+            for (const productItem of productCollection) {
+                if (productItem.product_qty === 0) {
+                    productItem.product_status = false;
+                    await productItem.save();
+                }
+                
+            }
+            // sort last doc from order collection
+            const latestDoc = await UserOrder.findOne().sort({ _id: -1 }).exec();
+
+
+
+            res.json({ orderdata: latestDoc, status: true })
 
         } catch (error) {
-            console.log("server ERROR - cls_removel_msg ", error);
+            console.log("server ERROR - orderConfirm ", error);
+            res.json({ orderdata: "", status: false })
+        }
+
+    },
+
+    orderSuccesspage: async (req, res) => {
+        try {
+            const orderId = req.params.id;
+            const orderDoc = await UserOrder.findById(orderId)
+            if (!orderDoc) {
+                res.redirect("/")
+            }
+
+            const now = new Date();
+            const orderDate = new Date(orderDoc.orderDate);
+            const diffInSeconds = Math.abs((now.getTime() - orderDate.getTime()) / 1000);
+            console.log("time:", diffInSeconds);
+            if (diffInSeconds >= 5) {
+                res.redirect("/")
+            }
+            res.render('./userSide/orderSuccessPage.ejs', { orderId })
+        } catch (error) {
+            console.log("server ERROR - orderSuccesspage ", error);
             return res.render("404page", { error })
         }
-        
     }
+
 };
-
-
-
 
 

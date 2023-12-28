@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styleadpage.css">
+  <title>admin page</title>
+  <!-- bootstrap link -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!--  -->
+  <!-- Import bootstrap cdn -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <!-- Import jquery cdn -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
+  </script>
+  <!--  -->
+  <style>
+    .single_user_order_div {
+      width: 100%;
+      min-height: 70px;
+      margin: 1rem 0 0 0;
+      color: #fff;
+
+      border-radius: 12px;
+      border: 1px solid rgb(68, 30, 30);
+      background-color: rgb(151, 126, 126);
+      box-shadow: 5px 5px 10px black;
+    }
+
+    .single_user_order_div:hover {
+      background-color: rgb(113, 88, 88);
+    }
+
+    .box {
+      width: 90%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container_main ">
+    <!-- left bar  -->
+    <div class="sidebar">
+      <!-- Your sidebar content goes here -->
+
+      <div class="profile_bar">
+        <form class="circle" action="/logout" method="get">
+          <img src="/image2/admin.png" alt="Profile Image">
+          <p class="admintag">admin </p>
+          <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
+        </form>
+      </div>
+      <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">User Management</button></a>
+      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Product Mangement</button></a>
+      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Category</button></a>
+      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(69, 45, 45);">Order Management</button></a>
+
+    </div>
+    <!--  -->
+
+
+    <form class="search-bar" action="/admin/usermanagement/search" method="get">
+      <h1>Orders</h1>
+      <input type="text" name="key" id="search-input" placeholder="Search...">
+      <button type="submit" id="search-button">
+        <img src="/image2/search.png" width="30px" alt="Search Icon">
+      </button>
+    </form>
+
+    <!-- Your scrollable content goes here -->
+
+    <div class="scrollable-content">
+      <div class="box">
+        <% orderData.forEach(order=> { %>
+        <div class="single_user_order_div">
+          
+        </div>
+
+        <%})%>
+
+        <!-- Pagination -->
+        <div class="container mt-4">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <% if (hasPreviousPage) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= previousPage %>"><%= previousPage %></a>
+              </li>
+              <% } %>
+              <li class="page-item active">
+                <a class="page-link" href="?page=<%= currentPage %>"><%= currentPage %></a>
+              </li>
+              <% if (hasNextPage) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= nextPage %>"><%= nextPage %></a>
+              </li>
+              <% } %>
+            </ul>
+          </nav>
+        </div>
+        <!-- ... -->
+
+      </div>
+
+
+    </div>
+
+    <div class="errormsg" style="display: none;">
+      Fail to connect database check your network !
+    </div>
+
+
+    <!-- ////////////////////////SCRIPT AREA/////////////////////////////// -->
+
+
+
+    <!--          ERROR MSG         -->
+    <script>
+      function errorMsg() {
+        document.querySelector('.errormsg').textContent = data.message;
+        document.querySelector('.errormsg').style.display = "block";
+        document.querySelector('.errormsg').style.animationPlayState = 'running';
+
+        setTimeout(function() {
+          document.querySelector('.errormsg').style.animationPlayState = 'paused';
+          document.querySelector('.errormsg').style.animationName = "hide"
+          document.querySelector('.errormsg').style.animationPlayState = 'running';
+          setTimeout(() => {
+            window.location.reload()
+          }, 150);
+        }, 2000);
+      }
+    </script>
+    <!--           _______          -->
+
+
+
+</body>
+
+</html>

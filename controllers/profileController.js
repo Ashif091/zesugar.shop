@@ -1,5 +1,6 @@
 const userdata = require("../models/userModel");
 const addressCollections = require("../models/addressModel");
+const UserOrder = require("../models/orderModel");
 const path = require('path');
 const fs = require('fs');
 const sharp = require('sharp');
@@ -206,7 +207,7 @@ module.exports = {
                 res.json({ message: 'No document matches the provided query.', status: false });
 
             } else {
-                res.json({ message: 'Address updated successfully', status: true ,editedData:req.body});
+                res.json({ message: 'Address updated successfully', status: true, editedData: req.body });
 
             }
 
@@ -229,6 +230,95 @@ module.exports = {
         } catch (error) {
             console.log(`server Error with (edit Address DELETE)${error} `);
             return res.json({ status: false, error, message: 'Fail to Delete, server Error !' });
+        }
+    },
+
+
+    // ======== order history ======
+
+    orderHistory: async (req, res) => {
+        try {
+            const user = req.session.username;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            let userData = await userdata.findById(user._id);
+       
+            const ITEMS_PER_PAGE = 3; 
+            const page = +req.query.page || 1; 
+       
+            const totalOrders = await UserOrder.countDocuments({ userId: userData._id });
+            const totalPages = Math.ceil(totalOrders / ITEMS_PER_PAGE);
+       
+            const orderData = await UserOrder.find({ userId: userData._id })
+                .sort({ orderDate: -1 }) 
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+                .populate(['items.product', 'shippingAddress']);
+       
+            return res.render("./userSide/profileOrders", {
+                user,
+                userData,
+                orderData,
+                currentPage: page,
+                hasNextPage: page < totalPages,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1
+            });
+       
+        } catch (error) {
+            console.log(`server Error with (edit Address DELETE)${error} `);
+            return res.render("404page", { error })
+        }
+       },
+       
+
+    orderdetails: async (req, res) => {
+        try {
+            const user = req.session.username;
+            const orderid = req.params.id;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            let userData = await userdata.findById(user._id);
+
+            const orderDetail = await UserOrder.findById(orderid).populate(['items.product', 'shippingAddress']);
+
+            console.log(orderDetail);
+            return res.render("./userSide/orderDetailPage", { user, userData, orderDetail })
+
+        } catch (error) {
+            console.log(`server Error with (edit Address DELETE)${error} `);
+            return res.render("404page", { error })
+        }
+    },
+
+    orderCancel: async (req, res) => {
+        try {
+            const user = req.session.username;
+            const orderid = req.params.id;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            let userData = await userdata.findById(user._id);
+
+            const orderdata = await UserOrder.findById(orderid); 
+
+            orderdata.status = 'cancelled';
+            orderdata.balance_amount = 'Refund';
+            orderdata.paymentMethod = 'Successful';
+            await orderdata.save();
+            //cart upadate 
+
+
+            const orderDetail = await UserOrder.findById(orderid).populate(['items.product', 'shippingAddress']);
+
+            return res.render("./userSide/orderDetailPage", { user, userData, orderDetail })
+
+        } catch (error) {
+            console.log(`server Error with (edit Address DELETE)${error} `);
+            return res.render("404page", { error })
         }
     },
 
