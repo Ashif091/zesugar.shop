@@ -41,6 +41,11 @@ const { profile,
   orderHistory,
   orderdetails,
   orderCancel,} = require("../controllers/profileController")
+//_____________________Wallet controller_____________________
+const {getWallet,
+  } = require("../controllers/walletController")
+
+  // ______________________________________________________
 
 
 router.route('/login').get(authenticateUser, login).post(check)
@@ -97,7 +102,12 @@ router.route('/confirmOrder').post(userstatus,confirmOrder)
 router.route('/orderSuccess/:id').get(userstatus,orderSuccesspage)
 router.route('/orderCancel/:id').get(userstatus,orderCancel)
 
-//============================================
+//================== Wallet =====================
+
+router.route('/getprofile_wallet').get(userstatus,getWallet)
+
+
+//=======================================
 
 
 

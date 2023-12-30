@@ -83,7 +83,7 @@
         <!-- profile data -->
         <div class="data_display_div_order ">
           <% orderData.forEach(order => {%>
-          <div class="single_order_data_div "  onclick="orderDetails('<%=order._id%>')">
+          <div class="single_order_data_div " onclick="orderDetails('<%=order._id%>')">
             <div class="orderid_img_div">
               <div class="items_img_div">
                 <%if(order.items.length == 1){%>
@@ -102,17 +102,29 @@
               Amount in DHS: <strong><%=order.balance_amount%></strong>
             </div>
             <div class="order_status_div">
-              
+
               <div class="status_order" data-status="<%=order.status %>">
                 <% if(order.status=="pending"){ %>
-                  <div class="order_status_text" style="color:rgb(255, 192, 76);">
-                    <div id="circle" style="border-color:rgb(255, 192, 76);"></div><%=order.status%>
-                  </div>
-                  <%}else if(order.status=="cancelled"){  %>
-                  <div class="order_status_text" style="color:rgb(148, 0, 0);">
-                    <div id="circle" style="border-color:rgb(188, 3, 3);"></div><%=order.status%>
-                  </div>
-                  <% } %>
+                <div class="order_status_text" style="color:rgb(255, 192, 76);">
+                  <div id="circle" style="border-color:rgb(255, 192, 76);"></div><%=order.status%>
+                </div>
+                <%}else if(order.status=="Shipped"){  %>
+                <div class="order_status_text" style="color:rgb(196, 238, 133);">
+                  <div id="circle" style="border-color:rgb(196, 238, 133);"></div><%=order.status%>
+                </div>
+                <%}else if(order.status=="Out For Delivery"){  %>
+                <div class="order_status_text" style="color:rgb(171, 220, 88);">
+                  <div id="circle" style="border-color:rgb(171, 220, 88);"></div><%=order.status%>
+                </div>
+                <%}else if(order.status=="Delivered"){  %>
+                <div class="order_status_text" style="color:rgb(42, 118, 64);">
+                  <div id="circle" style="border-color:rgb(44, 124, 67);"></div><%=order.status%>
+                </div>
+                <%}else if(order.status=="cancelled"){  %>
+                <div class="order_status_text" style="color:rgb(148, 0, 0);">
+                  <div id="circle" style="border-color:rgb(188, 3, 3);"></div><%=order.status%>
+                </div>
+                <% } %>
 
                 <%=new Date(order.orderDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) %>
               </div>

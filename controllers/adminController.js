@@ -673,20 +673,22 @@ module.exports = {
 
             const totalOrders = await UserOrder.countDocuments();
             const totalPages = Math.ceil(totalOrders / ITEMS_PER_PAGE);
+            const totalCheckedOrders = await UserOrder.countDocuments({ check_status: true });
 
             const orderData = await UserOrder.find()
-                .sort({ orderDate: -1 })
+                .sort({ check_status: -1, orderDate: -1 }) 
                 .skip((page - 1) * ITEMS_PER_PAGE)
                 .limit(ITEMS_PER_PAGE)
-                .populate(['items.product', 'shippingAddress']);
+                .populate(['items.product', 'shippingAddress', 'userId']);
 
             return res.render("./adminSide/orderManagement", {
                 orderData,
+                totalCheckedOrders,
                 currentPage: page,
                 hasNextPage: page < totalPages,
                 hasPreviousPage: page > 1,
                 nextPage: page + 1,
-                previousPage: page - 1
+                previousPage: page - 1,
             });
 
         } catch (error) {
@@ -697,6 +699,59 @@ module.exports = {
 
 
     }),
+    orderStatusUpdate: (async (req, res) => {
+        console.log("orderStatusUpdate requst got as the get");
+        try {
+            const orderId = req.query.id;
+
+            const orderData = await UserOrder.findById(orderId)
+            const totalCheckedOrders = await UserOrder.countDocuments({ check_status: true });
+            let orderStatus = "";
+            if (orderData.status == "pending") {
+                orderStatus = "Shipped";
+            }else if(orderData.status == "Shipped"){
+                orderStatus = "Out For Delivery";
+            }else if(orderData.status == "Out For Delivery"){
+                orderStatus = "Delivered";
+            }
+            orderData.status=orderStatus;
+            orderData.check_status=false;
+
+            await orderData.save()
+            console.log({status:true,msg:"",orderStatus,totalCheckedOrders});
+            res.json({status:true,msg:"",orderStatus,totalCheckedOrders})
+
+
+
+        } catch (error) {
+            console.log(`server Error with (edit Address DELETE)${error} `);
+            res.json({status:false,msg:"server Error",orderStatus})
+        }
+
+
+
+    }),
+    orderdetails: (async (req, res) => {
+        console.log("orderdetails requst got as the get");
+        try {
+
+            const orderId = req.query.id;
+
+            const orderData = await UserOrder.findById(orderId).populate(['items.product', 'shippingAddress', 'userId']);
+            
+            return res.render("./adminSide/orderdetails", {
+                orderData,
+
+            });
+        } catch (error) {
+            console.log(`server Error with (edit Address DELETE)${error} `);
+            return res.render("404page", { error })
+        }
+
+
+
+    }),
+    
 
 
 

@@ -3,6 +3,7 @@ const product = require("../models/productModel");
 const Cart = require('../models/cartModel');
 const addressCollections = require("../models/addressModel");
 const UserOrder = require("../models/orderModel");
+const Wallet = require("../models/walletModel");
 const Razorpay = require("razorpay");
 const { render } = require("ejs");
 
@@ -127,11 +128,48 @@ module.exports = {
             const Address = await addressCollections.findById(id_address);
             //_______
             let balance_amount = "";
-            if (payment_method == "UPI") {
+            if (payment_method == "UPI" || payment_method == "Wallet") {
                 balance_amount = "Paid"
             } else {
                 balance_amount = `${isCart.total}`
             }
+
+            // ===============order Random ID ==============
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let orderRandomId = '';
+            for (var i = 0; i < 24; i++) {
+                var randomIndex = Math.floor(Math.random() * chars.length);
+                orderRandomId += chars[randomIndex];
+            }
+            // =============================================
+            // ________________if USE WALLET _______________________________  
+            if (payment_method == "Wallet") {
+                let userWallet = await Wallet.findOne({ userId: userData._id })
+                if (!userWallet) {
+                    return res.json({ orderdata: "", status: false, errMsg: "The Wallet is empty,Choose another option" })
+                }
+                const WalletBalance = userWallet.balance - isCart.total;
+                if (WalletBalance < 0) {
+                    return res.json({ orderdata: "", status: false, errMsg: `You have only ${userWallet.balance},DHS in your wallet,Choose another option` })
+                }
+                await Wallet.updateOne(
+                    { userId: userData._id },
+                    {
+                        $inc: { balance: -isCart.total },
+                        $push: {
+                            transactions: {
+                                description: `To purchase the order (${orderRandomId})`,
+                                amount: isCart.total,
+                                transaction_type: false,
+                                date: new Date(),
+                            },
+                        },
+                    }
+                );
+
+            }
+            // ____________________________________________________________
+
             let newOrderItems = cartitems.map(item => ({
                 product: item.product,
                 orderPrice: item.product_price,
@@ -147,6 +185,8 @@ module.exports = {
                 email: userData.email,
                 paymentMethod: payment_method,
                 balance_amount: balance_amount,
+                totalPrice: isCart.total,
+                check_status: true,
             });
 
             await newOrder.save();
@@ -178,7 +218,7 @@ module.exports = {
                     productItem.product_status = false;
                     await productItem.save();
                 }
-                
+
             }
             // sort last doc from order collection
             const latestDoc = await UserOrder.findOne().sort({ _id: -1 }).exec();
@@ -189,7 +229,7 @@ module.exports = {
 
         } catch (error) {
             console.log("server ERROR - orderConfirm ", error);
-            res.json({ orderdata: "", status: false })
+            res.json({ orderdata: "", status: false, errMsg: `server error ${error}` })
         }
 
     },

@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/styleadpage.css">
+  <link rel="shortcut icon" type="image" href="/image/logo.png">
   <title>admin page</title>
   <!-- bootstrap link -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,15 +23,19 @@
   <!--  -->
   <style>
     .single_user_order_div {
-      width: 100%;
+      width: 90%;
       min-height: 70px;
       margin: 1rem 0 0 0;
       color: #fff;
+      position: relative;
 
       border-radius: 12px;
       border: 1px solid rgb(68, 30, 30);
       background-color: rgb(151, 126, 126);
       box-shadow: 5px 5px 10px black;
+      display: flex;
+      justify-content: space-between;
+
     }
 
     .single_user_order_div:hover {
@@ -40,7 +45,130 @@
     .box {
       width: 90%;
     }
+
+    .rotate_new {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: rotate(-45deg);
+      user-select: none;
+    }
+
+    .animate-charcter {
+      text-transform: uppercase;
+      background-image: linear-gradient(-225deg,
+          #fbcde6 0%,
+          #962746 29%,
+          #ee4f84 67%,
+          #fff800 100%);
+      background-size: auto auto;
+      background-clip: border-box;
+      background-size: 200% auto;
+      color: #fff;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textclip 2s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes textclip {
+      to {
+        background-position: 200% center;
+      }
+    }
+
+    .order_details {
+      flex: 0 0 35%;
+      padding: 1rem 0 0 2rem;
+      max-width: 14rem;
+      word-wrap: break-word;
+      font-size: 13px;
+    }
+
+    .username_p_tag {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .orderid_p_tag {
+      margin-top: -.8rem;
+      cursor: pointer;
+    }
+
+    .orderItem_count_p_tag {
+      margin-top: -.8rem;
+      color: #fffff5;
+    }
+
+    .order_price_status {
+      flex: 0 0 20%;
+      align-items: center;
+      text-align: center;
+      margin: 2rem 0 0 0;
+
+    }
+
+    .order_action_div {
+      flex: 0 0 40%;
+      display: flex;
+      position: relative;
+
+    }
+
+    .order_status {
+      display: flex;
+      margin: 2rem 0 0 1rem;
+      text-transform: capitalize;
+    }
+
+    .order_status_text {
+      display: flex;
+      text-transform: capitalize;
+    }
+
+    .status_circle {
+      width: 16px;
+      height: 16px;
+      border: 3px solid red;
+      border-radius: 50%;
+      margin: 5px 2px 0 0;
+    }
+
+    .img_up_arrow {
+      margin: 2rem 0 0 .5rem;
+      height: 25px;
+      cursor: pointer;
+    }
+
+    .img_detail_page {
+      width: 40px;
+      height: 60px;
+      position: absolute;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+      right: 1rem;
+      top: 1.2rem;
+    }
+
+    .single_user_order_div:hover .img_detail_page {
+      opacity: 1;
+    }
+
+    .new_orders {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .scrollable-content {
+      position: relative;
+    }
   </style>
+
 
 </head>
 
@@ -77,11 +205,72 @@
     <!-- Your scrollable content goes here -->
 
     <div class="scrollable-content">
+      <!--  -->
+      <!--  -->
+      <p class="new_orders">New Orders:- <strong class="new_order_count"><%=totalCheckedOrders%></strong></p>
       <div class="box">
         <% orderData.forEach(order=> { %>
         <div class="single_user_order_div">
-          
+          <% if(order.check_status===true){ %>
+          <div class="rotate_new animate-charcter rotate_new<%=order._id%>">NEW</div>
+          <% }else{ %>
+          <div class="rotate_new animate-charcter rotate_new<%=order._id%>" style="display: none;">NEW</div>
+          <% } %>
+          <!-- Details -->
+          <div class="order_details">
+            <p class="username_p_tag"><%=order.userId.name%></p>
+            <p class="orderid_p_tag">
+              <span id="orderID" onclick="copyToClipboard()"><%=order._id%></span>
+            </p>
+
+            <p class="orderItem_count_p_tag"> <strong><%=order.items.length%> </strong>Items &nbsp; <%=new Date(order.orderDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) %></p>
+
+          </div>
+
+          <!-- Price Status -->
+          <div class="order_price_status">
+            <%= order.balance_amount %>
+          </div>
+          <!-- Action -->
+          <div class="order_action_div">
+            <%if(order.status=='pending'){%>
+            <div class="order_status ">
+              <div class="status_circle status_circle<%=order._id%> " style="border-color:rgb(255, 192, 76);"></div>
+              <p class="order_status_text<%=order._id%>" style="color:rgb(255, 192, 76);"><%=order.status%></p>
+            </div>
+            <img class="img_up_arrow img_up_arrow<%=order._id%>" onclick="statusUpdate('<%=order._id%>')" src="/image2/up-arrow.png" width="25px" alt="">
+            <% }else if(order.status=='Shipped'){ %>
+            <div class="order_status ">
+              <div class="status_circle status_circle<%=order._id%>" style="border-color:rgb(196, 238, 133);"></div>
+              <p class="order_status_text<%=order._id%>" style="color:rgb(196, 238, 133);"><%=order.status%></p>
+            </div>
+            <img class="img_up_arrow img_up_arrow<%=order._id%>" onclick="statusUpdate('<%=order._id%>')" src="/image2/up-arrow.png" width="25px" alt="">
+            <% }else if(order.status=='Out For Delivery'){ %>
+            <div class="order_status ">
+              <div class="status_circle status_circle<%=order._id%>" style="border-color:rgb(171, 220, 88);"></div>
+              <p class="order_status_text<%=order._id%>" style="color:rgb(171, 220, 88);"><%=order.status%></p>
+            </div>
+            <img class="img_up_arrow img_up_arrow<%=order._id%>" onclick="statusUpdate('<%=order._id%>')" src="/image2/up-arrow.png" width="25px" alt="">
+            <% }else if(order.status=='Delivered'){ %>
+            <div class="order_status">
+              <div class="status_circle status_circle<%=order._id%>" style="border-color:rgb(82, 197, 114);"></div>
+              <p class="order_status_text<%=order._id%>" style="color:rgb(82, 197, 114);"><%=order.status%></p>
+            </div>
+
+            <% }else { %>
+            <div class="order_status order_status<%=order._id%>" style="color:rgb(148, 0, 0);">
+              <div class="status_circle status_circle<%=order._id%>" style="border-color:rgb(188, 3, 3);"></div><%=order.status%>
+            </div>
+            <% } %>
+
+
+
+            <img src="/image2/next.png" alt="" class="img_detail_page" onclick="orderdetails('<%=order._id%>')">
+          </div>
         </div>
+
+
+
 
         <%})%>
 
@@ -117,7 +306,62 @@
     </div>
 
 
+
     <!-- ////////////////////////SCRIPT AREA/////////////////////////////// -->
+
+    <!-- more orderdetails req -->
+    <script>
+        function orderdetails(id) {
+            window.location.href = `/admin/orderdetails?id=${id}`
+            
+        }
+    </script>
+
+    <!-- status update  -->
+    <script>
+      function statusUpdate(id) {
+        fetch(`/admin/ordermanagement?id=${id}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status) {
+              document.querySelector(".rotate_new" + id).style.display = "none"
+              if (data.totalCheckedOrders === 0) {
+                document.querySelector(".new_order_count").textContent = 0;
+              } else {
+                document.querySelector(".new_order_count").textContent = data.totalCheckedOrders - 1;
+              }
+
+              if (data.orderStatus == "Shipped") {
+                document.querySelector(".order_status_text" + id).textContent = data.orderStatus;
+                document.querySelector(".order_status_text" + id).style.color = "rgb(196, 238, 133)";
+                document.querySelector(".status_circle" + id).style.borderColor = "rgb(196, 238, 133)";
+              } else if (data.orderStatus == "Out For Delivery") {
+                document.querySelector(".order_status_text" + id).textContent = data.orderStatus;
+                document.querySelector(".order_status_text" + id).style.color = "rgb(171, 220, 88);";
+                document.querySelector(".status_circle" + id).style.borderColor = "rgb(171, 220, 88);";
+
+              } else if (data.orderStatus == "Delivered") {
+                document.querySelector(".order_status_text" + id).textContent = data.orderStatus;
+                document.querySelector(".order_status_text" + id).style.color = "rgb(82, 197, 114)";
+                document.querySelector(".status_circle" + id).style.borderColor = "rgb(82, 197, 114)";
+                document.querySelector(".img_up_arrow" + id).style.display = "none";
+              }
+            } else {
+              alert(data.msg)
+            }
+
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      }
+    </script>
+    <!-- _____________  -->
 
 
 
@@ -139,6 +383,19 @@
       }
     </script>
     <!--           _______          -->
+
+    <!--        copy of id  -->
+    <script>
+      function copyToClipboard() {
+        var orderID = document.getElementById("orderID").innerText;
+        navigator.clipboard.writeText(orderID).then(function() {
+          console.log('Order ID copied to clipboard');
+        }).catch(function(err) {
+          console.error('Could not copy text: ', err);
+        });
+      }
+    </script>
+    <!-- __________________ -->
 
 
 

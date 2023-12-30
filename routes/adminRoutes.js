@@ -39,7 +39,8 @@ const {logout,
     productstatus,
     deletecategory,
     ordermanagement,
-    
+    orderStatusUpdate,
+    orderdetails,
 }=require("../controllers/adminController")
 router.route("/logout").get(logout)
 router.route("/").get( adminAuthenticate,usermanagement).post(admincheck)
@@ -76,7 +77,8 @@ router.route('/deletecategory/:id').delete(deletecategory)
 
 // _____________________orderManagment_admin_management________________________
 
-router.route("/ordermanagement").get(ordermanagement).post(single_upload,categoryPOST)
+router.route("/ordermanagement").get(ordermanagement).patch(orderStatusUpdate)
+router.route("/orderdetails").get(orderdetails).patch(orderStatusUpdate)
 
 
 

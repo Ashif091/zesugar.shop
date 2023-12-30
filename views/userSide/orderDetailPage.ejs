@@ -38,6 +38,14 @@
         font-weight: 700;
       }
     }
+    .back_action{
+      position: absolute;
+      top: 0rem;
+      left:-1rem;
+      width:40px;
+      height:40px;
+      cursor: pointer;
+    }
   </style>
 
 
@@ -83,6 +91,7 @@
         <!-- profile data -->
         <%#= orderDetail %>
         <div class="data_display_div_orderData ">
+          <img src="/image2/left_arrow.png" class="back_action" onclick="history.back();" alt="">
           <P class="order_id" style="color: #fff ; cursor: pointer ; user-select: none;">Order ID:-<span style="user-select:text;"><%=orderDetail._id%></span></P>
           <div class="single_order_details_div ">
             <!-- order data -->
@@ -112,6 +121,18 @@
               <% if(orderDetail.status=="pending"){ %>
               <div class="order_status" style="color:rgb(255, 192, 76);">
                 <div id="circle" style="border-color:rgb(255, 192, 76);"></div><%=orderDetail.status%>
+              </div>
+              <%}else if(orderDetail.status=="Shipped"){  %>
+              <div class="order_status" style="color:rgb(196, 238, 133);">
+                <div id="circle" style="border-color:rgb(196, 238, 133);"></div><%=orderDetail.status%>
+              </div>
+              <%}else if(orderDetail.status=="Out For Delivery"){  %>
+              <div class="order_status" style="color:rgb(171, 220, 88);">
+                <div id="circle" style="border-color:rgb(171, 220, 88);"></div><%=orderDetail.status%>
+              </div>
+              <%}else if(orderDetail.status=="Delivered"){  %>
+              <div class="order_status" style="color:rgb(65, 158, 90);">
+                <div id="circle" style="border-color:rgb(59, 147, 84);"></div><%=orderDetail.status%>
               </div>
               <%}else if(orderDetail.status=="cancelled"){  %>
               <div class="order_status" style="color:rgb(148, 0, 0);">

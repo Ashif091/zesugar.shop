@@ -5,6 +5,7 @@ body {
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
+    background-color: rgb(143, 115, 115);
 }
 
 .container_main {

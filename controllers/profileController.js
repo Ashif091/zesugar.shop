@@ -1,6 +1,8 @@
 const userdata = require("../models/userModel");
 const addressCollections = require("../models/addressModel");
 const UserOrder = require("../models/orderModel");
+const Wallet = require("../models/walletModel");
+const product = require("../models/productModel")
 const path = require('path');
 const fs = require('fs');
 const sharp = require('sharp');
@@ -243,19 +245,19 @@ module.exports = {
                 res.status(208).redirect('/');
             }
             let userData = await userdata.findById(user._id);
-       
-            const ITEMS_PER_PAGE = 3; 
-            const page = +req.query.page || 1; 
-       
+
+            const ITEMS_PER_PAGE = 3;
+            const page = +req.query.page || 1;
+
             const totalOrders = await UserOrder.countDocuments({ userId: userData._id });
             const totalPages = Math.ceil(totalOrders / ITEMS_PER_PAGE);
-       
+
             const orderData = await UserOrder.find({ userId: userData._id })
-                .sort({ orderDate: -1 }) 
+                .sort({ orderDate: -1 })
                 .skip((page - 1) * ITEMS_PER_PAGE)
                 .limit(ITEMS_PER_PAGE)
                 .populate(['items.product', 'shippingAddress']);
-       
+
             return res.render("./userSide/profileOrders", {
                 user,
                 userData,
@@ -266,13 +268,13 @@ module.exports = {
                 nextPage: page + 1,
                 previousPage: page - 1
             });
-       
+
         } catch (error) {
             console.log(`server Error with (edit Address DELETE)${error} `);
             return res.render("404page", { error })
         }
-       },
-       
+    },
+
 
     orderdetails: async (req, res) => {
         try {
@@ -303,11 +305,74 @@ module.exports = {
             }
             let userData = await userdata.findById(user._id);
 
-            const orderdata = await UserOrder.findById(orderid); 
+            const orderdata = await UserOrder.findById(orderid);
+            if(orderdata.paymentMethod=='UPI' || orderdata.paymentMethod=='Wallet' ){
+                let userWallet = await Wallet.findOne({ userId: userData._id })
+                //___________cash add to  Wallet______________ 
+                if (!userWallet) {
+                    console.log('no Wallet');
+                    userWallet = new Wallet({
+                        userId: userData._id,
+                        transactions: [
+                            {
+                                description: `Refund of cancelled order (${orderid})`,
+                                amount: orderdata.totalPrice,
+                            },
+                        ],
+    
+                        balance: orderdata.totalPrice,
+    
+                    });
+                    await userWallet.save();
+    
+                } else {
+    
+    
+                    await Wallet.updateOne(
+                        { userId: userData._id },
+                        {
+                            $inc: { balance: orderdata.totalPrice },
+                            $push: {
+                                transactions: {
+                                    description: `Refund of cancelled order (${orderid})`,
+                                    amount: orderdata.totalPrice,
+                                    transaction_type:true,
+                                    date: new Date(),
+                                },
+                            },
+                        }
+                    );
+    
+    
+                }
+
+            }
+
+            //__________________qty update in stock________________________
+
+            for (const item of orderdata.items) {
+                const productId = item.product;
+                const productDb = await product.findById(productId);
+                if (!productDb) {
+                    console.error(`Product not found with id ${productId}`);
+                    continue;
+                }
+                productDb.product_qty= +item.quantity
+                if(productDb.product_status==false){
+                    productDb.product_status=true;
+                }
+                await productDb.save();
+            }
+
+            console.log('Product quantities updated successfully');
+
+            // ____________________________________________________________
+
 
             orderdata.status = 'cancelled';
             orderdata.balance_amount = 'Refund';
             orderdata.paymentMethod = 'Successful';
+            orderdata.check_status = false;
             await orderdata.save();
             //cart upadate 
 
