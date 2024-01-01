@@ -252,16 +252,29 @@ module.exports = {
             const totalOrders = await UserOrder.countDocuments({ userId: userData._id });
             const totalPages = Math.ceil(totalOrders / ITEMS_PER_PAGE);
 
-            const orderData = await UserOrder.find({ userId: userData._id })
+            const orderDataDOC = await UserOrder.find({ userId: userData._id })
                 .sort({ orderDate: -1 })
                 .skip((page - 1) * ITEMS_PER_PAGE)
                 .limit(ITEMS_PER_PAGE)
                 .populate(['items.product', 'shippingAddress']);
+                if(orderDataDOC.length === 0){
+                    return res.render("./userSide/profileOrders", {
+                        user,
+                        userData,
+                        orderData :false,
+                        currentPage: page,
+                        hasNextPage: page < totalPages,
+                        hasPreviousPage: page > 1,
+                        nextPage: page + 1,
+                        previousPage: page - 1
+                    });
+                 }
+                 
 
             return res.render("./userSide/profileOrders", {
                 user,
                 userData,
-                orderData,
+                orderData:orderDataDOC,
                 currentPage: page,
                 hasNextPage: page < totalPages,
                 hasPreviousPage: page > 1,
@@ -357,7 +370,7 @@ module.exports = {
                     console.error(`Product not found with id ${productId}`);
                     continue;
                 }
-                productDb.product_qty= +item.quantity
+                productDb.product_qty=productDb.product_qty +item.quantity
                 if(productDb.product_status==false){
                     productDb.product_status=true;
                 }

@@ -69,7 +69,13 @@
               <div class="active_div_num">2</div>
               DELIVERY ADDRESS
             </div>
+
             <div class="data_display_div data_display_div_address">
+              <% console.log("data  ",userAddress); %>
+
+              <%if(!(userAddress===false)){ %>
+                <% console.log("data reload ",userAddress); %>
+
               <!--      foreach      -->
               <% let no = 0;%>
               <% userAddress.forEach(address => {%>
@@ -162,6 +168,13 @@
               </div>
 
               <% }) %>
+
+              <% }else{ %>
+                <div class="single_address_div " onclick="selectAddress(false,false)">
+                  <% console.log("else condition data run"); %>
+                </div>
+                <% } %>
+
               <!-- _________________ -->
               <!--      ADD ADDRESS  FORM       -->
               <div class="add_address_form_div">
@@ -242,6 +255,8 @@
               <!-- ____________________________ -->
 
             </div>
+
+
           </div>
 
           <!-- ==========Address confirm div========== -->
@@ -673,9 +688,9 @@
             const orderdata = result.orderdata;
             window.location.href = `/orderSuccess/${orderdata._id}`
           } else {
-            document.querySelector(".Wallet_error_msg").style.display="block";
-            document.querySelector(".Wallet_pay_btn").style.display="none";
-            document.querySelector(".Wallet_error_msg").textContent=result.errMsg;
+            document.querySelector(".Wallet_error_msg").style.display = "block";
+            document.querySelector(".Wallet_pay_btn").style.display = "none";
+            document.querySelector(".Wallet_error_msg").textContent = result.errMsg;
           }
 
         })
@@ -953,6 +968,7 @@
     function selectAddress(addressId, no) {
       // Unselect all radio buttons
       event.stopPropagation();
+      if(addressId){
       document.querySelectorAll('.address_radio_action').forEach(function(radio) {
         radio.checked = false;
       });
@@ -978,6 +994,7 @@
       data_div.forEach(function(element) {
         element.style.display = 'block';
       });
+    }
       // ____________________________________________
 
       // __________-ORDER SUMMARY hide and payment- _________
@@ -988,6 +1005,7 @@
 
 
       // -_______________________
+      if(addressId){
       var radio = document.querySelector('.address_radio-' + addressId);
       if (radio) {
         radio.checked = true;
@@ -996,7 +1014,7 @@
       document.querySelector(".edit_btn-" + addressId).style.display = "block"
       document.querySelector(".address_select_btn" + addressId).style.display = "block"
       document.querySelector(".single_address_div" + addressId).style.backgroundColor = "rgb(155, 113, 133)"
-
+       }
 
 
     }

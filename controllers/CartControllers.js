@@ -127,11 +127,12 @@ module.exports = {
 
                 return res.render("cartPage", { userData, isCart, products_data, cart_items,outOfStock})
             } else {
-                isCart = []
+                isCart = false
                 let products_data = []
                 let cart_items = []
+                let outOfStock=[]
 
-                return res.render("cartPage", { userData, isCart, products_data, cart_items })
+                return res.render("cartPage", { userData, isCart, products_data, cart_items,outOfStock})
             }
 
 

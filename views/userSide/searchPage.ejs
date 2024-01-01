@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZESUGAR PISTORS</title>
+  <link rel="shortcut icon" type="image" href="/image/logo.png">
+  <link rel="stylesheet" href="/cartpage.css">
+  <!-- bootstrap links -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- bootstrap links -->
+  <!-- fonts links -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Uchen&display=swap" rel="stylesheet">
+  <!-- fonts links -->
+  <!-- icons links -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <!-- icons links -->
+  <!-- animation links -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- animation links -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
+  <style>
+    .main_search_body {
+      margin: 0 auto;
+      display: flex;
+      width: 85%;
+      min-height: 600px;
+      position: relative;
+    }
+
+    .left_filter_bar {
+      flex: 0 0 20%;
+      width: 100%;
+      background-color: rgb(96, 55, 74);
+      position: sticky;
+    }
+
+    .right_data_display_bar {
+      flex: 0 0 80%;
+      width: 80%;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 3rem 0 0 3rem;
+    }
+
+    /* cart */
+    .card {
+      box-shadow: 0px 0px 5px black;
+      margin-top: 10px;
+      transition: 0.5s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .out-of-stock-label {
+      position: absolute;
+      top: 30px;
+      left: 63px;
+      width: 100%;
+      background-color: red;
+      color: white;
+      text-align: center;
+      transform: rotate(45deg);
+    }
+
+    #product-cards h1 {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 50px;
+      color: rgb(190, 71, 104);
+      text-shadow: 1px 1px 1px black;
+      border-bottom: 2px solid rgb(190, 71, 104);
+    }
+
+    #product-cards .card {
+      background-color: rgb(197, 84, 116);
+      box-shadow: 0 0 3px black;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 0 1rem 1rem 0;
+    }
+
+    .overlay {
+      display: block;
+      opacity: 0;
+      position: absolute;
+      top: 10%;
+      margin-left: 0;
+      width: 70px;
+    }
+
+    #product-cards .card:hover .overlay {
+      opacity: 1;
+      margin-left: 1%;
+      transition: 0.5s ease;
+    }
+
+    .overlay i img {
+      background-color: rgb(72, 20, 44);
+      height: 30px;
+      width: 30px;
+      font-size: 20px;
+      padding: 7px;
+      margin: -20%;
+      margin-bottom: 5%;
+      cursor: pointer;
+    }
+
+    .overlay .btn-side {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      margin: 5px;
+    }
+
+    #product-cards h3 {
+      color: white;
+      text-shadow: 1px 1px 1px black;
+    }
+
+    .star .checked {
+      color: yellow;
+    }
+
+    #product-cards p {
+      color: rgb(72, 20, 44);
+      font-weight: bold;
+    }
+
+    #product-cards h6 {
+      font-size: 20px;
+      color: rgb(72, 20, 44);
+      font-weight: bold;
+    }
+
+    #product-cards h6 span button {
+      width: 100px;
+      height: 26px;
+      font-size: 15px;
+      background: transparent;
+      letter-spacing: 3px;
+      border: 2px solid rgb(241, 92, 132);
+      border-radius: 5px;
+      float: right;
+      font-weight: bold;
+      transition: 0.5s ease;
+      cursor: pointer;
+    }
+
+    #product-cards h6 span button:hover {
+      background-color: rgb(72, 20, 44);
+      color: white;
+    }
+
+    .card {
+      flex: 0 0 25%;
+      max-height: 23rem;
+    }
+
+    /* ========== */
+    .price_rage_set_div {
+      width: 100%;
+      min-height: 50px;
+      margin: 5rem 0 0 0;
+      border: 1px solid #fff;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 80%;
+      height: 10px;
+      margin: 0 0 0 1.4rem;
+      border-radius: 5px;
+      background-color: #ddd;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      width: 10%;
+      height: 10px;
+      cursor: pointer;
+      background: #ddd;
+      border-radius: 5px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 13px;
+      height: 20px;
+      cursor: pointer;
+      background: rgb(241, 79, 139);
+      border-top-right-radius: 50%;
+      border-top-left-radius: 50%;
+      border-bottom-right-radius: 10%;
+      border-bottom-left-radius: 10%;
+    }
+
+    input[type="range"]:active::-webkit-slider-thumb {
+      background: rgb(241, 79, 139);
+    }
+
+    input[type="range"]:focus {
+      outline: none;
+    }
+
+    .rage_value_div {
+      display: flex;
+      width: 80%;
+      margin: 0 0 0 1.4rem;
+      min-height: 20px;
+      font-size: 13px;
+      text-shadow: 2px 2px 5px black;
+      color: #fff;
+    }
+
+    .minimum_value {
+      flex: 0 0 33%;
+
+    }
+
+    .medium_value {
+      flex: 0 0 33%;
+      text-align: center;
+
+
+    }
+
+    .maximum_value {
+      flex: 0 0 33%;
+      text-align: end;
+
+    }
+
+    /* ========== */
+
+    .product_category_search_div {
+      border: 1px solid #fff;
+      width: 100%;
+      min-height: 70px;
+      margin: 1rem 0 0 0;
+    }
+
+    .check_category_div {
+      display: flex;
+      font-size: 13px;
+      color: #fff;
+      text-shadow: 2px 2px 5px black;
+      border: 1px solid #fff;
+
+    }
+
+    .category_name_p_tag {
+      margin: 2px 0 0 3px;
+    }
+  </style>
+</head>
+
+<body style=" background: rgb(72, 20, 44);" id="body" data-searchData="<%= searchData %>">
+  <div class="all-content">
+    <!-- navbar -->
+    <%- include("../partials/nav_bar") %>
+    <div class="main_search_body">
+      <div class="left_filter_bar">
+        <select id="price-filter">
+          <option value="" <% if (priceSort === '') { %>selected<% } %> hidden>Select price range</option>
+          <option value="low" <% if (priceSort === 'low') { %>selected<% } %>>Low to High</option>
+          <option value="high" <% if (priceSort === 'high') { %>selected<% } %>>High to Low</option>
+        </select>
+
+        <div class="price_rage_set_div">
+          <div class="rage_value_div">
+            <div class="minimum_value">
+              1
+            </div>
+            <div class="medium_value">
+              <%= maxProductPrice/2 %>
+            </div>
+            <div class="maximum_value">
+              <%= maxProductPrice %>
+            </div>
+          </div>
+          <input type="range" class="price_range" min="1" max="100">
+        </div>
+
+        <div class="product_category_search_div">
+
+          <% Categories.forEach(category => { %>
+          <div class="check_category_div">
+            <input type="checkbox" class="category-checkbox" value="<%=category%>" <% if(checkedCategoriesArray.includes(category)) { %> checked <% } %>>
+            <p class="category_name_p_tag"><%=category%></p>
+          </div>
+          <% }) %>
+
+
+        </div>
+
+      </div>
+
+      <div class="right_data_display_bar " id="product-cards">
+        <% productlist.forEach(product => { %>
+
+        <div class="card" data-product-id="<%= product._id %>">
+
+          <div class="container_img" style="width: 100%; height: 200px; overflow: hidden; position: relative; ">
+            <div class="overlay">
+              <button type="button" class="btn-side" title="Quick View"><i><img src="/image/views.png" alt="" width="30px"></i></button>
+              <button type="button" class="btn-side" title="Add to Wishlist"><i><img src="/image/heart.png" alt="" width="30px"></i></button>
+              <button type="button" class="btn-side" title="Add to Cart"><i><img src="/image/add.png" alt="" width="30px"></i></button>
+            </div>
+            <img style="height: auto; width: 100%;" src="/<%= product.product_image_url[0] %>" alt="">
+          </div>
+          <div class="card-body">
+            <h3>
+              <%= product.product_name %>
+            </h3>
+            <div class="star">
+              <i class="bx bxs-star checked"></i>
+              <i class="bx bxs-star checked"></i>
+              <i class="bx bxs-star checked"></i>
+              <i class="bx bxs-star checked"></i>
+              <i class="bx bxs-star checked"></i>
+            </div>
+            <p style="height: 70px;">
+              <%= product.product_description %>
+            </p>
+            <h6>
+              <%= product.product_price %>
+              DHS
+              <span><button>Add
+                  Cart</button></span>
+            </h6>
+          </div>
+          <% if (product.product_status === false) { %>
+          <div class="out-of-stock-label">
+            Out of Stock
+          </div>
+
+
+
+
+
+          <% } %>
+        </div>
+
+
+
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <%- include("../partials/footer.ejs") %>
+    <!-- ======= -->
+
+
+
+    <!-- ====ERROR PoP UP==== -->
+
+    <div class="errormsg" style="display: none;">
+      Fail to connect database check your network !
+    </div>
+
+    <!-- ==================== -->
+
+    <!-- ================== -->
+
+
+    <!-- /////////SCRIPT AREA///////// -->
+
+    <!-- price rage action  -->
+
+    <script>
+         document.addEventListener('DOMContentLoaded', function() {
+      const maxPrice = parseInt("<%= maxProductPrice %>")
+      document.getElementById('price-filter').addEventListener('change', function() {
+        let priceFlow = this.value;
+        let priceRange = document.querySelector('.price_range').value;
+        let checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value);
+        const searchData = document.querySelector(".search_input_tag").value;
+        if (priceFlow !== "") {
+          window.location.href = `/search/?q=${searchData.trim()}&pf=${priceFlow}&pr=${priceRange}&mp=${maxPrice}&cc=${checkedCategories.join(",")}`;
+        }
+      });
+
+
+      document.querySelector('.price_range').addEventListener('input', function() {
+        let priceRange = this.value;
+        const priceFlow = document.getElementById('price-filter').value;
+        let checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value);
+        const searchData = document.querySelector(".search_input_tag").value;
+        window.location.href = `/search/?q=${searchData.trim()}&pf=${priceFlow}&pr=${priceRange}&mp=${maxPrice}&cc=${checkedCategories.join(",")}`;
+      });
+
+     
+        let checkboxes = document.querySelectorAll('.category-checkbox');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function(event) {
+                const priceFlow = document.getElementById('price-filter').value;
+                let priceRange = document.querySelector('.price_range').value;
+                let checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value);
+                const searchData = document.querySelector(".search_input_tag").value;
+                window.location.href = `/search/?q=${searchData.trim()}&pf=${priceFlow}&pr=${priceRange}&mp=${maxPrice}&cc=${checkedCategories.join(",")}`;
+            });
+        });
+    });
+    </script>
+    <!-- __________________ -->
+
+    <!-- query pass to the input -->
+    <script>
+      window.onload = function() {
+        document.querySelector(".search_input_tag").value = "<%= searchData %>";
+        var maxProductPrice = parseInt("<%= maxProductPrice %>");
+        document.querySelector(".price_range").value = parseInt("<%= priceRange %>");
+        document.querySelector(".price_range").max = maxProductPrice;
+      };
+    </script>
+
+    <!-- _______________________ -->
+
+
+
+    <!-- for aos animation  -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- ============ -->
+
+    <!-- page reback bug fix code -->
+    <script>
+      AOS.init();
+    </script>
+    <script>
+      if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+      }
+    </script>
+    <!-- ======================== -->
+
+
+    <!-- page reload -->
+    <script>
+      let cart = function cart() {
+        window.location.href = "/cart";
+
+      }
+    </script>
+    <!-- ========= -->
+
+
+
+
+</body>
+
+</html>

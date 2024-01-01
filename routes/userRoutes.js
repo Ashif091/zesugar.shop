@@ -45,7 +45,11 @@ const { profile,
 const {getWallet,
   } = require("../controllers/walletController")
 
-  // ______________________________________________________
+  // _____________________SEARCH Controller___________________
+  const {getSearchPage,
+  } = require("../controllers/searchController")
+
+  // ________________________________________________________
 
 
 router.route('/login').get(authenticateUser, login).post(check)
@@ -107,7 +111,13 @@ router.route('/orderCancel/:id').get(userstatus,orderCancel)
 router.route('/getprofile_wallet').get(userstatus,getWallet)
 
 
-//=======================================
+//=================SEARCH PAGE======================
+
+
+router.route('/search').get(userstatus,getSearchPage)
+
+
+//=================================================
 
 
 

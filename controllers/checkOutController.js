@@ -23,8 +23,14 @@ module.exports = {
             // ________Address data_______
 
             const Address = await addressCollections.find({ userId: userData._id });
-
-            const userAddress = Address.map(address => address);
+            let userAddress;
+            if (!(Address=='')) {
+                console.log(`user have address doc ${Address}`);
+                userAddress = Address.map(address => address);
+            } else {
+                console.log("else condition");
+                userAddress = false;
+            }
 
             // ___________________________
             //             cart product    
@@ -32,7 +38,6 @@ module.exports = {
             let productIds = isCart.items.map(product => product.product);
             const itemCount = productIds.length;
             let cart_items = isCart.items.map(product => product);
-            console.log(cart_items);
 
             const products_data = await product.find({
                 _id: {
@@ -246,7 +251,7 @@ module.exports = {
             const orderDate = new Date(orderDoc.orderDate);
             const diffInSeconds = Math.abs((now.getTime() - orderDate.getTime()) / 1000);
             console.log("time:", diffInSeconds);
-            if (diffInSeconds >= 5) {
+            if (diffInSeconds >= 2) {
                 res.redirect("/")
             }
             res.render('./userSide/orderSuccessPage.ejs', { orderId })

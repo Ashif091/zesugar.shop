@@ -30,7 +30,7 @@
 
 </head>
 
-<body style=" background: rgb(72, 20, 44);" id="body" data-items="<%=cart_items.length%>">
+<body style=" background: rgb(72, 20, 44);" id="body" data-items="<%=cart_items.length%>" data-isCart="<%= isCart %>">
   <div class="all-content">
     <!-- navbar -->
     <%-include("./partials/nav_bar") %>
@@ -293,6 +293,8 @@
 
   <!-- epmty cart animation div style  -->
   <script>
+   
+
     let amount_items = document.getElementById("body").getAttribute("data-items")
     if (amount_items == 0 || amount_items == "" || amount_items == undefined) {
       document.getElementById("main_container").style.display = "none"
