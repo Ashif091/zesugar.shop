@@ -40,7 +40,10 @@ const { profile,
   delete_address,
   orderHistory,
   orderdetails,
-  orderCancel,} = require("../controllers/profileController")
+  orderCancel,
+  getWishlist,
+addWishlist,
+productDeleteFromTheWishlist} = require("../controllers/profileController")
 //_____________________Wallet controller_____________________
 const {getWallet,
   } = require("../controllers/walletController")
@@ -96,6 +99,8 @@ router.route('/edit_address').put(userstatus,editAddress)
 router.route('/edit_address/:id').delete(userstatus,delete_address)
 router.route('/getprofile_order').get(userstatus,orderHistory)
 router.route('/orderdetails/:id').get(userstatus,orderdetails)
+
+router.route('/myWishlist').get(userstatus,getWishlist).post(addWishlist).delete(productDeleteFromTheWishlist)
 
 
 //============CHECK OUT ===========

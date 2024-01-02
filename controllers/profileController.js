@@ -2,6 +2,7 @@ const userdata = require("../models/userModel");
 const addressCollections = require("../models/addressModel");
 const UserOrder = require("../models/orderModel");
 const Wallet = require("../models/walletModel");
+const wishlist = require("../models/wishlistModel");
 const product = require("../models/productModel")
 const path = require('path');
 const fs = require('fs');
@@ -257,24 +258,24 @@ module.exports = {
                 .skip((page - 1) * ITEMS_PER_PAGE)
                 .limit(ITEMS_PER_PAGE)
                 .populate(['items.product', 'shippingAddress']);
-                if(orderDataDOC.length === 0){
-                    return res.render("./userSide/profileOrders", {
-                        user,
-                        userData,
-                        orderData :false,
-                        currentPage: page,
-                        hasNextPage: page < totalPages,
-                        hasPreviousPage: page > 1,
-                        nextPage: page + 1,
-                        previousPage: page - 1
-                    });
-                 }
-                 
+            if (orderDataDOC.length === 0) {
+                return res.render("./userSide/profileOrders", {
+                    user,
+                    userData,
+                    orderData: false,
+                    currentPage: page,
+                    hasNextPage: page < totalPages,
+                    hasPreviousPage: page > 1,
+                    nextPage: page + 1,
+                    previousPage: page - 1
+                });
+            }
+
 
             return res.render("./userSide/profileOrders", {
                 user,
                 userData,
-                orderData:orderDataDOC,
+                orderData: orderDataDOC,
                 currentPage: page,
                 hasNextPage: page < totalPages,
                 hasPreviousPage: page > 1,
@@ -319,7 +320,7 @@ module.exports = {
             let userData = await userdata.findById(user._id);
 
             const orderdata = await UserOrder.findById(orderid);
-            if(orderdata.paymentMethod=='UPI' || orderdata.paymentMethod=='Wallet' ){
+            if (orderdata.paymentMethod == 'UPI' || orderdata.paymentMethod == 'Wallet') {
                 let userWallet = await Wallet.findOne({ userId: userData._id })
                 //___________cash add to  Wallet______________ 
                 if (!userWallet) {
@@ -332,15 +333,15 @@ module.exports = {
                                 amount: orderdata.totalPrice,
                             },
                         ],
-    
+
                         balance: orderdata.totalPrice,
-    
+
                     });
                     await userWallet.save();
-    
+
                 } else {
-    
-    
+
+
                     await Wallet.updateOne(
                         { userId: userData._id },
                         {
@@ -349,14 +350,14 @@ module.exports = {
                                 transactions: {
                                     description: `Refund of cancelled order (${orderid})`,
                                     amount: orderdata.totalPrice,
-                                    transaction_type:true,
+                                    transaction_type: true,
                                     date: new Date(),
                                 },
                             },
                         }
                     );
-    
-    
+
+
                 }
 
             }
@@ -370,9 +371,9 @@ module.exports = {
                     console.error(`Product not found with id ${productId}`);
                     continue;
                 }
-                productDb.product_qty=productDb.product_qty +item.quantity
-                if(productDb.product_status==false){
-                    productDb.product_status=true;
+                productDb.product_qty = productDb.product_qty + item.quantity
+                if (productDb.product_status == false) {
+                    productDb.product_status = true;
                 }
                 await productDb.save();
             }
@@ -400,6 +401,103 @@ module.exports = {
         }
     },
 
+    getWishlist: async (req, res) => {
+        console.log("req wishlist");
+        try {
+            const user = req.session.username;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            
+            let userData = await userdata.findById(user._id);
+
+            let userWishlist = await wishlist.findOne({ userId: userData._id }).populate(['items.product']);
+
+            console.log(userWishlist);
+
+            return res.render("./userSide/profileWishlist", { user, userData, userWishlist })
+
+        } catch (error) {
+            console.log(`server Error with (edit Address DELETE)${error} `);
+            return res.render("404page", { error })
+        }
+    },
+    addWishlist: async (req, res) => {
+        const productId = req.query.id;
+        const user = req.session.username;
+
+        try {
+            let userDbData = await userdata.findById(user._id);
+            if (!userDbData) {
+                return res.redirect('/');
+            }
+
+            const productData = await product.findOne({ _id: productId });
+
+            let userWishlist = await wishlist.findOne({ userId: userDbData._id });
+            if (!userWishlist) {
+
+                userWishlist = new wishlist({
+                    userId: userDbData._id,
+                    items: [
+                        {
+                            product: productData._id,
+                        },
+                    ],
+                });
+                await userWishlist.save();
+
+            } else {
+                // =================================
+                console.log("ADDING......................");
+
+                await wishlist.updateOne(
+                    { userId: userDbData._id },
+                    {
+                        $push: { items: { product: productData._id } }
+
+                    }
+                )
+
+
+            }
+
+            return res.json({ status: true, errmsg: ` `, data: productId });
+        } catch (error) {
+            console.error('Error adding product to addWishlist:', error);
+            return res.json({ status: false, errmsg: `'server ERROR ` });
+        }
+    },
+    productDeleteFromTheWishlist: async (req, res) => {
+        let user = req.session.username;
+        const productId = req.query.id;
+        console.log(`get the delete req ${productId}`);
+
+        try {
+            let userData = await userdata.findById(user._id);
+            if (!userData) {
+                return res.redirect('/');
+            }
+            const userWishlist = await wishlist.findOne({ userId: userData._id });
+            if (!userWishlist) {
+                return res.json({ status: false, errmsg: ` `, data: productId });
+
+            }
+
+            await wishlist.findOneAndUpdate(
+                { userId: userData._id },
+                { $pull: { items: { product: productId } } }
+            )
+            const WishlistItems = await wishlist.findOne({ userId: userData._id });
+            return res.json({ status: true, errmsg: ` `, data: productId,itemsCount:WishlistItems.items.length});
+
+
+        } catch (error) {
+            console.error('Error adding product to Wishlist:', error);
+            return res.json({ status: false, errmsg: `'server ERROR ` });
+        }
+    }
+    ,
 
 
 

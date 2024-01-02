@@ -4,6 +4,8 @@ const asyncHandler = require("express-async-handler")
 const nodemailer = require('nodemailer')
 const bcrypt = require("bcrypt")
 const Cart = require('../models/cartModel');
+const wishlist = require("../models/wishlistModel");
+
 // ================
 const product = require("../models/productModel")
 const category = require("../models/categoryModel")
@@ -13,9 +15,9 @@ module.exports = {
         res.status(208).redirect('/');
     }),
     home: (async (req, res) => {
-        const user = req.session.username; 
-        if(!user){
-         res.status(208).redirect('/');
+        const user = req.session.username;
+        if (!user) {
+            res.status(208).redirect('/');
         }
         let userData = await users.findById(user._id);
         let categorylist = await category.aggregate([{ $lookup: { from: "products", localField: "category_name", foreignField: "product_category", as: "product_data" } }]);
@@ -28,8 +30,8 @@ module.exports = {
     ,
     registerpage: (async (req, res) => {
         const user = req.session.username;
-        if(!user){
-         res.status(208).redirect('/');
+        if (!user) {
+            res.status(208).redirect('/');
         }
         let userData = await users.findById(user._id);
         let categorylist = await category.aggregate([{ $lookup: { from: "products", localField: "category_name", foreignField: "product_category", as: "product_data" } }]);
@@ -300,13 +302,13 @@ module.exports = {
 
     logout: ((req, res) => {
         try {
-        req.session.destroy();
-        res.redirect('/');
+            req.session.destroy();
+            res.redirect('/');
 
         } catch (error) {
             console.log(`error with logout ${error}`);
-            return res.render("404page",{error})
-            
+            return res.render("404page", { error })
+
         }
 
     })
@@ -368,38 +370,44 @@ module.exports = {
 
     ,
     page: ((req, res) => {
-        let productdata ={
-            _id:"cxcxccxc"
+        let productdata = {
+            _id: "cxcxccxc"
         }
-        res.render("product_detail_page ", { name: "ashif",productdata });
+        res.render("product_detail_page ", { name: "ashif", productdata });
     })
     ,
     productGET: (async (req, res) => {
         console.log('req is get');
         try {
-            const productId = req.params.id;
-            const user = req.session.username;
-            if(!user){
-             res.status(208).redirect('/');
-            }
-            let userData = await users.findById(user._id);
-            console.log(`id is ${productId}`);
-            let userCart = await Cart.findOne({ userId: user._id });
-            
-            let productdata = await product.findById(productId)
-            
-            if (userCart) {
-                let cartstatus = userCart.items.map(item => item.product.toString());
-                res.render("product_detail_page ", { userData,productdata,cartstatus,productId});
-             }else{
-                let cartstatus =[]
-                res.render("product_detail_page ", { userData,productdata,cartstatus,productId});
-             }
-        } catch (error) {
-          console.log(`server have trouble ${error}`);
+        const productId = req.params.id;
+        const user = req.session.username;
+        if (!user) {
+          res.status(208).redirect('/');
         }
+        let userData = await users.findById(user._id);
+        console.log(`id is ${productId}`);
 
-    })
+        let userCart = await Cart.findOne({ userId: user._id });
+        let userWishlist = await wishlist.findOne({ userId: userData._id });
+        let wishlistStatus = false;
+        if(userWishlist){
+          wishlistStatus = userWishlist.items.some(item => item.product.toString() === productId);
+        }
+        let productdata = await product.findById(productId)
+        if (userCart) {
+          let cartstatus = userCart.items.map(item => item.product.toString());
+          res.render("product_detail_page ", { userData, productdata, cartstatus, productId, wishlistStatus });
+        } else {
+          let cartstatus = []
+          res.render("product_detail_page ", { userData, productdata, cartstatus, productId, wishlistStatus });
+        }
+       
+        } catch (error) {
+        console.log(`server have trouble ${error}`);
+        }
+       
+       })
+       
 
 
 }

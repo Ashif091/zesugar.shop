@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZESUGAR PISTORS</title>
+  <link rel="shortcut icon" type="image" href="/image/logo.png">
+  <link rel="stylesheet" href="/cartpage.css">
+  <!-- bootstrap links -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- bootstrap links -->
+  <!-- fonts links -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Uchen&display=swap" rel="stylesheet">
+  <!-- fonts links -->
+  <!-- icons links -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <!-- icons links -->
+  <!-- animation links -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- animation links -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
+  <style>
+    .main_search_body {
+      margin: 0 auto;
+      display: flex;
+      width: 85%;
+      min-height: 300px;
+      position: relative;
+      flex-wrap: wrap;
+    }
+
+    #footer {
+      margin: 1rem 0 0 0;
+    }
+
+    .no_search_animation {
+      margin: 2rem auto;
+      width: 12rem;
+      height: 12rem;
+      flex: 0 0 100%;
+
+    }
+    .no_serch_text{
+        font-size: 25px;
+        color: #fff;
+        text-shadow:3px 3px 6px rgb(0, 0, 0);
+        margin: -5rem auto;
+        flex: 0 0 100%;
+        text-align: center;
+    }
+    .R_no_serch_text{
+        font-size: 17px;
+        color: #acacac;
+        text-shadow:3px 3px 6px rgb(0, 0, 0);
+        margin: -4rem auto;
+    }
+  </style>
+</head>
+
+<body style=" background: rgb(72, 20, 44);" id="body">
+  <div class="all-content">
+    <!-- navbar -->
+    <%- include("../partials/nav_bar") %>
+    <div class="main_search_body">
+      <div class="no_search_animation"></div>
+      <p class="no_serch_text">Sorry, no results found!</p><br>
+      <p class="R_no_serch_text">Please check the spelling or try searching for something else</p>
+
+    </div>
+    
+
+    <!-- footer -->
+    <%- include("../partials/footer.ejs") %>
+    <!-- ======= -->
+
+
+
+    <!-- ====ERROR PoP UP==== -->
+
+    <div class="errormsg" style="display: none;">
+      Fail to connect database check your network !
+    </div>
+
+    <!-- ==================== -->
+
+    <!-- ================== -->
+
+
+    <!-- /////////SCRIPT AREA///////// -->
+
+
+    <!-- for aos animation  -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- ============ -->
+
+    <!-- query pass to the input -->
+    <script>
+      window.onload = function() {
+        document.querySelector(".search_input_tag").value =
+          "<%= searchData %>";
+      };
+    </script>
+
+    <!-- _______________________ -->
+    <!-- for json animation  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+    <script>
+      var animation = bodymovin.loadAnimation({
+        container: document.querySelector('.no_search_animation'),
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: '/json/no_search.json',
+        speed: 2,
+      });
+    </script>
+    <!-- ============== -->
+
+    <!-- page reback bug fix code -->
+    <script>
+      AOS.init();
+    </script>
+    <script>
+      if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+      }
+    </script>
+    <!-- ======================== -->
+
+
+    <!-- page reload -->
+    <script>
+      let cart = function cart() {
+        window.location.href = "/cart";
+
+      }
+    </script>
+    <!-- ========= -->
+
+
+
+
+</body>
+
+</html>

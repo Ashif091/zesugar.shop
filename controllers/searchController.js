@@ -15,9 +15,7 @@ module.exports = {
             let maxProductPrice = req.query.mp;
             let checkedCategories = req.query.cc;
 
-            if (!priceRange) {
-                priceRange = 100;
-            }
+
             if (!user) {
                 res.status(208).redirect('/');
             }
@@ -31,6 +29,15 @@ module.exports = {
                     { product_category: regex }
                 ]
             })
+            
+            if(productlist.length===0){
+                return res.render("./userSide/zeroSearchPage", {
+                    user,
+                    userData,
+                    searchData,
+                });
+            }
+
             const Categories = [...new Set(productlist.map(product => product.product_category))];
             let priceSort = '';
             if (priceFlow) {
@@ -45,8 +52,12 @@ module.exports = {
             if (priceRange) {
                 productlist = productlist.filter(product => product.product_price <= priceRange);
             }
+            // maximum price rage set
             if (!maxProductPrice) {
                 maxProductPrice = Math.max(...productlist.map(product => product.product_price));
+            }
+            if (!priceRange) {
+                priceRange = maxProductPrice;
             }
             // Convert checkedCategories string into an array
             let checkedCategoriesArray = Categories;

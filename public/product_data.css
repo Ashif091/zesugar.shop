@@ -221,6 +221,7 @@ html{
     font-size: 17px;
 }
 .quantity-select{
+    flex:0 0 30%;
     background-color: rgb(160, 79, 102);
     border: 2px solid rgb(40, 22, 22);
     color: #010101;
@@ -477,3 +478,13 @@ html{
    }
    
 /* ================================ */
+
+.selectiondiv{
+    display: flex;
+    width: 50%;
+}
+
+.wishlist_img{
+    margin:.5rem 0 0 1rem;
+    height: 20px;
+}

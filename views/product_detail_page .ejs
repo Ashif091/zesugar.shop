@@ -26,7 +26,12 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- animation links -->
 
+  <style>
+    .addWishlist_img {
+      cursor: pointer;
+    }
 
+  </style>
 
 </head>
 
@@ -121,7 +126,13 @@
                 <option value="1kg">1kg</option>
                 <option value="0.5kg">0.5kg</option>
               </select>
-              <img src="/image/heart.png" alt="" width="20px">
+              <%if(wishlistStatus === true){ %>
+              <img src="/image/unheart.png" alt="" width="20px" class="addedWishlist_img wishlist_img" >
+                
+              <%}else{%>
+              <img src="/image/heart.png" alt="" width="20px" class="addWishlist_img wishlist_img" onclick="addTowishlist('<%=productdata._id%>')">
+              <img src="/image/unheart.png" alt="" width="20px" class="addedWishlist_img wishlist_img" style="display: none;" >
+              <% } %>
             </div>
 
           </div>
@@ -145,6 +156,34 @@
   </div>
 
   <!-- ==================== -->
+  <!-- ADD TO wishlist -->
+  <script>
+    function addTowishlist(id) {
+
+      fetch(`/myWishlist/?id=${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+
+          if (data.status === true) {
+            
+            document.querySelector(".addWishlist_img").style.display="none";
+            document.querySelector(".addedWishlist_img").style.display="block";
+            // error msg
+          } else {
+            window.location.reload()
+          }
+
+
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+  <!-- ______________ -->
 
   <!-- ============ADD TO CART FETCH REQ================ -->
 
@@ -178,8 +217,8 @@
               document.querySelector('.errormsg').style.animationName = "hide"
               document.querySelector('.errormsg').style.animationPlayState = 'running';
               setTimeout(() => {
-              document.querySelector('.errormsg').style.display = "none"
-                
+                document.querySelector('.errormsg').style.display = "none"
+
               }, 300);
             }, 3000);
           } else {

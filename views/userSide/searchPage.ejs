@@ -39,8 +39,9 @@
     .left_filter_bar {
       flex: 0 0 20%;
       width: 100%;
-      background-color: rgb(96, 55, 74);
+      box-shadow: 0 0 8px rgb(203, 107, 152);
       position: sticky;
+      border-top-right-radius: 10px;
     }
 
     .right_data_display_bar {
@@ -171,11 +172,20 @@
     }
 
     /* ========== */
+    .filter_action_div {
+      width: 100%;
+      margin: 1rem 0 0 0;
+    }
+
     .price_rage_set_div {
       width: 100%;
       min-height: 50px;
-      margin: 5rem 0 0 0;
-      border: 1px solid #fff;
+    }
+
+    .price_rage_text {
+      color: #adadad;
+      margin: 1rem 0 0 5px;
+      font-size: 11px;
     }
 
     input[type="range"] {
@@ -246,10 +256,41 @@
 
     }
 
+    .current_price_value_div {
+      display: flex;
+      width: 80%;
+      margin: 1rem 0 0 1.4rem;
+      min-height: 20px;
+      font-size: 13px;
+      text-shadow: 2px 2px 5px black;
+      color: #fff;
+    }
+
+    .left_current_mini {
+      border: 1px solid #fff;
+      flex: 0 0 33%;
+      text-align: center;
+      border-radius: 3px;
+
+    }
+
+    .medil_div_current {
+      flex: 0 0 33%;
+      text-align: center;
+
+    }
+
+    .right_current_max {
+      border: 1px solid #fff;
+      flex: 0 0 33%;
+      text-align: center;
+      border-radius: 3px;
+
+    }
+
     /* ========== */
 
     .product_category_search_div {
-      border: 1px solid #fff;
       width: 100%;
       min-height: 70px;
       margin: 1rem 0 0 0;
@@ -257,16 +298,60 @@
 
     .check_category_div {
       display: flex;
-      font-size: 13px;
+      font-size: 11px;
       color: #fff;
       text-shadow: 2px 2px 5px black;
-      border: 1px solid #fff;
-
+      padding: 0 0 0 5px;
     }
 
     .category_name_p_tag {
       margin: 2px 0 0 3px;
     }
+
+    .seclection_div {
+      display: flex;
+      width: 100%;
+      color: #aeaeae;
+      font-size: 12px;
+      margin: 2rem 0 0 0;
+    }
+
+    #price-filter {
+      width: 60%;
+      padding: 0 0 0 5px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: transparent;
+      color: #fff;
+      margin: 0 0 0 1.4rem;
+      font-size: 13px;
+    }
+
+    .lebal_p_tag {
+      margin: .2rem 0 0 5px;
+    }
+
+    #price-filter option {
+      background-color: rgb(197, 84, 116);
+    }
+
+    .catagory_text {
+      font-size: 13px;
+      margin: 0 0 5px 5px;
+      color: #a2a2a2;
+    }
+
+    /* no products */
+    .no-product-message {
+      color: #fff;
+      width: 80%;
+      min-height:10rem;
+      text-align: center;
+      margin: 20px 0;
+      text-shadow:3px 3px 6px black;
+      padding-top:5rem ;
+    }
+
   </style>
 </head>
 
@@ -276,45 +361,66 @@
     <%- include("../partials/nav_bar") %>
     <div class="main_search_body">
       <div class="left_filter_bar">
-        <select id="price-filter">
-          <option value="" <% if (priceSort === '') { %>selected<% } %> hidden>Select price range</option>
-          <option value="low" <% if (priceSort === 'low') { %>selected<% } %>>Low to High</option>
-          <option value="high" <% if (priceSort === 'high') { %>selected<% } %>>High to Low</option>
-        </select>
 
-        <div class="price_rage_set_div">
-          <div class="rage_value_div">
-            <div class="minimum_value">
-              1
+        <div class="filter_action_div">
+
+          <p class="price_rage_text">PRICE</p>
+          <div class="price_rage_set_div">
+            <div class="rage_value_div">
+              <div class="minimum_value">
+                1
+              </div>
+              <div class="medium_value">
+                <%= maxProductPrice/2 %>
+              </div>
+              <div class="maximum_value">
+                <%= maxProductPrice %>
+              </div>
             </div>
-            <div class="medium_value">
-              <%= maxProductPrice/2 %>
-            </div>
-            <div class="maximum_value">
-              <%= maxProductPrice %>
+            <input type="range" class="price_range" min="1" max="100">
+            <div class="current_price_value_div">
+              <div class="left_current_mini">Min</div>
+              <div class="medil_div_current">To</div>
+              <div class="right_current_max"><%= maxProductPrice %></div>
             </div>
           </div>
-          <input type="range" class="price_range" min="1" max="100">
-        </div>
-
-        <div class="product_category_search_div">
-
-          <% Categories.forEach(category => { %>
-          <div class="check_category_div">
-            <input type="checkbox" class="category-checkbox" value="<%=category%>" <% if(checkedCategoriesArray.includes(category)) { %> checked <% } %>>
-            <p class="category_name_p_tag"><%=category%></p>
+          <div class="seclection_div">
+            <p class="lebal_p_tag">Sort By</p>
+            <select id="price-filter">
+              <option value="" <% if (priceSort === '') { %>selected<% } %> hidden>Select price</option>
+              <option value="low" <% if (priceSort === 'low') { %>selected<% } %>>Low to High</option>
+              <option value="high" <% if (priceSort === 'high') { %>selected<% } %>>High to Low</option>
+            </select>
           </div>
-          <% }) %>
-
-
+          <div class="product_category_search_div">
+            <p class="catagory_text">Categories</p>
+            <% Categories.forEach(category => { %>
+            <div class="check_category_div">
+              <input type="checkbox" class="category-checkbox" value="<%=category%>" <% if(checkedCategoriesArray.includes(category)) { %> checked <% } %>>
+              <p class="category_name_p_tag"><%=category%></p>
+            </div>
+            <% }) %>
+          </div>
         </div>
 
       </div>
 
       <div class="right_data_display_bar " id="product-cards">
+
+        <%if(productlist.length===0) { %>
+          <% console.log(` condition the data : ${productlist.length}`); %>
+
+          <div class="no-product-message">
+            ! No products found within the specified price range.
+            
+            
+        </div>        
+        <% }else{%>
+          <% console.log(`else condition the data : ${productlist.length}`); %>
+
         <% productlist.forEach(product => { %>
 
-        <div class="card" data-product-id="<%= product._id %>">
+        <div class="card" data-product-id="<%= product._id %>" onclick="productDetailPage('<%= product._id %>')">
 
           <div class="container_img" style="width: 100%; height: 200px; overflow: hidden; position: relative; ">
             <div class="overlay">
@@ -356,10 +462,10 @@
 
           <% } %>
         </div>
-
-
-
         <% }) %>
+        <% }%>
+
+
       </div>
     </div>
 
@@ -385,40 +491,40 @@
     <!-- price rage action  -->
 
     <script>
-         document.addEventListener('DOMContentLoaded', function() {
-      const maxPrice = parseInt("<%= maxProductPrice %>")
-      document.getElementById('price-filter').addEventListener('change', function() {
-        let priceFlow = this.value;
-        let priceRange = document.querySelector('.price_range').value;
-        let checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value);
-        const searchData = document.querySelector(".search_input_tag").value;
-        if (priceFlow !== "") {
+      document.addEventListener('DOMContentLoaded', function() {
+        const maxPrice = parseInt("<%= maxProductPrice %>")
+        document.getElementById('price-filter').addEventListener('change', function() {
+          let priceFlow = this.value;
+          let priceRange = document.querySelector('.price_range').value;
+          let checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value);
+          const searchData = document.querySelector(".search_input_tag").value;
+          if (priceFlow !== "") {
+            window.location.href = `/search/?q=${searchData.trim()}&pf=${priceFlow}&pr=${priceRange}&mp=${maxPrice}&cc=${checkedCategories.join(",")}`;
+          }
+        });
+
+
+        document.querySelector('.price_range').addEventListener('input', function() {
+          let priceRange = this.value;
+          const priceFlow = document.getElementById('price-filter').value;
+          let checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value);
+          const searchData = document.querySelector(".search_input_tag").value;
           window.location.href = `/search/?q=${searchData.trim()}&pf=${priceFlow}&pr=${priceRange}&mp=${maxPrice}&cc=${checkedCategories.join(",")}`;
-        }
-      });
+        });
 
 
-      document.querySelector('.price_range').addEventListener('input', function() {
-        let priceRange = this.value;
-        const priceFlow = document.getElementById('price-filter').value;
-        let checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value);
-        const searchData = document.querySelector(".search_input_tag").value;
-        window.location.href = `/search/?q=${searchData.trim()}&pf=${priceFlow}&pr=${priceRange}&mp=${maxPrice}&cc=${checkedCategories.join(",")}`;
-      });
-
-     
         let checkboxes = document.querySelectorAll('.category-checkbox');
 
         checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function(event) {
-                const priceFlow = document.getElementById('price-filter').value;
-                let priceRange = document.querySelector('.price_range').value;
-                let checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value);
-                const searchData = document.querySelector(".search_input_tag").value;
-                window.location.href = `/search/?q=${searchData.trim()}&pf=${priceFlow}&pr=${priceRange}&mp=${maxPrice}&cc=${checkedCategories.join(",")}`;
-            });
+          checkbox.addEventListener('change', function(event) {
+            const priceFlow = document.getElementById('price-filter').value;
+            let priceRange = document.querySelector('.price_range').value;
+            let checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value);
+            const searchData = document.querySelector(".search_input_tag").value;
+            window.location.href = `/search/?q=${searchData.trim()}&pf=${priceFlow}&pr=${priceRange}&mp=${maxPrice}&cc=${checkedCategories.join(",")}`;
+          });
         });
-    });
+      });
     </script>
     <!-- __________________ -->
 
@@ -428,12 +534,20 @@
         document.querySelector(".search_input_tag").value = "<%= searchData %>";
         var maxProductPrice = parseInt("<%= maxProductPrice %>");
         document.querySelector(".price_range").value = parseInt("<%= priceRange %>");
+        document.querySelector(".right_current_max").textContent = "<%= priceRange %>";
         document.querySelector(".price_range").max = maxProductPrice;
       };
     </script>
 
     <!-- _______________________ -->
 
+    <!--    productDetailPage reqst  -->
+    <script>
+      function productDetailPage(productId) {
+        window.location.href = `/products/${productId}`
+      }
+    </script>
+    <!-- ___________________________ -->
 
 
     <!-- for aos animation  -->

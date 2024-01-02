@@ -29,7 +29,7 @@
 
 
   <style>
-    .order_btn {
+    .Wishlist_btn {
       background: rgb(213, 106, 137);
       background: linear-gradient(90deg, rgb(200, 92, 123) 0%, rgb(249, 249, 249) 100%);
 
@@ -70,6 +70,74 @@
     .shop_now_btn:active {
       transform: scale(0.95);
     }
+
+    .single_product_display_div {
+      width: 100%;
+      border-radius: 8px;
+      min-height: 80px;
+      background: rgb(238, 197, 209);
+      background: linear-gradient(90deg, rgb(185, 91, 119) 0%, rgb(230, 166, 178) 100%);
+      border: 2px solid #fcd1e9;
+      margin-top: 1rem;
+
+      display: flex;
+      align-items: stretch;
+
+    }
+    .product_img_div{
+        width: 70px;
+        height: 70px;
+        margin:.7rem 0 0 0;
+        object-fit: contain;
+        position: relative;
+        cursor: pointer;
+        user-select:none;
+        flex: 0 0 15%;
+        padding:0 0 0 1rem;
+      cursor: pointer;
+
+
+    }
+    .product_name_div{
+        flex: 0 0 40%;
+        margin-left: 0;
+    }
+    .product_action_div{
+        flex: 0 0 45%;
+        position: relative;
+    }
+    .nameAndPrice_p_tag{
+        color: #fff;
+        user-select: none;
+        text-shadow:2px 2px 3px black;
+        text-transform: capitalize;
+      cursor: pointer;
+
+    }
+    .product_description_p_tag{
+        color: #fff;
+        user-select: none;
+        font-size:13px;
+        text-shadow:2px 2px 3px black;
+        text-transform: capitalize;
+        margin:-1rem 0  0 0;
+      cursor: pointer;
+
+    }
+    .delete_form_wishlist{
+   width:15px;
+   margin:.5rem 0 0 80%;
+   cursor: pointer;
+   position: absolute;
+   right: 1rem;
+   top: .5rem;
+   display: none;
+}
+
+.single_product_display_div:hover .delete_form_wishlist{
+   display: block;
+}
+
   </style>
 
 
@@ -118,86 +186,38 @@
       <div class="right_bar">
         <div class="vertical_line"></div>
         <!-- profile data -->
-        <% if(orderData===false){ %>
+        <% if(!userWishlist || userWishlist.items.length === 0){ %>
         <div class="data_display_div_order" style="user-select: none; min-height:400px;">
-          <p class="text_msg" style="margin: 8rem 0 0 13rem; font-size: 23px; color: #fff; text-shadow:3px 3px 6px black; text-transform: capitalize;"> You have no orders!</p>
-          <a href="/"><button class="shop_now_btn" style="margin: 1rem 0 0 15rem ; text-transform: capitalize;">start shopping</button></a>
+          <p class="text_msg" style="margin: 8rem 0 0 9rem; font-size: 23px; color: #fff; text-shadow:3px 3px 6px black; text-transform: capitalize;"> Your Wishlist is currently empty!</p>
+          <a href="/"><button class="shop_now_btn" style="margin: 1rem 0 0 15rem ; text-transform: capitalize;">start exploring</button></a>
         </div>
         <% }else{ %>
-        <div class="data_display_div_order ">
-          <% orderData.forEach(order => {%>
-          <div class="single_order_data_div " onclick="orderDetails('<%=order._id%>')">
-            <div class="orderid_img_div">
-              <div class="items_img_div">
-                <%if(order.items.length == 1){%>
+        <div class="data_display_div_order wishlist_main">
+          <% userWishlist.items.forEach(product => {%>
 
-                <img src="/<%=order.items[0].product.product_image_url[0]%>" width="70px" alt="" style="border:1px solid #fff; border-radius: 4px;">
-                <% }else{%>
-                <div class="item_qty_p">&nbsp;(&cross;<%= order.items.length %>)</div>
-                <img src="/image2/items.png" alt="items" width="70px">
-                <% } %>
-
-              </div>
-              <div class="oredr_id"><span style="user-select: none; font-size: 14px;">Order Id:</span><%= order._id%></div>
+          <div class="single_product_display_div single_product_display_div<%= product.product._id %>" >
+            <div class="product_img_div" onclick="productDetailPage('<%= product.product._id %>')">
+                <img src="/<%=product.product.product_image_url[0]%>" width="70px" alt="" style="border:1px solid #fff; border-radius: 4px;">
             </div>
-
-            <div class="order_price_div">
-              Amount in DHS: <strong><%=order.balance_amount%></strong>
+            <div class="product_name_div" onclick="productDetailPage('<%= product.product._id %>')">
+                <p class="nameAndPrice_p_tag"><%=product.product.product_name%>&nbsp;<strong><%=product.product.product_price%>,DHS</strong></p>
+                <p class="product_description_p_tag"><%=product.product.product_description%></p>
             </div>
-            <div class="order_status_div">
-
-              <div class="status_order" data-status="<%=order.status %>">
-                <% if(order.status=="pending"){ %>
-                <div class="order_status_text" style="color:rgb(255, 192, 76);">
-                  <div id="circle" style="border-color:rgb(255, 192, 76);"></div><%=order.status%>
-                </div>
-                <%}else if(order.status=="Shipped"){  %>
-                <div class="order_status_text" style="color:rgb(196, 238, 133);">
-                  <div id="circle" style="border-color:rgb(196, 238, 133);"></div><%=order.status%>
-                </div>
-                <%}else if(order.status=="Out For Delivery"){  %>
-                <div class="order_status_text" style="color:rgb(171, 220, 88);">
-                  <div id="circle" style="border-color:rgb(171, 220, 88);"></div><%=order.status%>
-                </div>
-                <%}else if(order.status=="Delivered"){  %>
-                <div class="order_status_text" style="color:rgb(42, 118, 64);">
-                  <div id="circle" style="border-color:rgb(44, 124, 67);"></div><%=order.status%>
-                </div>
-                <%}else if(order.status=="cancelled"){  %>
-                <div class="order_status_text" style="color:rgb(148, 0, 0);">
-                  <div id="circle" style="border-color:rgb(188, 3, 3);"></div><%=order.status%>
-                </div>
-                <% } %>
-
-                <%=new Date(order.orderDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) %>
-              </div>
+            <div class="product_action_div">
+                <img src="/image2/delete.png" alt="" class="delete_form_wishlist" onclick="removeProduct('<%= product.product._id %>')">
             </div>
           </div>
+
 
 
           <% }) %>
-          <!-- Pagination -->
-          <div class="container mt-4">
-            <div aria-label="Page navigation example">
-              <ul class="pagination justify-content-center">
-                <% if (hasPreviousPage) { %>
-                <li class="page-item">
-                  <a class="page-link" href="?page=<%= previousPage %>"><%= previousPage %></a>
-                </li>
-                <% } %>
-                <li class="page-item active">
-                  <a class="page-link" href="?page=<%= currentPage %>"><%= currentPage %></a>
-                </li>
-                <% if (hasNextPage) { %>
-                <li class="page-item">
-                  <a class="page-link" href="?page=<%= nextPage %>"><%= nextPage %></a>
-                </li>
-                <% } %>
-              </ul>
-            </div>
-          </div>
-          <!-- ... -->
+
         </div>
+
+        <div class="data_display_div_order wishlist_sub" style="user-select: none; min-height:400px; display: none;">
+            <p class="text_msg" style="margin: 8rem 0 0 9rem; font-size: 23px; color: #fff; text-shadow:3px 3px 6px black; text-transform: capitalize;"> Your Wishlist is currently empty!</p>
+            <a href="/"><button class="shop_now_btn" style="margin: 1rem 0 0 15rem ; text-transform: capitalize;">start exploring</button></a>
+          </div>
         <% } %>
 
       </div>
@@ -228,7 +248,13 @@
 
   <!-- /////////SCRIPT AREA///////// -->
 
-
+      <!--    productDetailPage reqst  -->
+      <script>
+        function productDetailPage(productId) {
+          window.location.href = `/products/${productId}`
+        }
+      </script>
+      <!-- ___________________________ -->
 
   <!--   ===============orderDetailPage req =============  -->
   <script>
@@ -236,7 +262,35 @@
       window.location.href = `/orderdetails/${id}`
     }
   </script>
+
   <!-- ================================================= -->
+  <!-- remove fetch req  -->
+  <script>
+    function removeProduct(id) {
+        fetch(`/myWishlist/?id=${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+           if(data.itemsCount ==0){
+            document.querySelector(".wishlist_sub").style.display="block";
+            document.querySelector(".wishlist_main").style.display="none";
+           }
+          if (data.status === true) {
+            document.querySelector(".single_product_display_div"+id).style.display="none"   
+          } else {
+            window.location.reload()
+          }
+
+
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+  <!-- _________________ -->
   <!-- =========ERROR ANIMATION=========== -->
   <script>
     function errorMsg(params) {
