@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styleadpage.css">
+  <link rel="shortcut icon" type="image" href="/image/logo.png">
+  <title>admin page</title>
+  <!-- bootstrap link -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!--  -->
+  <!-- Import bootstrap cdn -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <!-- Import jquery cdn -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
+  </script>
+  <!--  -->
+  <!-- cart scrript  -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!--  -->
+  <style>
+    .button {
+      width: 100%;
+      padding: 6px;
+      margin-bottom: 5px;
+      text-align: center;
+      background-color: rgb(136, 118, 118);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      text-shadow: 2px 2px 3px black;
+      box-shadow: 4px 4px 5px black;
+      transition: background-color, .3s;
+    }
+
+    .scrollable-content {
+      margin: 1rem 0 0 17rem;
+      width: 60rem;
+      height: 35rem;
+      padding: 0;
+      position: relative;
+    }
+
+    .box {
+      margin: 1rem 0 0 2rem;
+      width: 95%;
+      height: 31rem;
+    }
+
+    .time_action_selection_div {
+      width: 80%;
+      min-height: 40px;
+      margin: .3rem 0 0 6rem;
+      display: flex;
+
+    }
+
+    .chart_display_div {
+      border: 1px solid #fff;
+      width: 90%;
+      margin: 1rem 0 0 5%;
+      min-height: 20rem;
+      border-radius: 10px;
+      box-shadow: 5px 5px 10px black;
+
+
+    }
+
+    .action_div {
+      flex: 0 0 20%;
+      min-height: 35px;
+      margin: 3px 0 0 1rem;
+      text-align: center;
+      padding: .5rem 0 0 0;
+      color: #fff;
+      text-transform: capitalize;
+      font-size: 12px;
+      text-shadow: 2px 2px 3px black;
+      cursor: pointer;
+      user-select: none;
+
+
+    }
+
+    .action_div:hover {
+      color: #a0d7ff;
+    }
+
+    .selected_div_btn {
+      border: 1px solid rgb(68, 30, 30);
+      border-radius: 8px;
+      backdrop-filter: blur(2px);
+
+
+    }
+
+    .selected_div_btn:hover {
+      color: #fff;
+
+    }
+
+    .chart_two_data_div {
+      width: 100%;
+      min-height: 16rem;
+      display: flex;
+      display: none;
+    }
+
+    .revenue_cart_div,
+    .orders_cart_div {
+      flex: 0 0 50%;
+      width: 100%;
+      min-height: 16rem;
+    }
+
+    .revenue_chart_pTag {
+      font-size: 30px;
+      user-select: none;
+      text-transform: uppercase;
+      text-shadow: 5px 5px 8px black;
+      color: #fff;
+      margin: 1rem 0 0 36%;
+    }
+
+    .botttm_info_div {
+      width: 90%;
+      display: flex;
+      min-height: 20rem;
+      margin: 1rem 0 0 5%;
+      flex-wrap: wrap;
+
+    }
+
+    .sales_report_div {
+      width: 40%;
+      height: 9rem;
+      text-align: center;
+      border-radius: 8px;
+      border: 1px solid #fff;
+      box-shadow: 5px 5px 10px black;
+      color: #fff;
+      text-shadow: 3px 3px 5px black;
+
+    }
+
+    .input_tag_div_sales_report {
+      width: 100%;
+      min-height: 40px;
+      margin: 1rem 0 0 0;
+
+    }
+
+    #fromDate,
+    #toDate {
+      background-color: transparent;
+      border: .5px solid #fff;
+
+      border-radius: 5px;
+      width: 40%;
+      margin: 0 2% 0 0;
+      outline: none;
+      color: #fff;
+      text-shadow: 1px 1px 3px black;
+
+    }
+
+    #fromDate::-webkit-calendar-picker-indicator,
+    #toDate::-webkit-calendar-picker-indicator {
+      filter: invert(100%);
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container_main ">
+    <!-- left bar  -->
+    <div class="sidebar">
+      <!-- Your sidebar content goes here -->
+
+      <div class="profile_bar">
+        <form class="circle" action="/logout" method="get">
+          <img src="/image2/admin.png" alt="Profile Image">
+          <p class="admintag">admin </p>
+          <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
+        </form>
+      </div>
+      <a href="/admin/adminDashboard"><button id="toggleButton button" class="button action_usermanagement" style=" background-color: rgb(69, 45, 45);">Dashboard</button></a>
+      <a href="/admin/usermanagement"><button id="toggleButton button" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">Users</button></a>
+      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Products</button></a>
+      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Categorys</button></a>
+      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Orders</button></a>
+      <a href="/admin/offermanagement/product"><button class="button" style=" background-color: rgb(98, 77, 77);">Offers</button></a>
+      <a href="/admin/couponmanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Coupons</button></a>
+
+    </div>
+    <!--  -->
+
+
+
+    <!-- Your scrollable content goes here -->
+
+    <div class="scrollable-content">
+
+      <div class="box">
+        <p class="revenue_chart_pTag">
+          revenue chart
+        </p>
+        <div class="chart_display_div">
+
+          <div class="time_action_selection_div">
+            <div class="action_div selected_div_btn" data-action="weekChart">last 7 days(week)</div>
+            <div class="action_div" data-action="monthChart">last 30 days(month)</div>
+            <div class="action_div" data-action="yearChart">last 12 months(year)</div>
+            <div class="action_div" data-action="dayChart">last 24 hours(day)</div>
+          </div>
+
+          <!-- last 7 days(week) -->
+
+          <div class="chart_two_data_div weekChart">
+            <div class="revenue_cart_div">
+              <canvas id="myChartWeek" style="width:100%;max-width:600px;margin:2rem 0 0 2rem;"></canvas>
+              <!-- req for chart cata  -->
+              <script>
+                fetch('/admin/adminDashboard', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+
+                    // ___________________7day ravanue____________________________
+
+                    let xValuesDay = [];
+                    let yValuesDay = [];
+                    data.dailyData.forEach((item) => {
+                      yValuesDay.push(item.totalPrice);
+                      xValuesDay.push(`(${item.date})`)
+                    });
+                    new Chart("myChartWeek", {
+                      type: "line",
+                      data: {
+                        labels: xValuesDay,
+                        datasets: [{
+                          label: 'Revenue Last 7 Days',
+                          fill: false,
+                          lineTension: 0,
+                          backgroundColor: "rgb(68, 30, 30)",
+                          borderColor: "rgba(68, 30, 30,0.3)",
+                          data: yValuesDay
+                        }]
+                      },
+                      options: {
+                        plugins: {
+                          legend: {
+                            labels: {
+                              color: '#ffffff',
+                              font: {
+                                size: 14,
+                              },
+                            }
+                          }
+                        },
+                        legend: {
+                          display: true,
+                        },
+
+                        scales: {
+                          x: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 8,
+                              },
+                            }
+                          },
+                          y: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 10,
+                              },
+                            }
+                          }
+                        },
+                      },
+                      animation: {
+                        duration: 1000,
+                        easing: 'easeInOutElastic'
+                      },
+
+                    });
+
+                    // ________________7day order_______________________________
+
+                    let xOrdersDay = [];
+                    let yOrdersDay = [];
+                    data.dailyData.forEach((item) => {
+                      yOrdersDay.push(item.count);
+                      xOrdersDay.push(item.date)
+
+                    });
+                    new Chart("myOrderChartWeek", {
+                      type: "bar",
+                      data: {
+                        labels: xOrdersDay,
+                        datasets: [{
+                          label: 'Sales Last 7 Days',
+                          fill: false,
+                          lineTension: 0,
+                          backgroundColor: "rgb(68, 30, 30)",
+                          borderColor: "rgba(68, 30, 30,0.3)",
+                          data: yOrdersDay
+                        }]
+                      },
+                      options: {
+                        plugins: {
+                          legend: {
+                            labels: {
+                              color: '#ffffff',
+                              font: {
+                                size: 14,
+                              },
+                            }
+                          }
+                        },
+                        legend: {
+                          display: true,
+                        },
+
+                        scales: {
+                          x: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 8,
+                              },
+                            }
+                          },
+                          y: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 10,
+                              },
+                            }
+                          }
+                        },
+                      },
+                      animation: {
+                        duration: 1000,
+                        easing: 'easeInOutElastic'
+                      },
+
+                    });
+
+                    // ___________________30day revanue_______________________________
+
+                    let xValuesMonth = [];
+                    let yValuesMonth = [];
+                    data.monthData.forEach((item) => {
+                      yValuesMonth.push(item.totalPrice);
+                      xValuesMonth.push(item.date)
+
+                    });
+
+                    new Chart("myChartWeekOrder", {
+                      type: "line",
+                      data: {
+                        labels: xValuesMonth,
+                        datasets: [{
+                          label: 'Revenue Last Month',
+                          fill: false,
+                          lineTension: 0,
+                          backgroundColor: "rgb(68, 30, 30)",
+                          borderColor: "rgba(68, 30, 30,0.3)",
+                          data: yValuesMonth
+                        }]
+                      },
+                      options: {
+                        plugins: {
+                          legend: {
+                            labels: {
+                              color: '#ffffff',
+                              font: {
+                                size: 14,
+                              },
+                            }
+                          }
+                        },
+                        legend: {
+                          display: true,
+                        },
+
+                        scales: {
+                          x: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 8,
+                              },
+                            }
+                          },
+                          y: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 10,
+                              },
+                            }
+                          }
+                        },
+                        animation: {
+                          duration: 0,
+                          easing: 'easeInOutElastic'
+                        },
+                      },
+
+                    });
+
+                    // ___________________30day Order_______________________________
+
+                    let xOrderMonth = [];
+                    let yOrderMonth = [];
+                    data.monthData.forEach((item) => {
+                      yOrderMonth.push(item.count);
+                      xOrderMonth.push(item.date)
+
+                    });
+                    new Chart("myChartMonthOrder", {
+                      type: "bar",
+                      data: {
+                        labels: xOrderMonth,
+                        datasets: [{
+                          label: 'Sales Last Month',
+                          fill: false,
+                          lineTension: 0,
+                          backgroundColor: "rgb(68, 30, 30)",
+                          borderColor: "rgba(68, 30, 30,0.3)",
+                          data: yOrderMonth
+                        }]
+                      },
+                      options: {
+                        plugins: {
+                          legend: {
+                            labels: {
+                              color: '#ffffff',
+                              font: {
+                                size: 14,
+                              },
+                            }
+                          }
+                        },
+                        legend: {
+                          display: true,
+                        },
+
+                        scales: {
+                          x: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 8,
+                              },
+                            }
+                          },
+                          y: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 10,
+                              },
+                            }
+                          }
+                        },
+                        animation: {
+                          duration: 0,
+                          easing: 'easeInOutElastic'
+                        },
+                      },
+
+                    });
+
+                    // ___________________30day revanue_______________________________
+
+                    let xValuesYear = [];
+                    let yValuesYear = [];
+                    data.yearData.forEach((item) => {
+                      yValuesYear.push(item.totalPrice);
+                      xValuesYear.push(item.date)
+
+                    });
+
+                    new Chart("myChartyear", {
+                      type: "line",
+                      data: {
+                        labels: xValuesYear,
+                        datasets: [{
+                          label: 'Revenue Last Year',
+                          fill: false,
+                          lineTension: 0,
+                          backgroundColor: "rgb(68, 30, 30)",
+                          borderColor: "rgba(68, 30, 30,0.3)",
+                          data: yValuesYear
+                        }]
+                      },
+                      options: {
+                        plugins: {
+                          legend: {
+                            labels: {
+                              color: '#ffffff',
+                              font: {
+                                size: 14,
+                              },
+                            }
+                          }
+                        },
+                        legend: {
+                          display: true,
+                        },
+
+                        scales: {
+                          x: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 8,
+                              },
+                            }
+                          },
+                          y: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 10,
+                              },
+                            }
+                          }
+                        },
+                        animation: {
+                          duration: 0,
+                          easing: 'easeInOutElastic'
+                        },
+                      },
+
+                    });
+
+                    // ___________________30day revanue_______________________________
+
+                    let xOrderYear = [];
+                    let yOrderYear = [];
+                    data.yearData.forEach((item) => {
+                      yOrderYear.push(item.count);
+                      xOrderYear.push(item.date)
+
+                    });
+
+                    new Chart("myChartOrderyear", {
+                      type: "bar",
+                      data: {
+                        labels: xOrderYear,
+                        datasets: [{
+                          label: 'Sales Last Year',
+                          fill: false,
+                          lineTension: 0,
+                          backgroundColor: "rgb(68, 30, 30)",
+                          borderColor: "rgba(68, 30, 30,0.3)",
+                          data: yOrderYear
+                        }]
+                      },
+                      options: {
+                        plugins: {
+                          legend: {
+                            labels: {
+                              color: '#ffffff',
+                              font: {
+                                size: 14,
+                              },
+                            }
+                          }
+                        },
+                        legend: {
+                          display: true,
+                        },
+
+                        scales: {
+                          x: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 8,
+                              },
+                            }
+                          },
+                          y: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 10,
+                              },
+                            }
+                          }
+                        },
+                        animation: {
+                          duration: 0,
+                          easing: 'easeInOutElastic'
+                        },
+                      },
+
+                    });
+                    // ___________________hour revanue_______________________________
+
+                    let xValueshour = [];
+                    let yValueshour = [];
+                    data.hourData.forEach((item) => {
+                      yValueshour.push(item.totalPrice);
+                      xValueshour.push(item.date)
+
+                    });
+
+                    new Chart("myCharthour", {
+                      type: "line",
+                      data: {
+                        labels: xValueshour,
+                        datasets: [{
+                          label: 'Revenue Last Hours',
+                          fill: false,
+                          lineTension: 0,
+                          backgroundColor: "rgb(68, 30, 30)",
+                          borderColor: "rgba(68, 30, 30,0.3)",
+                          data: yValueshour
+                        }]
+                      },
+                      options: {
+                        plugins: {
+                          legend: {
+                            labels: {
+                              color: '#ffffff',
+                              font: {
+                                size: 14,
+                              },
+                            }
+                          }
+                        },
+                        legend: {
+                          display: true,
+                        },
+
+                        scales: {
+                          x: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 8,
+                              },
+                            }
+                          },
+                          y: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 10,
+                              },
+                            }
+                          }
+                        },
+                        animation: {
+                          duration: 0,
+                          easing: 'easeInOutElastic'
+                        },
+                      },
+
+                    });
+                    // ___________________30day revanue_______________________________
+
+                    let xOrderHour = [];
+                    let yOrderHour = [];
+                    data.hourData.forEach((item) => {
+                      yOrderHour.push(item.count);
+                      xOrderHour.push(item.date)
+
+                    });
+
+                    new Chart("myChartOrderHour", {
+                      type: "bar",
+                      data: {
+                        labels: xOrderHour,
+                        datasets: [{
+                          label: 'Sales Last Hours',
+                          fill: false,
+                          lineTension: 0,
+                          backgroundColor: "rgb(68, 30, 30)",
+                          borderColor: "rgba(68, 30, 30,0.3)",
+                          data: yOrderHour
+                        }]
+                      },
+                      options: {
+                        plugins: {
+                          legend: {
+                            labels: {
+                              color: '#ffffff',
+                              font: {
+                                size: 14,
+                              },
+                            }
+                          }
+                        },
+                        legend: {
+                          display: true,
+                        },
+
+                        scales: {
+                          x: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 8,
+                              },
+                            }
+                          },
+                          y: {
+                            ticks: {
+                              color: '#fff',
+                              font: {
+                                size: 10,
+                              },
+                            }
+                          }
+                        },
+                        animation: {
+                          duration: 0,
+                          easing: 'easeInOutElastic'
+                        }
+                      }
+
+                    });
+
+                  })
+                  .catch((error) => console.error('Error:', error));
+              </script>
+
+              <!-- =========================================== -->
+
+
+
+
+
+            </div>
+            <div class="orders_cart_div">
+
+              <canvas id="myOrderChartWeek" style="width:100%;max-width:600px;margin:2rem 0 0 2rem;"></canvas>
+            </div>
+
+          </div>
+          <!-- last 7 days(week) -->
+
+          <div class="chart_two_data_div monthChart">
+            <div class="revenue_cart_div">
+              <canvas id="myChartWeekOrder" style="width:100%;max-width:600px;margin:2rem 0 0 2rem;"></canvas>
+
+
+            </div>
+            <div class="orders_cart_div ">
+              <canvas id="myChartMonthOrder" style="width:100%;max-width:600px;margin:2rem 0 0 2rem;"></canvas>
+            </div>
+
+          </div>
+          <!-- last 7 days(week) -->
+
+          <div class="chart_two_data_div yearChart">
+            <div class="revenue_cart_div">
+              <canvas id="myChartyear" style="width:100%;max-width:600px;margin:2rem 0 0 2rem;"></canvas>
+            </div>
+            <div class="orders_cart_div">
+              <canvas id="myChartOrderyear" style="width:100%;max-width:600px;margin:2rem 0 0 2rem;"></canvas>
+            </div>
+
+          </div>
+          <!-- last 7 days(week) -->
+
+          <div class="chart_two_data_div dayChart">
+            <div class="revenue_cart_div">
+              <canvas id="myCharthour" style="width:100%;max-width:600px;margin:2rem 0 0 2rem;"></canvas>
+            </div>
+            <div class="orders_cart_div">
+              <canvas id="myChartOrderHour" style="width:100%;max-width:600px;margin:2rem 0 0 2rem;"></canvas>
+
+            </div>
+
+          </div>
+
+
+
+
+        </div>
+
+        <script>
+          document.querySelector(".weekChart").style.display = "flex";
+          let divs = document.querySelectorAll('.action_div');
+
+          divs.forEach(div => {
+            div.addEventListener('click', function() {
+              divs.forEach(div => {
+                div.classList.remove('selected_div_btn');
+              });
+
+              this.classList.add('selected_div_btn');
+              let btn = this.getAttribute('data-action')
+              document.querySelector(`.${btn}`).style.display = "flex";
+              document.querySelectorAll(".chart_two_data_div").forEach(div => {
+                if (div !== document.querySelector(`.${btn}`)) {
+                  div.style.display = "none";
+                }
+              });
+            });
+          });
+        </script>
+
+        <div class="botttm_info_div">
+
+          <div class="sales_report_div">
+            Sales Report
+            <div class="input_tag_div_sales_report">
+              <input type="date" id="fromDate">
+
+              <input type="date" id="toDate" max="<?php echo date('Y-m-d'); ?>">
+              <div id="error_msg_validation" style="color:rgb(251, 173, 173); margin-bottom:1rem;"></div>
+
+
+              Download
+              <i class="fas fa-file-pdf white-icon" style="width:40px; cursor: pointer; position: relative;" onclick="invoicePdfData()"><p style="position: absolute; bottom:-1.7rem; left:.7rem; font-size: 10px;">PDF</p></i>
+              <i class="fas fa-file-excel white-icon" style="width:40px; cursor: pointer; position: relative;" onclick="invoiceExlData()"><p style="position: absolute; bottom:-1.7rem; left:.7rem; font-size: 10px;">EXL</p></i>
+
+            </div>
+
+            <script>
+              function invoicePdfData() {
+                const fromDateInput = document.getElementById('fromDate');
+                const toDateInput = document.getElementById('toDate');
+                const errorMsgDiv = document.getElementById('error_msg_validation');
+
+                const fromDate = new Date(fromDateInput.value);
+                const toDate = new Date(toDateInput.value);
+
+                if (fromDate > toDate) {
+                  errorMsgDiv.textContent = 'From Date cannot be greater than To Date';
+                  return false;
+                } else {
+                  errorMsgDiv.textContent = '';
+                  window.location.href = `/admin/getPdf?fromDate=${fromDate}&toDate=${toDate}`;
+                }
+
+              }
+              function invoiceExlData() {
+                const fromDateInput = document.getElementById('fromDate');
+                const toDateInput = document.getElementById('toDate');
+                const errorMsgDiv = document.getElementById('error_msg_validation');
+
+                const fromDate = new Date(fromDateInput.value);
+                const toDate = new Date(toDateInput.value);
+
+                if (fromDate > toDate) {
+                  errorMsgDiv.textContent = 'From Date cannot be greater than To Date';
+                  return false;
+                } else {
+                  errorMsgDiv.textContent = '';
+                  window.location.href = `/admin/getExel?fromDate=${fromDate}&toDate=${toDate}`;
+                }
+
+              }
+            </script>
+
+            <script>
+              // Get the current date
+              const currentDate = new Date();
+              const currentDateString = currentDate.toISOString().split('T')[0];
+
+              // Subtract one day from the current date for fromDate
+              const fromDate = new Date(currentDate);
+              fromDate.setDate(fromDate.getDate() - 100);
+              const fromDateString = fromDate.toISOString().split('T')[0];
+
+              // Set the max attribute and default values
+              document.getElementById('toDate').max = currentDateString;
+              document.getElementById('toDate').value = currentDateString;
+              document.getElementById('fromDate').value = fromDateString;
+            </script>
+          </div>
+
+        </div>
+
+
+
+
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+
+  <!-- ////////////////////////SCRIPT AREA/////////////////////////////// -->
+
+
+
+
+
+  <!--          ERROR MSG         -->
+  <script>
+    function errorMsg() {
+      document.querySelector('.errormsg').textContent = data.message;
+      document.querySelector('.errormsg').style.display = "block";
+      document.querySelector('.errormsg').style.animationPlayState = 'running';
+
+      setTimeout(function() {
+        document.querySelector('.errormsg').style.animationPlayState = 'paused';
+        document.querySelector('.errormsg').style.animationName = "hide"
+        document.querySelector('.errormsg').style.animationPlayState = 'running';
+        setTimeout(() => {
+          window.location.reload()
+        }, 150);
+      }, 2000);
+    }
+  </script>
+  <!--           _______          -->
+
+  <div class="errormsg" style="display: none;">
+    Fail to connect database check your network !
+  </div>
+
+
+
+</body>
+
+</html>
