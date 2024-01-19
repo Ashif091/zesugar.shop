@@ -21,6 +21,21 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
   </script>
   <!--  -->
+  <style>
+    .button {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 5px;
+    text-align: center;
+    background-color: rgb(136, 118, 118);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    text-shadow:2px 2px 3px black;
+    box-shadow:4px 4px 5px black;
+    transition: background-color, .3s;
+}
+  </style>
 
 </head>
 
@@ -37,10 +52,13 @@
           <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
         </form>
       </div>
-      <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(69, 45, 45); ">User Management</button></a>
-      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Product Mangement</button></a>
-      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Category</button></a>  
-      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Order Management</button></a>
+      <a href="/admin/adminDashboard"><button id="toggleButton button" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">Dashboard</button></a>
+      <a href="/admin/usermanagement"><button id="toggleButton button" class="button action_usermanagement" style=" background-color: rgb(69, 45, 45);">Users</button></a>
+      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Products</button></a>
+      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Categorys</button></a>
+      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Orders</button></a>
+      <a href="/admin/offermanagement/product"><button class="button" style=" background-color: rgb(98, 77, 77);">Offers</button></a>
+      <a href="/admin/couponmanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Coupons</button></a>
 
     </div>
     <!--  -->

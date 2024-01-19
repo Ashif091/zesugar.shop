@@ -30,24 +30,27 @@
 
 <body>
   <div class="container_main ">
-        <!-- left bar  -->
-        <div class="sidebar">
-          <!-- Your sidebar content goes here -->
-      
-          <div class="profile_bar">
-            <form class="circle" action="/logout" method="get">
-              <img src="/image2/admin.png" alt="Profile Image">
-              <p class="admintag">admin </p>
-              <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
-            </form>
-          </div>
-          <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">User Management</button></a>
-          <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(69, 45, 45); ">Product Mangement</button></a>
-          <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Category</button></a>  
-          <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Order Management</button></a>
+    <!-- left bar  -->
+    <div class="sidebar">
+      <!-- Your sidebar content goes here -->
 
-        </div>
-        <!--  -->
+      <div class="profile_bar">
+        <form class="circle" action="/logout" method="get">
+          <img src="/image2/admin.png" alt="Profile Image">
+          <p class="admintag">admin </p>
+          <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
+        </form>
+      </div>
+      <a href="/admin/adminDashboard"><button id="toggleButton button" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">Dashboard</button></a>
+      <a href="/admin/usermanagement"><button id="toggleButton button" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">Users</button></a>
+      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(69, 45, 45);">Products</button></a>
+      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Categorys</button></a>
+      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Orders</button></a>
+      <a href="/admin/offermanagement/product"><button class="button" style=" background-color: rgb(98, 77, 77);">Offers</button></a>
+      <a href="/admin/couponmanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Coupons</button></a>
+
+    </div>
+    <!--  -->
     <form class="search-bar" action="/admin/usermanagement/search" method="get">
       <h1>Product Mangement </h1>
 
@@ -150,7 +153,7 @@
         <!-- pagination controller div  -->
 
         <!-- Pagination -->
-        <div class="container "  style="margin:3rem 0 0 0 ;">
+        <div class="container " style="margin:3rem 0 0 0 ;">
           <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               <% if (hasPreviousPage) { %>
@@ -410,18 +413,18 @@
           <div class="container_input">
             <!--  -->
             <div class="input_div mb-3">
-              <input type="text" id="productname" placeholder="productname" name="productname">
+              <input type="text" id="productname" placeholder="productname" name="productname" required>
               <div id="productname-error" class="error-message"></div>
 
             </div>
             <!--  -->
             <div class="input_div mb-3">
-              <input type="file" id="productimg" name="image" multiple accept="image/*" hidden>
+              <input type="file" id="productimg" name="image" multiple accept="image/*"  hidden required>
 
             </div>
             <!--  -->
             <div class="input_div mb-3">
-              <textarea type="text" cols="30" rows="2" id="description" placeholder="Description" name="description"></textarea>
+              <textarea type="text" cols="30" rows="2" id="description" placeholder="Description" name="description" required></textarea>
               <div id="description_error" class="error-message"></div>
             </div>
             <!--  -->
@@ -429,7 +432,7 @@
               <select id="category_create" name="category" required>
                 <% result.forEach(function(item) { %>
                 <option value="" disabled selected hidden>Category</option>
-                <option><%= item._id %></option>
+                <option><%= item.category_name%></option>
                 <% }); %>
               </select>
               <div id="category-error" class="error-message"></div>
@@ -437,12 +440,12 @@
             </div>
             <!--  -->
             <div class="input_div mb-3">
-              <input type="text" id="productprice" placeholder="Price (USD)" name="productprice">
+              <input type="text" id="productprice" placeholder="Price " name="productprice" required>
               <div id="productprice-error" class="error-message"></div>
             </div>
             <!--  -->
             <div class="input_div mb-3">
-              <input type="text" id="quantity" placeholder="Quantity" name="quantity">
+              <input type="text" id="quantity" placeholder="Quantity" name="quantity" required>
               <div id="quantity-error" class="error-message"></div>
             </div>
             <!--  -->
@@ -484,17 +487,57 @@
     document.getElementById('productname').addEventListener('input', function() {
       var productNameInput = this.value.trim()
       var errorElement = document.getElementById('productname-error');
+      // update name check 
+      const data = {
+        productName: productNameInput,
+      };
+      let nameOk =false;
+      fetch('/admin/productAvailability', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.status === true) {
+            errorElement.textContent = 'Product name already taken';
+            check = false
 
+            nameOk =false;
+            const button = document.querySelector('#submit');
+             button.disabled = true;
+          }else{
+            nameOk=true;
+          }
+        })
+        .catch(e => {
+          console.log('There has been a problem with your fetch operation: ' + e.message);
+        });
+
+      // _________________
       // Validate product name
       if (productNameInput.length <= 4) {
         errorElement.textContent = 'Product name must be minimum 4 characters.';
         check = false
+        const button = document.querySelector('#submit');
+        button.disabled = true;
       } else if (productNameInput.toLowerCase() === productNameInput) {
         errorElement.textContent = 'Product name must be in capital letters.';
         check = false
+        const button = document.querySelector('#submit');
+        button.disabled = true;
       } else if (productNameInput.length > 15) {
         errorElement.textContent = 'Product name must be maximum 15 characters.';
         check = false
+        const button = document.querySelector('#submit');
+        button.disabled = true;
       } else {
         errorElement.textContent = '';
         check = true
@@ -511,12 +554,18 @@
       if (description.length <= 4) {
         errorElement.textContent = 'description must be minimum 4 characters.';
         check = false
+        const button = document.querySelector('#submit');
+        button.disabled = true;
       } else if (description[0].toLowerCase() === description[0]) {
         errorElement.textContent = 'first letter must be in capital letters.';
         check = false
+        const button = document.querySelector('#submit');
+        button.disabled = true;
       } else if (description.length > 100) {
         errorElement.textContent = 'description must be maximum 100 characters.';
         check = false
+        const button = document.querySelector('#submit');
+        button.disabled = true;
       } else {
         errorElement.textContent = '';
         check = true
@@ -528,6 +577,8 @@
       if (this.value) {
         categoryError.textContent = '';
         check = true
+        const button = document.querySelector('#submit');
+        button.disabled = true;
 
       }
 
@@ -543,6 +594,8 @@
       if (categorySelect.value === "") {
         categoryError.textContent = 'Please choose a category.';
         check = false
+        const button = document.querySelector('#submit');
+        button.disabled = true;
         event.preventDefault(); // Prevent form submission
       } else {
         categoryError.textContent = '';
@@ -561,6 +614,7 @@
       if (price > 999999) {
         alert('Maximum price exceeded');
         this.value = '';
+
         check = false
         return;
       }
@@ -591,9 +645,13 @@
       if (!/^\d+$/.test(quantityInput)) {
         check = false
         quantityError.textContent = 'Please enter a valid quantity (numeric only).';
+        const button = document.querySelector('#submit');
+        button.disabled = true;
       } else {
         quantityError.textContent = '';
         check = true
+        const button = document.querySelector('#submit');
+        button.disabled = false;
       }
     });
   </script>
@@ -801,7 +859,7 @@
                 <p class="col-3">category</p>
                 <select class="col-6" id="category_update" name="category" required>
                   <% result.forEach(function(item) { %>
-                  <option><%= item._id %></option>
+                  <option><%= item.category_name %></option>
                   <% }); %>
                 </select>
 
@@ -809,7 +867,7 @@
               <!--  -->
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="productprice_update" placeholder="productprice" name="productprice">
-                <label for="newUsername">Price (USD)</label>
+                <label for="newUsername">Price </label>
               </div>
               <!--  -->
               <div class="form-floating mb-3">
@@ -818,6 +876,7 @@
               </div>
               <!--  -->
               <input type="text" class="form-control" hidden id="productid_update" name="productid">
+              <p class="erroMsg_edit" style="color: rgb(255, 125, 125);"></p>
 
             </div>
           </div>
@@ -854,8 +913,32 @@
       }
 
 
+      // Validate each field
+      if (!productname.value) {
+        document.querySelector(".erroMsg_edit").textContent = "Product name cannot be empty";
+        return false;
+      }
 
-      console.log(data);
+      if (!description.value) {
+        document.querySelector(".erroMsg_edit").textContent = "Description cannot be empty";
+
+        return false;
+      }
+
+      if (!productprice.value || productprice.value <= 0) {
+        document.querySelector(".erroMsg_edit").textContent = "Invalid price";
+        return false;
+      }
+
+      if (!quantity.value || quantity.value < 0) {
+        document.querySelector(".erroMsg_edit").textContent = "Invalid quantity";
+        return false;
+      }
+
+      if (!category.value) {
+        document.querySelector(".erroMsg_edit").textContent = "Category cannot be emptyy";
+        return false;
+      }
 
       fetch(`/admin/productmangement/edit`, {
           method: 'POST',
@@ -930,7 +1013,7 @@
     submitbtn.addEventListener("click", (event) => {
       console.log("the data saving ...");
       console.log("THE CHECK IS", check);
-      if (check) {
+      if (check &&nameOk) {
 
         console.log("condition is true");
         event.preventDefault();

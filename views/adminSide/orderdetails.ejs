@@ -245,17 +245,129 @@
     .name_data_text_preview {
       text-shadow: 2px 2px 5px rgb(44, 43, 43);
     }
-    .id_item{
-        font-weight: 600;
-        color: rgb(231, 231, 231);
-        position: relative;
+
+    .id_item {
+      font-weight: 600;
+      color: rgb(231, 231, 231);
+      position: relative;
     }
-    .copy_img_tag{
-        width:15px;
-        position: absolute;
-        top:.5rem;
-        right: -1rem;
-        cursor: pointer;
+
+    .copy_img_tag {
+      width: 15px;
+      position: absolute;
+      top: .5rem;
+      right: -1rem;
+      cursor: pointer;
+    }
+
+    .order_retun_confirm_action_div {
+      width: 100%;
+      min-height: 100px;
+      border: 1px solid #fff;
+      border-radius: 5px;
+      box-shadow: 3px 3px 6px black;
+      padding: 5px;
+    }
+
+    .return_req_hd {
+      font-size: 13px;
+      text-shadow: 2px 2px 3px rgb(54, 54, 54);
+      color: #fff;
+    }
+
+    .reason_for_return {
+      background-color: transparent;
+      box-shadow: 0 0 2px black;
+      color: #fff;
+      font-size: 12px;
+      padding: 0 0 0 0;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .reason_for_return:focus {
+      outline: none;
+      cursor: pointer;
+
+    }
+
+    /* For Webkit browsers (Chrome, Safari) */
+    textarea::-webkit-scrollbar {
+      width: 12px;
+      /* Set the width of the scrollbar */
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      /* Set the color of the thumb (the moving part) */
+    }
+
+    textarea::-webkit-scrollbar-corner {
+      background-color: rgb(69, 45, 45);
+    }
+
+    .return_confirm_action_div {
+      display: flex;
+      width: 100%;
+      min-height: 30px;
+    }
+
+    .accept_btn,
+    .accept_btn:focus {
+      background-color: transparent;
+      color: #64e185;
+      font-size: 12px;
+      text-shadow: 2px 2px 3px black;
+      border: none;
+      outline: none;
+      text-transform: capitalize;
+      margin: 0 0 0 3rem;
+    }
+
+    .reject_btn,
+    .reject_btn:focus {
+      background-color: transparent;
+      color: #e16d6d;
+      font-size: 12px;
+      text-shadow: 2px 2px 3px black;
+      border: none;
+      outline: none;
+      text-transform: capitalize;
+      margin: 0 0 0 2.5rem;
+    }
+
+    .poduct_restoring_div {
+      display: flex;
+      width: 100%;
+      min-height: 16px;
+    }
+
+    .label_resotre {
+      font-size: 11px;
+      color: #c2c2c2;
+      margin: 1px 0 0 4px;
+      text-transform: capitalize;
+    }
+
+    /* ===================================================== */
+    .orderStatus {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      text-shadow: 2px 2px 3px black;
+
+
+    }
+
+    .orderStatus option {
+      background-color: rgba(100, 87, 86, 0.549);
+    }
+
+    .orderStatus option :hover {
+      background-color: rgba(113, 75, 72, 0.808);
     }
   </style>
 
@@ -275,10 +387,12 @@
           <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
         </form>
       </div>
-      <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">User Management</button></a>
-      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Product Mangement</button></a>
-      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Category</button></a>
-      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(69, 45, 45);">Order Management</button></a>
+      <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">Users</button></a>
+      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Products</button></a>
+      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Categorys</button></a>
+      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(69, 45, 45);">Orders</button></a>
+      <a href="/admin/offermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Offers</button></a>
+      <a href="/admin/couponmanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Coupons</button></a>
 
     </div>
     <!--  -->
@@ -310,16 +424,77 @@
 
           </div>
           <div class="right_order_status_bar">
-            <div class="order_status_update_div"><%=orderData.status%></div>
+            <div class="order_status_update_div">
+              <!--  -->
+              <% if (["pending", "Shipped", "Out For Delivery"].includes(orderData.status)) { %>
+
+              <select name="orderStatus" class="orderStatus" onchange="statusUpdate('<%= orderData._id %>', this.value)">
+                <option value="pending" <%= orderData.status === "pending" ? "selected" : "" %>>Pending</option>
+                <option value="Shipped" <%= orderData.status === "Shipped" ? "selected" : "" %>>Shipped</option>
+                <option value="Out For Delivery" <%= orderData.status === "Out For Delivery" ? "selected" : "" %>>Out For Delivery</option>
+                <option value="Delivered" <%= orderData.status === "Delivered" ? "selected" : "" %>>Delivered</option>
+                <!-- <option value="cancelled" <%#= orderData.status === "cancelled" ? "selected" : "" %>>Cancelled</option> -->
+              </select>
+              <% }else{ %>
+              <%=orderData.status%>
+              <% } %>
+
+
+              <script>
+                function statusUpdate(id, update) {
+                  fetch(`/admin/orderdetails?id=${id}&data=${update}`, {
+                      method: 'PATCH',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                      if (data.status) {
+
+
+                      } else {
+                        alert(data.msg)
+                      }
+
+                    })
+                    .catch((error) => {
+                      console.error('Error:', error);
+                    });
+                }
+              </script>
+
+
+              <!--  -->
+
+              <span style="font-size:11px;color: rgb(239, 239, 161);"><% if(orderData.balance_amount==="Refund"){ %> <span style="color: #57c746;">Refund (Successful)</span> <% } else if(orderData.status==="Return" &&orderData.paymentStatus=="rejected"){%><span style="color:rgb(255, 91, 91);">(rejected)</span><% } else if(orderData.status==="Return" &&orderData.paymentStatus=="rejected"){%><span style="color:rgb(255, 91, 91);">(rejected)</span> <% } %></span>
+            </div>
             <div class="order_price_data_div">
               <% if(orderData.paymentMethod=="UPI"){ %>
-              <p class="price_status" style="color: #57c746;"><%=orderData.balance_amount%>&nbsp;<span style="font-size:13px; color: #bbfab1;">(Online Payment)</span></p>
+              <p class="price_status" style="color: #57c746;"><%=orderData.totalPrice%>,DHS&nbsp;<span style="font-size:13px; color: #bbfab1;">(Online Payment)</span></p>
               <%}else if(orderData.paymentMethod=="COD"){  %>
-              <p class="price_status" style="color:#e8d4d4;"><%=orderData.balance_amount%> <span style="color: #fff; font-size: 12px;">DHS</span>&nbsp;<span style="font-size:13px; color: #ffb7b7;">(Cash on Delivery)</span></p>
+              <p class="price_status" style="color:#e8d4d4;"><%=orderData.totalPrice%>,DHS <span style="color: #fff; font-size: 12px;">DHS</span>&nbsp;<span style="font-size:13px; color: #ffb7b7;">(Cash on Delivery)</span></p>
               <% }else{ %>
-              <p class="price_status" style="color:#ffffff;"><%=orderData.balance_amount%>&nbsp;<span style="font-size:13px; color: #64e185;">(refund successful)</span></p>
+              <p class="price_status" style="color:#ffffff;"><%=orderData.totalPrice%>,DHS&nbsp;<span style="font-size:13px; color: #64e185;"></p>
               <% } %>
             </div>
+
+            <% if(orderData.status=="Return"&&orderData.paymentStatus=="Processing"){ %>
+            <div class="order_retun_confirm_action_div">
+              <p class="return_req_hd">Return request!</p>
+              <textarea readonly class="reason_for_return"><%=orderData.retun_reason%>
+                </textarea>
+              <div class="poduct_restoring_div">
+                <input type="checkbox" class="restore" id="restore" checked>
+                <label for="restore" class="label_resotre">restore the stock</label>
+              </div>
+
+              <div class="return_confirm_action_div">
+                <button class="accept_btn" onclick="returnCorfirm('<%= orderData._id %>',true)">accept</button>
+                <button class="reject_btn" onclick="returnCorfirm('<%= orderData._id %>',false)">reject</button>
+              </div>
+            </div>
+            <% } %>
           </div>
 
         </div>
@@ -373,7 +548,44 @@
 
     <!-- ////////////////////////SCRIPT AREA/////////////////////////////// -->
 
+    <!-- _______retun status uptade ______- -->
+    <script>
+      function returnCorfirm(orderId, returnStatus) {
+        const restoreBtn = document.querySelector(".restore");
+        let restore = false;
+        if (restoreBtn.checked) {
+          restore = true;
+        }
+        const data = {
+          orderId,
+          returnStatus,
+          restore,
+        };
 
+        fetch('/admin/orderReturn', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+
+            window.location.reload()
+          })
+          .catch(e => {
+            console.log('There has been a problem with your fetch operation: ' + e.message);
+          });
+
+      }
+    </script>
+    <!-- __________________________________ -->
 
 
 

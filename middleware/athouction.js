@@ -51,6 +51,14 @@ module.exports = {
             console.error(err);
             return res.status(202).render("login.ejs", { errmsg: "please login again " })
         }
+    },
+    checkOutStatus: (req, res, next) => {
+        if (req.session.checkPage) {
+            next();
+        }
+        else {
+            res.redirect("/cart")
+        }
     }
 
 }

@@ -26,6 +26,7 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- animation links -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <style>
     .main_search_body {
@@ -352,6 +353,18 @@
       padding-top:5rem ;
     }
 
+    .realprice {
+      font-size: 13px;
+      color: #c1c1c1;
+      text-decoration: line-through;
+      margin-top: .4rem;
+    }
+    .footer_action{
+      display: flex;
+    }
+    .currentPrice{
+      display: flex;
+    }
   </style>
 </head>
 
@@ -377,7 +390,7 @@
                 <%= maxProductPrice %>
               </div>
             </div>
-            <input type="range" class="price_range" min="1" max="100">
+            <input type="range" class="price_range" min="1" max="<%= maxProductPrice %>">
             <div class="current_price_value_div">
               <div class="left_current_mini">Min</div>
               <div class="medil_div_current">To</div>
@@ -431,7 +444,7 @@
             <img style="height: auto; width: 100%;" src="/<%= product.product_image_url[0] %>" alt="">
           </div>
           <div class="card-body">
-            <h3>
+            <h3 style="font-size:17px;">
               <%= product.product_name %>
             </h3>
             <div class="star">
@@ -444,11 +457,9 @@
             <p style="height: 70px;">
               <%= product.product_description %>
             </p>
-            <h6>
-              <%= product.product_price %>
-              DHS
-              <span><button>Add
-                  Cart</button></span>
+            <h6 class="footer_action">
+              <% if(product.real_price){ %> <p class="currentPrice"><%=product.product_price%> <span style="font-size:14px; margin-top:.4rem;"><i class="fa fa-inr" aria-hidden="true"></i></span></p> <p class="realprice" style="margin-left:.3rem;"> <%=product.real_price%>,<i class="fa fa-inr" aria-hidden="true"></i></p><% }else{ %><%=product.product_price%> <i class="fa fa-inr" aria-hidden="true"></i>&nbsp; <% } %>
+              <span><button style="width: 4.5rem; margin:0 0 0 .5rem; font-size: 10px; font-weight: 800;">Add Cart</button></span>
             </h6>
           </div>
           <% if (product.product_status === false) { %>

@@ -27,6 +27,8 @@
   <!-- animation links -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
   <style>
     .order_btn {
@@ -38,13 +40,229 @@
         font-weight: 700;
       }
     }
-    .back_action{
+
+    .back_action {
       position: absolute;
       top: 0rem;
-      left:-1rem;
-      width:40px;
-      height:40px;
+      left: -1rem;
+      width: 40px;
+      height: 40px;
       cursor: pointer;
+    }
+
+    .confirm_model {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      top: 0;
+      width: 100%;
+      position: fixed;
+      background-color: rgba(72, 20, 44, 0.582);
+    }
+
+    .confirm_model_cancel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      top: 0;
+      width: 100%;
+      position: fixed;
+      background-color: rgba(72, 20, 44, 0.582);
+    }
+
+    .confirmDiv {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 350px;
+      min-height: 250px;
+      border-radius: 10px;
+      background-color: rgb(247, 78, 112);
+      border: 2px solid rgb(195, 195, 195);
+      box-shadow: 0px 0px 6px black;
+      padding: 10px 0 0 15px;
+      color: #fff;
+    }
+
+    .confirmDiv_cancel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 350px;
+      min-height: 100px;
+      border-radius: 10px;
+      background-color: rgb(247, 78, 112);
+      border: 2px solid rgb(195, 195, 195);
+      box-shadow: 0px 0px 6px black;
+      padding: 10px 0 0 15px;
+      color: #fff;
+    }
+
+    .bottom_text_reason_div {
+      margin: 1rem 0 0 0;
+      width: 100%;
+
+    }
+
+    .choice_div {
+      font-size: 11px;
+      display: flex;
+
+    }
+
+    .choice_div label {
+      margin: 4px 0 0 5px;
+    }
+
+    .reason_text_area {
+      border: 1px solid rgb(157, 65, 113);
+      background-color: #ffffff9d;
+      padding: 2px 0 0 10px;
+      margin: 5px 0 0 10px;
+      border-radius: 10px;
+      color: #434343;
+      font-size: 12px;
+      width: 90%;
+    }
+
+    .reason_text_area:focus {
+      outline: none;
+    }
+
+    /* CSS */
+    .sub_btn {
+      align-items: center;
+      appearance: none;
+      background: rgb(232, 18, 79);
+      background: linear-gradient(90deg, rgba(232, 18, 79, 1) 23%, rgba(242, 169, 212, 1) 94%);
+      border: 0;
+      border-radius: 6px;
+      box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+      box-sizing: border-box;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      font-family: "JetBrains Mono", monospace;
+      height: 30px;
+      padding-left: 5px;
+      padding-right: 5px;
+      font-size: 14px;
+
+      justify-content: center;
+      line-height: 1;
+      list-style: none;
+      overflow: hidden;
+
+      position: relative;
+      text-align: left;
+      text-decoration: none;
+      transition: box-shadow .15s, transform .15s;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      white-space: nowrap;
+      will-change: box-shadow, transform;
+
+      /* margin-left: 4rem; */
+    }
+
+    .sub_btn:focus {
+      box-shadow: rgb(232, 18, 79) 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgb(232, 18, 79) 0 -3px 0 inset;
+      outline: none;
+    }
+
+    .sub_btn:hover {
+      box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgb(232, 18, 79) 0 -3px 0 inset;
+      transform: translateY(-2px);
+    }
+
+    .sub_btn:active {
+      box-shadow: rgb(232, 18, 79) 0 3px 7px inset;
+      transform: translateY(2px);
+    }
+
+    /* CSS */
+    .sub_btn_cancel {
+      align-items: center;
+      appearance: none;
+      background: rgb(232, 18, 79);
+      background: linear-gradient(90deg, rgba(232, 18, 79, 1) 23%, rgba(242, 169, 212, 1) 94%);
+      border: 0;
+      border-radius: 6px;
+      box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+      box-sizing: border-box;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      font-family: "JetBrains Mono", monospace;
+      height: 30px;
+      padding-left: 5px;
+      padding-right: 5px;
+      font-size: 14px;
+
+      justify-content: center;
+      line-height: 1;
+      list-style: none;
+      overflow: hidden;
+
+      position: relative;
+      text-align: left;
+      text-decoration: none;
+      transition: box-shadow .15s, transform .15s;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      white-space: nowrap;
+      will-change: box-shadow, transform;
+
+      /* margin-left: 4rem; */
+    }
+
+    .sub_btn_cancel:focus {
+      box-shadow: rgb(232, 18, 79) 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgb(232, 18, 79) 0 -3px 0 inset;
+      outline: none;
+    }
+
+    .sub_btn_cancel:hover {
+      box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgb(232, 18, 79) 0 -3px 0 inset;
+      transform: translateY(-2px);
+    }
+
+    .sub_btn_cancel:active {
+      box-shadow: rgb(232, 18, 79) 0 3px 7px inset;
+      transform: translateY(2px);
+    }
+
+
+    .cls_ofs_btn {
+      background-color: transparent;
+      border: 1px solid rgb(32, 28, 28);
+      height: 30px;
+      padding-left: 5px;
+      padding-right: 5px;
+      font-size: 14px;
+    }
+
+    .footer_reason_div {
+      width: 100%;
+      padding: 0 0 0 1rem;
+    }
+
+    .footer_reason_div_cancel {
+      width: 100%;
+      padding: 0 0 0 4rem;
+    }
+
+    .total_amount_tag {
+      text-transform: capitalize;
+      margin: 0 0 0 2rem;
+      font-size: 14px;
+      color: #aaaaaa;
+      user-select: none;
     }
   </style>
 
@@ -102,8 +320,12 @@
             <!-- order data -->
             <div class="details_div">
               <p class="address_hd">Delivery Address
-                <%if(!(orderDetail.status=="cancelled")){%>
+                <%if(!(orderDetail.status=="cancelled" ||orderDetail.status=="Delivered"||orderDetail.status=="Return"||orderDetail.status=="Refund")){%>
                 <a class="caNCEL_BTN" href="#" onclick="orderCancel('<%=orderDetail._id%>')">CANCEL</a>
+
+                <% }else if(orderDetail.status=="Delivered"){%>
+                <a class="return_BTN" href="#" onclick="orderReturn('<%=orderDetail._id%>')">Return</a>
+                <% }else if(orderDetail.status=="Return"){%>
 
                 <% } %>
               </p>
@@ -115,13 +337,17 @@
               <p class="address_mob_hd">Phone number</p>
               <!--   PEMENT METHOD -->
               <p class="phone_number_div"><%=orderDetail.shippingAddress.phone_number%>,<%=orderDetail.shippingAddress.alternate_phone%></p>
-              <% if(orderDetail.paymentMethod=="UPI"){ %>
+              <p class="total_amount_tag">total price <%=orderDetail.totalPrice%>,<i class="fa fa-inr" aria-hidden="true"></i></p>
+              <% if(orderDetail.paymentMethod=="UPI"&&!(orderDetail.paymentStatus=="Processing")){ %>
               <p class="price_status" style="color: #57c746;"><%=orderDetail.balance_amount%>&nbsp;<span style="font-size:13px; color: #bbfab1;">(Online Payment)</span></p>
-              <%}else if(orderDetail.paymentMethod=="COD"){  %>
-              <p class="price_status" style="color:#950101;"><%=orderDetail.balance_amount%><span style="color: #fff; font-size: 12px;">DHS</span>&nbsp;<span style="font-size:13px; color: #ffb7b7;">(Cash on Delivery)</span></p>
-              <% }else{ %>
-              <p class="price_status" style="color:#ffffff;"><%=orderDetail.balance_amount%>&nbsp;<span style="font-size:13px; color: #64e185;">(refund successful)</span></p>
+              <%}else if(orderDetail.paymentMethod=="COD"&&!(orderDetail.paymentStatus=="Processing")){  %>
+              <p class="price_status" style="color:#950101;"><%=orderDetail.balance_amount%><span style="color: #fff; font-size: 12px;"><i class="fa fa-inr" aria-hidden="true"></i></span>&nbsp;<span style="font-size:13px; color: #ffb7b7;">(Cash on Delivery)</span></p>
+              <%}else if(orderDetail.paymentMethod=="Wallet" ||orderDetail.paymentMethod=="Wallet"){  %>
+              <p class="price_status" style="color:#4eeb78;"><%=orderDetail.balance_amount%><span style="color: #fff; font-size: 12px;"></span>&nbsp;<span style="font-size:13px; color: #b3f886;">(<%=orderDetail.paymentMethod%>)</span></p>
+              <%}else if(orderDetail.balance_amount=="Refund" && orderDetail.status=="cancelled"){  %>
+              <p class="price_status" style="color:#4eeb78;"><%=orderDetail.balance_amount%><span style="color: #fff; font-size: 12px;"></span>&nbsp;<span style="font-size:13px; color: #b3f886;">(<%=orderDetail.paymentMethod%>)</span></p>
               <% } %>
+
               <!--   ORDER STATUS -->
               <% if(orderDetail.status=="pending"){ %>
               <div class="order_status" style="color:rgb(255, 192, 76);">
@@ -130,6 +356,14 @@
               <%}else if(orderDetail.status=="Shipped"){  %>
               <div class="order_status" style="color:rgb(196, 238, 133);">
                 <div id="circle" style="border-color:rgb(196, 238, 133);"></div><%=orderDetail.status%>
+              </div>
+              <%}else if(orderDetail.status=="Return"){  %>
+              <div class="order_status" style="color:rgb(255, 192, 76);">
+                <div id="circle" style="border-color:rgb(255, 192, 76);"></div><%=orderDetail.status%> <span <% if(orderDetail.paymentStatus==='rejected'){ %> style="color: #950101;" <% } %>>(<%=orderDetail.paymentStatus%>)</span>
+              </div>
+              <%}else if(orderDetail.status=="Refund"){  %>
+              <div class="order_status" style="color:rgb(255, 192, 76);">
+                <div id="circle" style="border-color:rgb(255, 192, 76);"></div><%=orderDetail.status%> <span <% if(orderDetail.paymentStatus==='Successful'){ %> style="color:#57c746;" <% } %>>(<%=orderDetail.paymentStatus%>)</span>
               </div>
               <%}else if(orderDetail.status=="Out For Delivery"){  %>
               <div class="order_status" style="color:rgb(171, 220, 88);">
@@ -144,6 +378,7 @@
                 <div id="circle" style="border-color:rgb(188, 3, 3);"></div><%=orderDetail.status%>
               </div>
               <% } %>
+
 
 
 
@@ -162,7 +397,7 @@
                   <div class="item_data_preview_div">
                     <div class="top_text_data_preview_div">
                       <p class="name_data_text_preview"><%=item.product.product_name%>&nbsp;</p>
-                      <p class="price_data_text_preview"><%=item.product.product_price%> DHS</p>
+                      <p class="price_data_text_preview"><%=item.orderPrice%> <i class="fa fa-inr" aria-hidden="true"></i></p>
                       <% if(item.quantity>1){ %>
                       <p class="qty_data_text_preview">&nbsp;(&cross;<%=item.quantity%>)</p>
                       <% }%>
@@ -172,10 +407,18 @@
                     </div>
                   </div>
                   <div class="item_delivery_preview_div">
-                    <p class="delivery_charge_data_p">Delivery Charge: <s>0.3,DHS</s><span style="color: rgb(49, 188, 49);"> Free</span>
+                    <p class="delivery_charge_data_p">Delivery Charge: <s>0.3,<i class="fa fa-inr" aria-hidden="true"></i></s><span style="color: rgb(49, 188, 49);"> Free</span>
                   </div>
                 </div>
                 <% }) %>
+                <a href="#" class="invoice_btn" style="color:#fff; display: flex; margin:1rem 0 0 0;" onclick="invoiceData('<%=orderDetail._id%>')"><i class="fa fa-download" aria-hidden="true"></i> invoice</a>
+
+                <script>
+                  function invoiceData(id) {
+                    window.location.href = `/invoice?data=${id}`;
+                  }
+                </script>
+
               </div>
             </div>
           </div>
@@ -205,16 +448,125 @@
 
   <!-- ==================== -->
 
+  <!--  _____modal for retun reasonz___ -->
+  <div class="confirm_model" style="display: none;">
+    <div class="confirmDiv">
+      <p class="reason_q_PTag">Reason for return the product ? </p>
+      <div class="bottom_text_reason_div">
+        <div class="choice_div">
+          <input type="checkbox" id="one" name="choice" value="The product is damaged or defective" class="checkbox_reason_form">
+          <label for="one">The product is damaged or defective</label>
+        </div>
+        <div class="choice_div">
+          <input type="checkbox" id="two" name="choice" value=" The product arrived late or the wrong product was sent" class="checkbox_reason_form">
+          <label for="two"> The product arrived late or the wrong product was sent</label>
+        </div>
+        <div class="choice_div">
+          <input type="checkbox" id="three" name="choice" value="The product did not match the description" class="checkbox_reason_form">
+          <label for="three">The product did not match the description</label>
+        </div>
+
+        <textarea name="reason_return" id="" cols="30" rows="2" class="reason_text_area" placeholder="Others"></textarea>
+      </div>
+      <div class="footer_reason_div">
+        <button class="cls_ofs_btn" onclick="clsBtn()">
+          CANCEL
+        </button>
+        <button class="sub_btn" onclick="submitBtn('<%=orderDetail._id%>')">
+          SUBMIT
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- ________________________________ -->
+
+
+  <!--  _____modal for retun reasonz___ -->
+  <div class="confirm_model_cancel" style="display: none;">
+    <div class="confirmDiv_cancel">
+      <p class="reason_q_PTag" style="font-size:13px;">Are you sure you want to cancel this order ? </p>
+      <div class="footer_reason_div_cancel">
+        <button class="cls_ofs_btn" onclick="clsBtn()">
+          CANCEL
+        </button>
+        <button class="sub_btn_cancel">
+          YES, CONTINUE
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- ________________________________ -->
+
   <!-- ================== -->
 
 
   <!-- /////////SCRIPT AREA///////// -->
+  <!-- _______retun req_________ -->
+  <script>
+    function orderReturn(orderId) {
+      document.querySelector(".confirm_model").style.display = "block"
+      document.querySelectorAll(".checkbox_reason_form").forEach(function(btn) {
+        btn.addEventListener("change", function() {
+          if (this.checked) {
+            document.querySelectorAll(".checkbox_reason_form").forEach((checkBox) => {
+              if (checkBox !== this) {
+                checkBox.checked = false;
+              }
+            });
+            document.querySelector(".reason_text_area").value = this.value
+          }
+        });
+      });
+
+    }
+
+    function submitBtn(orderId) {
+      const reason = document.querySelector(".reason_text_area").value;
+      const data = {
+        orderId,
+        reason,
+      };
+
+      fetch('/orderReturn', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+
+          window.location.reload()
+        })
+        .catch(e => {
+          console.log('There has been a problem with your fetch operation: ' + e.message);
+        });
+
+    }
+
+    function clsBtn() {
+      document.querySelector(".confirm_model").style.display = "none";
+      document.querySelector(".confirm_model_cancel").style.display = "none";
+    }
+  </script>
+  <!-- _________________________ -->
 
   <!-- =======CANCEL ORDER REQ =========== -->
   <SCript>
     function orderCancel(id) {
-      event.preventDefault()
-      window.location.href = `/orderCancel/${id}`
+      document.querySelector(".confirm_model_cancel").style.display = "block";
+      document.querySelector(".sub_btn_cancel").addEventListener("click", () => {
+        if (id) {
+          window.location.href = `/orderCancel/${id}`
+        }
+      })
+
     }
   </SCript>
   <!-- =================================== -->

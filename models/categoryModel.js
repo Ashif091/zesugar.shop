@@ -14,6 +14,10 @@ const CategorySchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  category_offer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'offer',
+  },
   category_publishDate: {
     type: Date,
     default: Date.now,

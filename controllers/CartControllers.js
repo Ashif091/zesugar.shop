@@ -5,12 +5,12 @@ const product = require("../models/productModel")
 
 module.exports = {
     addToCart: async (req, res) => {
-        console.log("add to cart");
-        const productId = req.params.id;
-        const user = req.session.username;
-        console.log("add to id", productId);
-
         try {
+            console.log("add to cart");
+            const productId = req.params.id;
+            const user = req.session.username;
+            console.log("add to id", productId);
+
             let userData = await users.findById(user._id);
             if (!userData) {
                 return res.redirect('/');
@@ -96,7 +96,7 @@ module.exports = {
     getCart: async (req, res) => {
         console.log("get cart");
         const user = req.session.username;
-
+        req.session.checkPage=false;
         try {
             let userData = await users.findById(user._id);
             if (!userData) {
@@ -122,34 +122,35 @@ module.exports = {
                 })
 
 
+                const checkOutErr = req.session.checkOutValidation?true:false;
+
+                console.log(`CART STATUS ${req.session.checkOutValidation}`);
 
 
 
-                return res.render("cartPage", { userData, isCart, products_data, cart_items,outOfStock})
+
+                return res.render("cartPage", { userData, isCart, products_data, cart_items,outOfStock,checkOutErr})
             } else {
                 isCart = false
                 let products_data = []
                 let cart_items = []
                 let outOfStock=[]
 
-                return res.render("cartPage", { userData, isCart, products_data, cart_items,outOfStock})
+                return res.render("cartEtPage", { userData, isCart, products_data, cart_items,outOfStock})
             }
 
 
         } catch (error) {
-            console.error('Error adding product to cart:', error);
-            return res.status(500).send('Internal Server Error');
+            console.log('Error adding product to cart:', error);
+            res.render("404page",{error})
         }
     }
     ,
     // ======add qty======
     cart_add: async (req, res) => {
-        console.log("get cart_add");
-        console.log("get cart_drop id ", req.params.id);
-        let user = req.session.username;
-        let id = req.params.id
-
         try {
+            let user = req.session.username;
+            let id = req.params.id
             let userData = await users.findById(user._id);
             if (!userData) {
                 return res.redirect('/');
@@ -206,7 +207,7 @@ module.exports = {
             }
         } catch (error) {
             console.error('Error adding product to cart:', error);
-            return res.status(500).send('Internal Server Error');
+            res.status(404).json({error})
         }
     }
     ,
@@ -236,10 +237,6 @@ module.exports = {
             )
 
 
-
-            // cart.items.splice(productInCart, 1);
-            // console.log('data id of product',productInCart.product );
-            // console.log('price of data',productInCart.product_price );
             cart.total -= productInCart.product_price * productInCart.quantity;
             cart.totalQuantity -= productInCart.quantity;
 
@@ -251,6 +248,7 @@ module.exports = {
 
         } catch (error) {
             console.log(error);
+            res.status(404).json({error})
         }
     }
     ,

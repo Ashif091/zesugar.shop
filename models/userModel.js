@@ -21,7 +21,20 @@ const userSchema = mongoose.Schema({
   },
   imagePath:{
     type:String
-  }
+  },
+  referral_code :{
+    type: Number,
+  },
+  usedCoupons: [
+    {
+      couponName: {
+        type: String,
+      },
+      usageCount: {
+        type: Number,
+      },
+    },
+  ],
 
 })
 

@@ -1,11 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <h1>322</h1>
-</body>
-</html>
+<script>
+        const data = {
+        productName: productNameInput,
+      };
+      let nameOk =false;
+      fetch('/admin/productAvailability', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.status === true) {
+            errorElement.textContent = 'Product name already taken';
+            check = false
+
+            nameOk =false;
+            const button = document.querySelector('#submit');
+             button.disabled = true;
+          }else{
+            nameOk=true;
+          }
+        })
+        .catch(e => {
+          console.log('There has been a problem with your fetch operation: ' + e.message);
+        });
+
+</script>

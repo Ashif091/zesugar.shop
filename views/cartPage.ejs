@@ -27,6 +27,8 @@
   <!-- animation links -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
 </head>
 
@@ -60,7 +62,7 @@
                   <div class="name_product">
                     <p class="name">
                       <%=productItem.product_name%><span class="price_tag">
-                        <%=cartItem.product_price%>,DHS
+                        <%=cartItem.product_price%>,<i class="fa fa-inr" aria-hidden="true"></i>
                       </span>
                     </p>
                     <div class="description_div">
@@ -115,6 +117,7 @@
         </div>
         <!-- ==RIGHT BAR=== -->
         <div class="col-3">
+          <% if(isCart.totalQuantity>0){ %>
           <div class="left_bar">
             <div class="data_visible_div">
               <h3>Price Details</h3>
@@ -125,14 +128,14 @@
                   </strong></p>
                 <p class="total_price">Total Price: <span class="price">
                     <%=isCart.total%>
-                  </span>,DHS</p>
-                <p class="charge">Delivery Charge: <s>0.3,DHS</s><span style="color: rgb(49, 188, 49);"> Free</span>
+                  </span>,<i class="fa fa-inr" aria-hidden="true"></i></p>
+                <p class="charge">Delivery Charge: <s>0.3,<i class="fa fa-inr" aria-hidden="true"></i></s><span style="color: rgb(49, 188, 49);"> Free</span>
                 </p>
                 <hr>
               </div>
               <p class="amount">Total Price: <span class="amountv">
                   <%=isCart.total%>
-                </span>,DHS</p>
+                </span>,<i class="fa fa-inr" aria-hidden="true"></i></p>
               <button class="ckeckoutButton" id="check_out_btn" data-stock="<%=outOfStock %>">Check Out</button>
 
 
@@ -141,6 +144,7 @@
             </div>
 
           </div>
+          <% } %>
 
         </div>
       </div>
@@ -189,7 +193,7 @@
               <div class="stock_data">
                 <p class="stockname">
                   <%=productItem.product_name%><span class="price_tag">
-                    <%=cartItem.product_price%>,DHS
+                    <%=cartItem.product_price%>,<i class="fa fa-inr" aria-hidden="true"></i>
                   </span>
                 </p>
                 <div class="description_div_out_stock">
@@ -236,13 +240,25 @@
   <!-- /////////SCRIPT AREA///////// -->
 
 
+
+  <!-- check out validation  -->
+  <script>
+    const status = JSON.parse('<%=checkOutErr%>')
+    if (status) {
+      document.querySelector(".div_model").style.display = "block"
+      fetch("/cls_removel_OUTOFSTOCKmsg")
+        .catch(error => console.log(`error with cls_removel_msg-checkout ${error}`))
+    }
+  </script>
+
+
   <!--CHECK OUT fetch req section -->
   <script>
     const checkOutbtn = document.getElementById("check_out_btn")
     checkOutbtn.addEventListener("click", (event) => {
       const count = event.target.getAttribute("data-stock");
       if (count <= 0) {
-        window.location.href = "/getcheckout"      
+        window.location.href = "/checkOutreq"
       } else {
         document.querySelector(".div_model").style.display = "block"
 
@@ -263,7 +279,7 @@
         .then(response => response.json())
         .then(data => {
           if (data.status) {
-            window.location.href = "/getcheckout"
+            window.location.href = "/checkOutreq"
           } else {
             document.querySelector(".div_model").style.display = "none"
 
@@ -293,8 +309,6 @@
 
   <!-- epmty cart animation div style  -->
   <script>
-   
-
     let amount_items = document.getElementById("body").getAttribute("data-items")
     if (amount_items == 0 || amount_items == "" || amount_items == undefined) {
       document.getElementById("main_container").style.display = "none"

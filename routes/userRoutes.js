@@ -1,5 +1,5 @@
 const express = require("express");
-const { authenticateUser, signupAuthenticateUser, adminAuthenticate, userstatus } = require("../middleware/athouction")
+const { authenticateUser, signupAuthenticateUser, adminAuthenticate, userstatus,checkOutStatus } = require("../middleware/athouction")
 const router = express.Router();
 const multer = require('multer');
 //_____________________usercontroller_____________________
@@ -25,14 +25,19 @@ const { addToCart,
   cartremove_outofstock,
 } = require("../controllers/CartControllers")
 //_____________________checkout controller_____________________
-const { getcheckout,
+const {checkOutreq,
+   getcheckout,
   cls_removel_msg,
+  cls_removel_OUTOFSTOCKmsg,
   razorpay_payment_req,
   confirmOrder,
-  orderSuccesspage} = require("../controllers/checkOutController")
+  orderSuccesspage,
+  applyCoupon} = require("../controllers/checkOutController")
 //_____________________profile controller_____________________
 const { profile,
   imgupload,
+  createCode,
+  checkCode,
   imgEdit,
   newAddress,
   profileAddress,
@@ -43,7 +48,10 @@ const { profile,
   orderCancel,
   getWishlist,
 addWishlist,
-productDeleteFromTheWishlist} = require("../controllers/profileController")
+productDeleteFromTheWishlist,
+invoice,
+orderdata,
+orderReturn} = require("../controllers/profileController")
 //_____________________Wallet controller_____________________
 const {getWallet,
   } = require("../controllers/walletController")
@@ -94,22 +102,30 @@ const storage = multer.diskStorage({
 const single_upload = multer({ storage: storage }).single('image');
 
 router.route('/getprofile').get(userstatus, profile).post(userstatus, single_upload, imgupload).patch(userstatus, single_upload, imgEdit)
+router.route('/referralCode').get(createCode).post(checkCode)
 router.route('/getprofile_address').get(userstatus,profileAddress).post(newAddress)
 router.route('/edit_address').put(userstatus,editAddress)
 router.route('/edit_address/:id').delete(userstatus,delete_address)
 router.route('/getprofile_order').get(userstatus,orderHistory)
 router.route('/orderdetails/:id').get(userstatus,orderdetails)
 
+router.route('/invoice').get(userstatus,invoice)
+
 router.route('/myWishlist').get(userstatus,getWishlist).post(addWishlist).delete(productDeleteFromTheWishlist)
 
 
 //============CHECK OUT ===========
-router.route('/getcheckout').get(userstatus, getcheckout)
+router.route('/checkOutreq').get(userstatus, checkOutreq)
+
+router.route('/getcheckout').get(userstatus,checkOutStatus, getcheckout)
 router.route('/cls_removel_msg-checkout').get(userstatus,cls_removel_msg)
+router.route('/cls_removel_OUTOFSTOCKmsg').get(cls_removel_OUTOFSTOCKmsg)
 router.route('/razorpay_payment_req').post(userstatus,razorpay_payment_req)
 router.route('/confirmOrder').post(userstatus,confirmOrder)
 router.route('/orderSuccess/:id').get(userstatus,orderSuccesspage)
 router.route('/orderCancel/:id').get(userstatus,orderCancel)
+router.route('/orderReturn').post(orderReturn)
+router.route('/applyCoupon').post(applyCoupon)
 
 //================== Wallet =====================
 

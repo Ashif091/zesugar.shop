@@ -43,9 +43,15 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: 'pending',
     },
+    paymentStatus: {
+        type: String,
+    },
     check_status: {
         type: Boolean,
         default: true,
+    },
+    retun_reason: {
+        type: String,
     },
 });
 

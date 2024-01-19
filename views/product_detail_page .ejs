@@ -25,12 +25,32 @@
   <!-- animation links -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- animation links -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <style>
+
     .addWishlist_img {
       cursor: pointer;
     }
+    .price_area{
+      display: flex;
+      color:#fff ;
 
+    }
+    .old_price{
+      font-size: 13px;
+      color: #c1c1c1;
+      text-decoration: line-through;
+      margin:.2rem 0 0 .5rem;
+    }
+    .imgtag_{
+      transition: transform .3s;
+    }
+    .imgtag_:hover {
+      transform: scale(1.3);
+     
+      /* Animation */
+    }
   </style>
 
 </head>
@@ -119,7 +139,14 @@
               <i class="bx bxs-star checked"></i>
               <i class="bx bxs-star checked"></i>
             </div>
-            <p class="pricePtag"><%=productdata.product_price%> DHS<span class="offerPtag">10%</span></p>
+            <p class="pricePtag">
+              <%if(productdata.real_price){ %> 
+                <p class="price_area"><%=productdata.product_price%><i style="margin:4px 0 0 2px;" class="fa fa-inr" aria-hidden="true"></i> 
+                  <span class="old_price"><%=productdata.real_price%> <i class="fa fa-inr" aria-hidden="true"></i></span> <span class="offerPtag" style="color: rgb(143, 233, 143);">
+                  <%=productdata.product_off%>%,OFF
+                 </span>
+                </p>
+              <% }else{ %><%=productdata.product_price%> <i class="fa fa-inr" aria-hidden="true"></i> <% } %>    </p>
             <div class="selectiondiv">
               <select class="quantity-select">
                 <option value="" disabled selected hidden>Quantity</option>
@@ -277,11 +304,11 @@
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
-  <script>
+  <!-- <script>
     $(document).ready(function() {
       $("#zoom_04").ezPlus();
     });
-  </script>
+  </script> -->
 
 </body>
 

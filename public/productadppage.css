@@ -39,6 +39,8 @@ body {
     color: #fff;
     border: none;
     cursor: pointer;
+    text-shadow:2px 2px 3px black;
+    box-shadow:4px 4px 5px black;
     transition: background-color, .3s;
 }
 

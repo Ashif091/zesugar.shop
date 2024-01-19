@@ -27,6 +27,8 @@
   <!-- animation links -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
 
 
@@ -74,7 +76,7 @@
               <% console.log("data  ",userAddress); %>
 
               <%if(!(userAddress===false)){ %>
-                <% console.log("data reload ",userAddress); %>
+              <% console.log("data reload ",userAddress); %>
 
               <!--      foreach      -->
               <% let no = 0;%>
@@ -170,10 +172,10 @@
               <% }) %>
 
               <% }else{ %>
-                <div class="single_address_div " onclick="selectAddress(false,false)">
-                  <% console.log("else condition data run"); %>
-                </div>
-                <% } %>
+              <div class="single_address_div " onclick="selectAddress(false,false)">
+                <% console.log("else condition data run"); %>
+              </div>
+              <% } %>
 
               <!-- _________________ -->
               <!--      ADD ADDRESS  FORM       -->
@@ -318,7 +320,7 @@
                 <div class="item_data_preview_div">
                   <div class="top_text_data_preview_div">
                     <p class="name_data_text_preview"><%=productItem.product_name%>&nbsp;</p>
-                    <p class="price_data_text_preview"><%=cartItem.product_price%> DHS</p>
+                    <p class="price_data_text_preview"><%=cartItem.product_price%> <i class="fa fa-inr" aria-hidden="true"></i></p>
                     <% if(cartItem.quantity>1){ %>
                     <p class="qty_data_text_preview">&nbsp;(&cross;<%=cartItem.quantity%>)</p>
                     <% }%>
@@ -328,7 +330,7 @@
                   </div>
                 </div>
                 <div class="item_delivery_preview_div">
-                  <p class="delivery_charge_data_p">Delivery Charge: <s>0.3,DHS</s><span style="color: rgb(49, 188, 49);"> Free</span>
+                  <p class="delivery_charge_data_p">Delivery Charge: <s>0.3,<i class="fa fa-inr" aria-hidden="true"></i></s><span style="color: rgb(49, 188, 49);"> Free</span>
                 </div>
               </div>
 
@@ -427,6 +429,63 @@
                   </div>
                 </div>
 
+                <div class="apply_coupon_div">
+                  <div class="add_couponaction" onclick="addaction()">
+                    &plus; Add New Coupon
+                  </div>
+                  <div class="couponInput_div" style="display: none;">
+                    <input type="text" class="coupon_id" placeholder="CODE">
+                    <button class="apply" onclick="couponApply()">APPLY</button>
+                    <p class="error_msg">loading..</p>
+                  </div>
+                </div>
+
+                <script>
+                  function couponApply() {
+                    const couponName = document.querySelector(".coupon_id").value
+                    const data = {
+                      couponName,
+                    };
+                    fetch('/applyCoupon', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                      })
+                      .then(response => {
+                        if (!response.ok) {
+                          throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                      })
+                      .then(data => {
+                        if (data.status === false) {
+                          document.querySelector(".error_msg").innerHTML = data.errMsg;
+                          document.querySelector(".error_msg").style.display = "block"
+                          document.querySelector(".coupon_id").addEventListener("input", () => {
+                            document.querySelector(".error_msg").style.display = "none";
+
+                          })
+                        } else {
+                          document.querySelector(".btn_continue_confirm_order_summary").click()
+                          document.querySelector(".amountv").textContent = data.offerPrice;
+                          document.querySelector(".cuoponCode").textContent = data.couponName;
+                          document.querySelector(".coupon_data_ptag").style.display = "block";
+                          document.querySelector(".apply_coupon_div").style.display = "none";
+                        }
+                      })
+                      .catch(e => {
+                        console.log('There has been a problem with your fetch operation: ' + e.message);
+                      });
+                  }
+
+                  function addaction() {
+                    document.querySelector(".add_couponaction").style.display = "none";
+                    document.querySelector(".couponInput_div").style.display = "block";
+                  }
+                </script>
+
               </div>
 
             </div>
@@ -453,14 +512,15 @@
               </strong></p>
             <p class="total_price">Price (<%=itemCount%> items) :<span class="price">
                 <%=isCart.total%>
-              </span>,DHS</p>
-            <p class="charge">Delivery Charge: <s>0.3,DHS</s><span style="color: rgb(49, 188, 49);"> Free</span>
+              </span>,<i class="fa fa-inr" aria-hidden="true"></i></p>
+            <p class="charge">Delivery Charge: <s>0.3,<i class="fa fa-inr" aria-hidden="true"></i></s><span style="color: rgb(49, 188, 49);"> Free</span>
             </p>
+            <p class="coupon_data_ptag" style="display: none;">Applied Coupon: <span class="cuoponCode"></span></p>
             <hr>
           </div>
           <p class="amount">Total Price: <span class="amountv">
               <%=isCart.total%>
-            </span>,DHS</p>
+            </span>,<i class="fa fa-inr" aria-hidden="true"></i></p>
 
         </div>
 
@@ -629,6 +689,9 @@
             const orderdata = result.orderdata;
             window.location.href = `/orderSuccess/${orderdata._id}`
           } else {
+            if (result.cartErr) {
+              window.location.href = `/cart`
+            }
             errorMsg();
           }
 
@@ -688,6 +751,9 @@
             const orderdata = result.orderdata;
             window.location.href = `/orderSuccess/${orderdata._id}`
           } else {
+            if (result.cartErr) {
+              window.location.href = `/cart`
+            }
             document.querySelector(".Wallet_error_msg").style.display = "block";
             document.querySelector(".Wallet_pay_btn").style.display = "none";
             document.querySelector(".Wallet_error_msg").textContent = result.errMsg;
@@ -739,8 +805,13 @@
         .then(data => {
 
 
+
           document.querySelector(".loding_btn_main_data_div").style.display = "none";
           document.querySelector(".payment_method_selection_div").style.display = "block";
+
+          if (data.cartErr) {
+            window.location.href = `/cart`
+          }
 
 
           var options = {
@@ -775,6 +846,9 @@
                     const orderdata = result.orderdata;
                     window.location.href = `/orderSuccess/${orderdata._id}`
                   } else {
+                    if (result.cartErr) {
+                      window.location.href = `/cart`
+                    }
                     errorMsg();
                   }
                 })
@@ -968,33 +1042,33 @@
     function selectAddress(addressId, no) {
       // Unselect all radio buttons
       event.stopPropagation();
-      if(addressId){
-      document.querySelectorAll('.address_radio_action').forEach(function(radio) {
-        radio.checked = false;
-      });
-      document.querySelectorAll('.edit_action').forEach(function(btn) {
-        btn.style.display = "none";
-      });
-      document.querySelectorAll('.address_select_btn').forEach(function(btn) {
-        btn.style.display = "none";
-      });
-      document.querySelectorAll('.single_address_div').forEach(function(div) {
-        div.style.backgroundColor = "rgb(114, 65, 88)"
-      });
-      // Select the radio button with the given id
-      // ______form dismiss _____
+      if (addressId) {
+        document.querySelectorAll('.address_radio_action').forEach(function(radio) {
+          radio.checked = false;
+        });
+        document.querySelectorAll('.edit_action').forEach(function(btn) {
+          btn.style.display = "none";
+        });
+        document.querySelectorAll('.address_select_btn').forEach(function(btn) {
+          btn.style.display = "none";
+        });
+        document.querySelectorAll('.single_address_div').forEach(function(div) {
+          div.style.backgroundColor = "rgb(114, 65, 88)"
+        });
+        // Select the radio button with the given id
+        // ______form dismiss _____
 
-      let contentElements = document.querySelectorAll('.edit_address_div');
-      let data_div = document.querySelectorAll('.single_address_div');
+        let contentElements = document.querySelectorAll('.edit_address_div');
+        let data_div = document.querySelectorAll('.single_address_div');
 
-      contentElements.forEach(function(element) {
-        element.style.display = 'none';
-      });
-      //          display of data divs  
-      data_div.forEach(function(element) {
-        element.style.display = 'block';
-      });
-    }
+        contentElements.forEach(function(element) {
+          element.style.display = 'none';
+        });
+        //          display of data divs  
+        data_div.forEach(function(element) {
+          element.style.display = 'block';
+        });
+      }
       // ____________________________________________
 
       // __________-ORDER SUMMARY hide and payment- _________
@@ -1005,16 +1079,16 @@
 
 
       // -_______________________
-      if(addressId){
-      var radio = document.querySelector('.address_radio-' + addressId);
-      if (radio) {
-        radio.checked = true;
+      if (addressId) {
+        var radio = document.querySelector('.address_radio-' + addressId);
+        if (radio) {
+          radio.checked = true;
+        }
+        document.querySelector(".id_address_input").value = addressId;
+        document.querySelector(".edit_btn-" + addressId).style.display = "block"
+        document.querySelector(".address_select_btn" + addressId).style.display = "block"
+        document.querySelector(".single_address_div" + addressId).style.backgroundColor = "rgb(155, 113, 133)"
       }
-      document.querySelector(".id_address_input").value = addressId;
-      document.querySelector(".edit_btn-" + addressId).style.display = "block"
-      document.querySelector(".address_select_btn" + addressId).style.display = "block"
-      document.querySelector(".single_address_div" + addressId).style.backgroundColor = "rgb(155, 113, 133)"
-       }
 
 
     }

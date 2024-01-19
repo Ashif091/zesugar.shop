@@ -26,6 +26,7 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- animation links -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
   <style>
@@ -39,13 +40,191 @@
       background-repeat: no-repeat;
       background-size: cover;
     }
-    .profile_btn{
+
+    .profile_btn {
       background: rgb(213, 106, 137);
       background: linear-gradient(90deg, rgb(200, 92, 123) 0%, rgb(249, 249, 249) 100%);
-      p{
+
+      p {
         color: rgb(189, 43, 84);
         font-weight: 700;
       }
+    }
+
+    .new_user_referral {
+      width: 80%;
+      min-height: 100px;
+      display: flex;
+      margin: 0 0 0 10%;
+
+
+    }
+
+    .user_referral_div {
+      width: 80%;
+      min-height: 100px;
+      display: flex;
+      margin: 3rem 0 0 10%;
+      position: relative;
+
+
+    }
+
+    .referral_input_div {
+      flex: 0 0 50%;
+      display: flex;
+      padding: 2rem 3rem;
+
+    }
+
+    .referral_code {
+      background: rgb(179, 0, 50);
+      background: linear-gradient(90deg, rgba(179, 0, 50, 1) 0%, rgba(254, 86, 118, 1) 100%);
+      outline: none;
+      border: 1px solid #fff;
+      height: 40px;
+      color: #fff;
+      max-width: 140px;
+      letter-spacing: 12px;
+      font-size: 19px;
+      text-shadow: 2px 2px 3px black;
+      padding: 0 0 0 .3rem;
+      border-radius: 5px;
+    }
+
+    .referral_code::-webkit-outer-spin-button,
+    .referral_code::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    .referral_code_genarator {
+      flex: 0 0 50%;
+      padding: 2rem 0 0 2rem;
+
+    }
+
+    .referral_input_div {
+      .code_apply_btn {
+        align-items: center;
+        appearance: none;
+        background: rgb(232, 18, 79);
+        background: linear-gradient(90deg, rgba(232, 18, 79, 1) 23%, rgba(242, 169, 212, 1) 94%);
+        border: 0;
+        border-radius: 6px;
+        box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-flex;
+        font-family: "JetBrains Mono", monospace;
+        height: 40px;
+        padding-left: 8px;
+        padding-right: 8px;
+        font-size: 16px;
+        margin: 0 0 0 .5rem;
+
+        justify-content: center;
+        line-height: 1;
+        list-style: none;
+        overflow: hidden;
+
+        position: relative;
+        text-align: left;
+        text-decoration: none;
+        transition: box-shadow .15s, transform .15s;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        white-space: nowrap;
+        will-change: box-shadow, transform;
+
+        /* margin-left: 4rem; */
+      }
+
+      .code_apply_btn:focus {
+        box-shadow: rgb(232, 18, 79) 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgb(232, 18, 79) 0 -3px 0 inset;
+        outline: none;
+      }
+
+      .code_apply_btn:hover {
+        box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgb(232, 18, 79) 0 -3px 0 inset;
+        transform: translateY(-2px);
+      }
+
+      .code_apply_btn:active {
+        box-shadow: rgb(232, 18, 79) 0 3px 7px inset;
+        transform: translateY(2px);
+      }
+    }
+
+    .input_div {
+      position: relative;
+    }
+
+    .referral_code_text {
+      color: #e2e2e25d;
+      position: absolute;
+      top: .3rem;
+      left: .5rem;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .validation_error {
+      position: absolute;
+      top: 43px;
+      left: .4rem;
+      color: rgb(255, 131, 131);
+      display: none;
+    }
+
+
+
+
+    /* ++======================================= */
+
+    .referral_create {
+      cursor: pointer;
+      color: #fff;
+      text-transform: capitalize;
+      font-size: 15px;
+      border: 1px solid #fff;
+      padding: .5rem 1rem .5rem 1rem;
+      width: 9rem;
+
+
+    }
+
+    .referral_create:hover {
+      text-shadow: 3px 3px 5px black;
+
+    }
+
+    .refferal_p_text {
+      width: 86%;
+      font-size: 14px;
+      color: #fff;
+      text-shadow: 1px 1px 3px black;
+    }
+
+    .referral_code_db {
+      position: absolute;
+      top: 45%;
+      left: 37%;
+      display: flex;
+      color: #fff;
+      text-shadow: 3px 3px 5px black;
+      text-transform: capitalize;
+
+
+    }
+
+    .copy_img_tag {
+      width: 15px;
+      position: absolute;
+      top: .5rem;
+      right: -1rem;
+      cursor: pointer;
     }
   </style>
 
@@ -130,11 +309,132 @@
             <p class="nameUser"><%= user.email %></p>
 
           </div>
+          <% if(userData.referral_code){ %>
+          <div class="user_referral_div">
+            <p class="refferal_p_text">
+              Invite friends to Zesugar Pistors with referral code and get 504<i class="fa fa-inr" aria-hidden="true"></i>. They get 204<i class="fa fa-inr" aria-hidden="true"></i>
+            </p>
+            <p class="referral_code_db"><span style="color: #aeaeae; user-select: none;">referral code </span>&nbsp;<%=userData.referral_code%><img class="copy_img_tag" src="/image2/copy.png" alt="" onclick="copyToClipboard('<%=userData.referral_code%>')"></p>
+
+
+          </div>
+          <% }else{ %>
+          <div class="new_user_referral">
+            <div class="referral_input_div">
+              <div class="input_div"><label for="referral_code" class="referral_code_text">Referral Code</label><input type="number" class="referral_code" id="referral_code" maxlength="6" oninput="limitInputLength(this, 6)">
+                <p class="validation_error">Enter valid code</p>
+              </div>
+              <script>
+                function limitInputLength(input, maxLength) {
+                  if (input.value.length > maxLength) {
+                    input.value = input.value.slice(0, maxLength);
+                  }
+                }
+              </script>
+              <button class="code_apply_btn" onclick="applyCode()">APPLY</button>
+            </div>
+            <div class="referral_code_genarator">
+              <p class="referral_create" onclick="createCode()">invite friends</p>
+
+            </div>
+
+          </div>
+
+
+          <div class="user_referral_div" style="display:none ; ">
+            <p class="okay_msg" style="color: rgb(175, 248, 175);"><span class="amout_div"></span><i class="fa fa-inr" aria-hidden="true"></i> credited in your wallet</p>
+            <p class="refferal_p_text">
+              Invite friends to Zesugar Pistors with referral code and get 504<i class="fa fa-inr" aria-hidden="true"></i>. They get 204<i class="fa fa-inr" aria-hidden="true"></i>
+            </p>
+            <p class="referral_code_db" style="top:5rem;"><span style="color: #aeaeae; user-select: none;">referral code </span>&nbsp;<span class="codeFetch_div"></span><img class="copy_img_tag" src="/image2/copy.png" alt="" onclick="copyToClipboard('<%=userData.referral_code%>')"></p>
+
+
+          </div>
+          <% } %>
+
         </div>
-        
+
       </div>
 
     </div>
+
+    <script>
+      function createCode() {
+        fetch('/referralCode')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.status) {
+              window.location.reload()
+            }
+          })
+          .catch(e => {
+            console.log('There has been a problem with your fetch operation: ' + e.message);
+          });
+
+      }
+
+      function applyCode() {
+        document.querySelector(".referral_code").addEventListener("input", () => {
+          document.querySelector(".validation_error").style.display = "none";
+
+        })
+        const code = parseInt(document.querySelector(".referral_code").value);
+        if (!code) {
+          document.querySelector(".validation_error").style.display = "block";
+          return false;
+        }
+        fetch('/referralCode', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              code: code
+            })
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.status) {
+              document.querySelector(".user_referral_div").style.display = "block";
+             document.querySelector(".new_user_referral").style.display = "none";
+             document.querySelector(".amout_div").textContent = data.amount;
+             document.querySelector(".codeFetch_div").textContent = data.referralCode;
+
+
+            } else {
+              document.querySelector(".validation_error").style.display = "block";
+
+            }
+          })
+          .catch(e => {
+            console.log('There has been a problem with your fetch operation: ' + e.message);
+          });
+
+
+      }
+    </script>
+
+    <!--        copy of id  -->
+    <script>
+      function copyToClipboard(orderID) {
+        navigator.clipboard.writeText(orderID).then(function() {
+          console.log('Order ID copied to clipboard');
+        }).catch(function(err) {
+          console.error('Could not copy text: ', err);
+        });
+      }
+    </script>
+    <!-- __________________ -->
 
 
     <script>

@@ -1796,3 +1796,65 @@ select {
 .bottom_data_payment_method_action_Wallet{
     display: flex;
 }
+
+.apply_coupon_div{
+    width: 100%;
+    min-height: 30px;
+    background-color:rgb(127, 61, 93);
+    border: 1px solid rgb(225, 145, 168);
+    margin:.5rem 0 0  0;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding:5px 0 0 10px;
+    display: flex;
+    position: relative;
+
+}
+.couponInput_div{
+    display: flex;
+    width: 100%;
+
+}
+.add_couponaction{
+    color: #a597f5;
+    font-size: 15px;
+}
+.coupon_id{
+    background-color: transparent;
+    border: 1px solid rgb(225, 145, 168);
+    width:7rem;
+    height:2rem;
+    color: #fff;
+    text-shadow:2px 2px 3px black;
+    margin:.1rem 0 .3rem 1rem ;
+   
+
+}
+.coupon_id::placeholder{
+    color: #b1b8ef;
+    font-size: 13px;
+}
+.apply{
+    min-width:100px;
+    background-color: transparent;
+    text-transform: uppercase;
+    font-size: 14px;
+    outline: none;
+    border: none;
+    margin:.1rem 0 0 1rem;
+    cursor: pointer;
+    color: rgb(132, 255, 132);
+  
+
+}
+.error_msg{
+    display: none;
+    max-width:500px;
+    min-height:30px;
+    padding:.2rem 0  0 .5rem;
+    border:2px solid red;
+    background-color: rgb(255, 126, 126);
+    color:#fff;
+    border-radius: 4px;
+}

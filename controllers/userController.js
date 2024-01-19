@@ -12,33 +12,70 @@ const category = require("../models/categoryModel")
 // ============
 module.exports = {
     login: ((req, res) => {
-        res.status(208).redirect('/');
+
+        try {
+            res.status(208).redirect('/');
+        } catch (error) {
+            console.log("server ERROR - page ", error);
+            return res.render("404page", { error })
+        }
     }),
     home: (async (req, res) => {
-        const user = req.session.username;
-        if (!user) {
-            res.status(208).redirect('/');
+        try {
+            const user = req.session.username;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            let userData = await users.findById(user._id);
+            // let categorylist = await category.aggregate([{ $lookup: { from: "products", localField: "category_name", foreignField: "product_category", as: "product_data" } }]).populate(['category_offer']);
+            let categorylist = await category.aggregate([
+                {
+                    $lookup: {
+                        from: "products",
+                        localField: "category_name",
+                        foreignField: "product_category",
+                        as: "product_data"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "offers",
+                        localField: "category_offer",
+                        foreignField: "_id",
+                        as: "category_offer"
+                    }
+                }
+            ]);
+
+            let productlist = await product.find({})
+
+
+            res.status(201).render("home.ejs", { userData, categorylist, productlist })
+
+        } catch (error) {
+            console.log("server ERROR - page ", error);
+            return res.render("404page", { error })
         }
-        let userData = await users.findById(user._id);
-        let categorylist = await category.aggregate([{ $lookup: { from: "products", localField: "category_name", foreignField: "product_category", as: "product_data" } }]);
 
-        let productlist = await product.find({})
-
-
-        res.status(201).render("home.ejs", { userData, categorylist, productlist })
     })
     ,
     registerpage: (async (req, res) => {
-        const user = req.session.username;
-        if (!user) {
-            res.status(208).redirect('/');
+        try {
+            const user = req.session.username;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            let userData = await users.findById(user._id);
+            let categorylist = await category.aggregate([{ $lookup: { from: "products", localField: "category_name", foreignField: "product_category", as: "product_data" } }]);
+
+            let productlist = await product.find({})
+
+            res.status(201).render("home.ejs", { userData, categorylist, productlist })
+        } catch (error) {
+            console.log("server ERROR - page ", error);
+            return res.render("404page", { error })
         }
-        let userData = await users.findById(user._id);
-        let categorylist = await category.aggregate([{ $lookup: { from: "products", localField: "category_name", foreignField: "product_category", as: "product_data" } }]);
 
-        let productlist = await product.find({})
-
-        res.status(201).render("home.ejs", { userData, categorylist, productlist })
 
     })
     ,
@@ -60,7 +97,7 @@ module.exports = {
             service: 'gmail',
             auth: {
                 user: 'fhyvhh091@gmail.com',
-                pass: 'ohdv jqxd nzcf iugr'
+                pass: process.env.EMAIL_PASSWORD
             }
         });
 
@@ -122,32 +159,44 @@ module.exports = {
 
     ,
     check: asyncHandler(async (req, res) => {
-
-        const { email, password } = req.body
-        if (!email || !password) {
-            res.status(400).render("login.ejs", { errmsg: "emal and password are needed" })
-        }
-        const userCheck = await users.findOne({ email, user: 1 })
-        if (userCheck) {
-            const verify = await bcrypt.compare(password, userCheck.password)
-            if (!verify) {
-                res.status(404).render("login.ejs", { errmsg: "password is wrong" })
+        try {
+            const { email, password } = req.body
+            if (!email || !password) {
+                res.status(400).render("login.ejs", { errmsg: "emal and password are needed" })
             }
+            const userCheck = await users.findOne({ email, user: 1 })
+            if (userCheck) {
+                const verify = await bcrypt.compare(password, userCheck.password)
+                if (!verify) {
+                    res.status(404).render("login.ejs", { errmsg: "password is wrong" })
+                }
+            }
+            else {
+                return res.status(404).render("login.ejs", { errmsg: "this user-Email does not exist " })
+            }
+            console.log(`${userCheck.name} entered`);
+            req.session.username = userCheck
+            return res.redirect("/")
+        } catch (error) {
+            console.log("server ERROR - page ", error);
+            return res.render("404page", { error })
         }
-        else {
-            return res.status(404).render("login.ejs", { errmsg: "this user-Email does not exist " })
-        }
-        console.log(`${userCheck.name} entered`);
-        req.session.username = userCheck
-        return res.redirect("/")
+
+
 
 
 
     }),
     forgotpassword: (async (req, res) => {
-        let email = req.query.email;
+        try {
+            let email = req.query.email;
 
-        res.render("otppage.ejs", { email, errmsg: "", msg: "" })
+            res.render("otppage.ejs", { email, errmsg: "", msg: "" })
+        } catch (error) {
+            console.log("server ERROR - page ", error);
+            return res.render("404page", { error })
+        }
+
 
     })
     ,
@@ -166,7 +215,7 @@ module.exports = {
             service: 'gmail',
             auth: {
                 user: 'fhyvhh091@gmail.com',
-                pass: 'epwa vxkm rscl dnki'
+                pass: process.env.EMAIL_PASSWORD
             }
         });
 
@@ -252,7 +301,8 @@ module.exports = {
 
             }
         } catch (err) {
-            res.send("somthing hapende in etrycontoller/confirmotp")
+
+            return res.render("404page", { error: err })
 
         }
 
@@ -263,7 +313,13 @@ module.exports = {
 
     ,
     confimpassword: ((req, res) => {
-        res.status(200).render("password.ejs", { errmsg: "", email: "" })
+        try {
+            res.status(200).render("password.ejs", { errmsg: "", email: "" })
+        } catch (error) {
+            console.log("server ERROR - confimpassword ", error);
+            return res.render("404page", { error })
+        }
+
 
     }),
     checkpassword: (async (req, res) => {
@@ -278,7 +334,7 @@ module.exports = {
             userCheck.password = password
             await userCheck.save()
             console.log(userCheck.name, "password changed");
-
+            res.status(208).redirect("/login")
 
         } catch (err) {
             console.log("err in  data base ")
@@ -286,11 +342,6 @@ module.exports = {
 
 
         }
-
-        res.status(208).redirect("/login")
-
-
-
 
 
 
@@ -359,7 +410,8 @@ module.exports = {
 
             }
         } catch (err) {
-            res.send("somthing hapende in etrycontoller/confirmotp")
+            console.log("server ERROR - page ", err);
+            return res.render("404page", { error: err })
 
         }
 
@@ -370,44 +422,54 @@ module.exports = {
 
     ,
     page: ((req, res) => {
-        let productdata = {
-            _id: "cxcxccxc"
+        try {
+            let productdata = {
+                _id: "cxcxccxc"
+            }
+            res.render("product_detail_page ", { name: "ashif", productdata });
+        } catch (error) {
+            console.log("server ERROR - page ", error);
+            return res.render("404page", { error })
         }
-        res.render("product_detail_page ", { name: "ashif", productdata });
+
     })
     ,
     productGET: (async (req, res) => {
         console.log('req is get');
         try {
-        const productId = req.params.id;
-        const user = req.session.username;
-        if (!user) {
-          res.status(208).redirect('/');
-        }
-        let userData = await users.findById(user._id);
-        console.log(`id is ${productId}`);
+            const productId = req.params.id;
+            const user = req.session.username;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            let userData = await users.findById(user._id);
+            console.log(`id is ${productId}`);
 
-        let userCart = await Cart.findOne({ userId: user._id });
-        let userWishlist = await wishlist.findOne({ userId: userData._id });
-        let wishlistStatus = false;
-        if(userWishlist){
-          wishlistStatus = userWishlist.items.some(item => item.product.toString() === productId);
-        }
-        let productdata = await product.findById(productId)
-        if (userCart) {
-          let cartstatus = userCart.items.map(item => item.product.toString());
-          res.render("product_detail_page ", { userData, productdata, cartstatus, productId, wishlistStatus });
-        } else {
-          let cartstatus = []
-          res.render("product_detail_page ", { userData, productdata, cartstatus, productId, wishlistStatus });
-        }
-       
+            let userCart = await Cart.findOne({ userId: user._id });
+            let userWishlist = await wishlist.findOne({ userId: userData._id });
+            let wishlistStatus = false;
+            if (userWishlist) {
+                wishlistStatus = userWishlist.items.some(item => item.product.toString() === productId);
+            }
+            let productdata = await product.findById(productId).populate(['offer', 'category_offer']);
+            if (userCart) {
+                let cartstatus = userCart.items.map(item => item.product.toString());
+                res.render("product_detail_page ", { userData, productdata, cartstatus, productId, wishlistStatus });
+            } else {
+                let cartstatus = []
+                res.render("product_detail_page ", { userData, productdata, cartstatus, productId, wishlistStatus });
+            }
+
         } catch (error) {
-        console.log(`server have trouble ${error}`);
+            console.log(`server have trouble ${error}`);
         }
-       
-       })
-       
+
+    }),
+
+
+
+
+
 
 
 }

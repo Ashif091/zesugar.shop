@@ -167,6 +167,59 @@
     .scrollable-content {
       position: relative;
     }
+
+    .button {
+      width: 100%;
+      padding: 6px;
+      margin-bottom: 5px;
+      text-align: center;
+      background-color: rgb(136, 118, 118);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      text-shadow: 2px 2px 3px black;
+      box-shadow: 4px 4px 5px black;
+      transition: background-color, .3s;
+    }
+
+    .search_input_div {
+      position: relative;
+    }
+
+    .search_options {
+      position: absolute;
+      width: 100%;
+      min-height: 0px;
+      background-color: #962746;
+      top: 2.2rem;
+      left: 0rem;
+      border: 2px solid rgb(62, 30, 30);
+      background-color: rgba(100, 91, 91, 0.852);
+      color: #fff;
+      border-top: none;
+      font-size: 14px;
+      padding: 0 0 1rem 1rem;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      display: none;
+
+
+    }
+
+    .option_search:hover {
+      cursor: pointer;
+      background-color: rgb(100, 91, 91);
+      text-shadow: 2px 2px 3px black;
+    }
+
+    #search-input:focus {
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
+      border-bottom: none;
+
+    }
   </style>
 
 
@@ -185,22 +238,82 @@
           <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
         </form>
       </div>
-      <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">User Management</button></a>
-      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Product Mangement</button></a>
-      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Category</button></a>
-      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(69, 45, 45);">Order Management</button></a>
+      <a href="/admin/adminDashboard"><button id="toggleButton button" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">Dashboard</button></a>
+      <a href="/admin/usermanagement"><button id="toggleButton button" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">Users</button></a>
+      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Products</button></a>
+      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Categorys</button></a>
+      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(69, 45, 45);">Orders</button></a>
+      <a href="/admin/offermanagement/product"><button class="button" style=" background-color: rgb(98, 77, 77);">Offers</button></a>
+      <a href="/admin/couponmanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Coupons</button></a>
+
 
     </div>
     <!--  -->
 
 
-    <form class="search-bar" action="/admin/usermanagement/search" method="get">
+    <form class="search-bar" action="" method="get">
       <h1>Orders</h1>
-      <input type="text" name="key" id="search-input" placeholder="Search...">
+      <div class="search_input_div">
+        <input type="text" name="key" id="search-input" autocomplete="off" placeholder="Search for status or id...">
+        <div id="options" class="search_options">
+          <div class="option_search" onclick="setOption('Delivered')">Delivered</div>
+          <div class="option_search" onclick="setOption('Refund')">Refund</div>
+          <div class="option_search" onclick="setOption('Return')">Return</div>
+          <div class="option_search" onclick="setOption('Cancelled')">Cancelled</div>
+          <div class="option_search" onclick="setOption('Out For Delivery')">Out For Delivery</div>
+          <div class="option_search" onclick="setOption('Shipped')">Shipped</div>
+          <div class="option_search" onclick="setOption('pending')">pending</div>
+        </div>
+      </div>
+
+
+
+
+      <!-- Options -->
+
+
       <button type="submit" id="search-button">
         <img src="/image2/search.png" width="30px" alt="Search Icon">
       </button>
     </form>
+
+
+    <script>
+      document.querySelector('#search-input').addEventListener('input', function(e) {
+        let inputValue = e.target.value;
+        let capitalizedInputValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+        let options = document.querySelectorAll('.option_search');
+        for (let i = 0; i < options.length; i++) {
+          let optionText = options[i].textContent;
+          if (optionText.startsWith(capitalizedInputValue)) {
+            options[i].style.display = 'block';
+          } else {
+            options[i].style.display = 'none';
+          }
+        }
+      });
+
+      document.querySelector('#search-input').addEventListener('focus', function() {
+
+        document.querySelector('.search_options').style.display = 'block';
+
+      });
+
+      function setOption(optionText) {
+        var inputField = document.getElementById('search-input');
+        inputField.value = optionText;
+        document.querySelector('.search_options').style.display = 'none';
+
+      }
+
+      document.querySelector('.search-bar').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let searchData = document.querySelector('#search-input').value;
+        let url = `/admin/ordermanagement?page=${'<%= previousPage %>'}&searchData=${searchData}`;
+        window.location.href = url;
+      });
+      document.querySelector('#search-input').value = '<%= searchData %>'
+    </script>
 
     <!-- Your scrollable content goes here -->
 
@@ -256,6 +369,16 @@
               <div class="status_circle status_circle<%=order._id%>" style="border-color:rgb(82, 197, 114);"></div>
               <p class="order_status_text<%=order._id%>" style="color:rgb(82, 197, 114);"><%=order.status%></p>
             </div>
+            <% }else if(order.status=='Refund'){ %>
+            <div class="order_status">
+              <div class="status_circle status_circle<%=order._id%>" style="border-color:rgb(82, 197, 114);"></div>
+              <p class="order_status_text<%=order._id%>" style="color:rgb(82, 197, 114);"><%=order.status%></p>
+            </div>
+            <% }else if(order.status=='Return'){ %>
+            <div class="order_status">
+              <div class="status_circle status_circle<%=order._id%>" style="border-color:rgb(249, 187, 71);"></div>
+              <p class="order_status_text<%=order._id%>" style="color:rgb(239, 185, 84);"><%=order.status%> <span <% if(order.paymentStatus==='Successful'){ %> style="color:#57c746;" <% }else if(order.paymentStatus==='Processing'){ %>style="color:rgb(255, 192, 76);" <% }else{ %> style="color: rgb(188, 3, 3);" <% } %>>(<%=order.paymentStatus%>)</span></p>
+            </div>
 
             <% }else { %>
             <div class="order_status order_status<%=order._id%>" style="color:rgb(148, 0, 0);">
@@ -280,15 +403,15 @@
             <ul class="pagination justify-content-center">
               <% if (hasPreviousPage) { %>
               <li class="page-item">
-                <a class="page-link" href="?page=<%= previousPage %>"><%= previousPage %></a>
+                <a class="page-link" href="?page=<%= previousPage %>&searchData=<%= searchData %>"><%= previousPage %></a>
               </li>
               <% } %>
               <li class="page-item active">
-                <a class="page-link" href="?page=<%= currentPage %>"><%= currentPage %></a>
+                <a class="page-link" href="?page=<%= currentPage %>&searchData=<%= searchData %>"><%= currentPage %></a>
               </li>
               <% if (hasNextPage) { %>
               <li class="page-item">
-                <a class="page-link" href="?page=<%= nextPage %>"><%= nextPage %></a>
+                <a class="page-link" href="?page=<%= nextPage %>&searchData=<%= searchData %>"><%= nextPage %></a>
               </li>
               <% } %>
             </ul>
@@ -311,10 +434,10 @@
 
     <!-- more orderdetails req -->
     <script>
-        function orderdetails(id) {
-            window.location.href = `/admin/orderdetails?id=${id}`
-            
-        }
+      function orderdetails(id) {
+        window.location.href = `/admin/orderdetails?id=${id}`
+
+      }
     </script>
 
     <!-- status update  -->

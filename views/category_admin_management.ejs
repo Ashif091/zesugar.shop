@@ -26,24 +26,26 @@
 
 <body>
   <div class="container_main ">
-       <!-- left bar  -->
-       <div class="sidebar">
-        <!-- Your sidebar content goes here -->
-    
-        <div class="profile_bar">
-          <form class="circle" action="/logout" method="get">
-            <img src="/image2/admin.png" alt="Profile Image">
-            <p class="admintag">admin </p>
-            <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
-          </form>
-        </div>
-        <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">User Management</button></a>
-        <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Product Mangement</button></a>
-        <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(69, 45, 45); ">Category</button></a>  
-        <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Order Management</button></a>
+    <!-- left bar  -->
+    <div class="sidebar">
+      <!-- Your sidebar content goes here -->
 
+      <div class="profile_bar">
+        <form class="circle" action="/logout" method="get">
+          <img src="/image2/admin.png" alt="Profile Image">
+          <p class="admintag">admin </p>
+          <button id="logoutbtn" type="submit"><img width="20px" src="/image2/logout.png" alt="logout"></button>
+        </form>
       </div>
-      <!--  -->
+      <a href="/admin/adminDashboard"><button id="toggleButton button" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">Dashboard</button></a>
+      <a href="/admin/usermanagement"><button id="toggleButton" class="button action_usermanagement" style=" background-color: rgb(98, 77, 77);">Users</button></a>
+      <a href="/admin/productmangement"><button class="button" style=" background-color: rgb(98, 77, 77);">Products</button></a>
+      <a href="/admin/categorymanagement"><button class="button" style=" background-color: rgb(69, 45, 45);">Categorys</button></a>
+      <a href="/admin/ordermanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Orders</button></a>
+      <a href="/admin/offermanagement/product"><button class="button" style=" background-color: rgb(98, 77, 77);">Offers</button></a>
+      <a href="/admin/couponmanagement"><button class="button" style=" background-color: rgb(98, 77, 77);">Coupons</button></a>
+    </div>
+    <!--  -->
     <form class="search-bar" action="/admin/usermanagement/search" method="get">
       <h1>category Management</h1>
 
@@ -113,7 +115,6 @@
 
           </div>
           <div class="item">
-            <%=category.category_qty%>
           </div>
 
           <div class="item">
@@ -178,7 +179,7 @@
         })
         .then(response => response.json())
         .then(data => {
-         window.location.href='/admin/categorymanagement'
+          window.location.href = '/admin/categorymanagement'
         })
         .catch((error) => console.error('Error:', error));
 
@@ -209,7 +210,7 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Category</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="/admin/categorymangement" method="post" id="signupForm">
+        <form action="/admin/categorymangement" method="post" id="">
           <div class="modal-body">
             <div class="container-fluid">
               <!--  -->
@@ -223,19 +224,18 @@
                 <label for="newUsername">Description</label>
               </div>
               <!--  -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="quantity_update" placeholder="categoryprice" name="quantity">
-                <label for="newUsername">Quantity</label>
-              </div>
+
               <!--  -->
               <input type="text" class="form-control" hidden id="categoryid_update" name="categoryid">
 
             </div>
           </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary" id="submit_edit">Save changes</button>
           </div>
+
         </form>
       </div>
     </div>
@@ -249,7 +249,6 @@
     submit_edit.addEventListener("click", (event) => {
       event.preventDefault();
       var categoryid = document.getElementById("categoryid_update")
-      var quantity = document.getElementById("quantity_update")
       var description = document.getElementById("description_update")
       var categoryname = document.getElementById("categoryname_update")
 
@@ -257,7 +256,6 @@
 
       // Create a new FormData object
       var data = {
-        quantity: quantity.value,
         description: description.value,
         categoryname: categoryname.value,
         categoryid: categoryid.value,
@@ -306,14 +304,14 @@
   <!-- script end -->
 
   <!-- category create modal -->
-  <div class="modal fade" id="createcategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal fade" id="createcategory" onsubmit="addData()" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modelstyle ">
       <div class="modal-content inner">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Add New category</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="/admin/categorymanagement" method="post" id="signupForm" enctype="multipart/form-data">
+        <form action="/admin/categorymanagement" method="post" id="signupForm" class="create_form_data" enctype="multipart/form-data">
           <div class="modal-body">
             <div class="container-fluid">
               <!--  -->
@@ -323,7 +321,7 @@
               </div>
               <!--  -->
               <div class="form-floating mb-3">
-                <input type="file" class="form-control" id="categoryimg" name="image">
+                <input type="file" class="form-control" id="categoryimg" name="image" accept="image/png, image/jpeg">
 
               </div>
               <!--  -->
@@ -331,16 +329,11 @@
                 <input type="text" class="form-control" id="description" placeholder="name" name="description">
                 <label for="newUsername">Description</label>
               </div>
-              <!--  -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="quantity" placeholder="categoryprice" name="quantity">
-                <label for="newUsername">Quantity</label>
-              </div>
-
-              <!--  -->
 
             </div>
           </div>
+          <div style="color: rgb(255, 142, 142); text-shadow:2px 2px 3px black; font-size:15px; margin:0 0 0 1rem;" class="validation_error"></div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary" id="submit">Save changes</button>
@@ -350,6 +343,110 @@
     </div>
   </div>
   <!-- modal end  -->
+
+
+  <script>
+    function addData() {
+      event.preventDefault()
+      let form = document.querySelector(".create_form_data")
+      const categoryname = document.querySelector("#categoryname").value.trim();
+      const description = document.querySelector("#description").value.trim();
+      const categoryImg = document.querySelector("#categoryimg");
+
+      // Validate categoryname
+      if ((categoryname.length < 5 || categoryname.length > 12)) {
+        document.querySelector(".validation_error").style.display = "block";
+        document.querySelector(".validation_error").textContent = "Category name must be 5-12 characters.";
+        return false;
+      }
+      if (categoryname) {
+        const data = {
+          categoryname,
+        };
+        fetch('/admin/categorynameAvailability', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.status === true) {
+              document.querySelector(".validation_error").style.display = "block";
+              document.querySelector(".validation_error").textContent = "The name already taken.";
+              throw new Error('Coupon name already taken.');
+            } else {
+              // Continue with other validations and second fetch
+              continueWithSecondFetch();
+            }
+          })
+          .catch(e => {
+            console.log('There has been a problem with your fetch operation: ' + e.message);
+          });
+      }
+
+      function continueWithSecondFetch() {
+        // Validate image file
+        if (categoryImg.files[0] === undefined) {
+          document.querySelector(".validation_error").style.display = "block";
+          document.querySelector(".validation_error").textContent = "image mandatory. ";
+          return false;
+        }
+        if (!['image/png', 'image/jpeg'].includes(categoryImg.files[0].type)) {
+          document.querySelector(".validation_error").style.display = "block";
+          document.querySelector(".validation_error").textContent = "Invalid image file type. ";
+          return false;
+        }
+        if (categoryImg.files[0].size > 1000000) { // 1MB limit
+          document.querySelector(".validation_error").style.display = "block";
+          document.querySelector(".validation_error").textContent = "Image file too large. Maximum size is 1MB.";
+          return false;
+        }
+        // Validate description
+        if (description.length <= 1) {
+          document.querySelector(".validation_error").style.display = "block";
+          document.querySelector(".validation_error").textContent = "Description cannot be empty.";
+          return false;
+        }
+        if (description.length > 100) {
+          document.querySelector(".validation_error").style.display = "block";
+          document.querySelector(".validation_error").textContent = "Description max limit exceeded.";
+          return false;
+        }
+
+        // If all validations pass, submit the form
+        const data = {
+          categoryname,
+          description,
+          image: categoryImg,
+        };
+
+        // Second fetch request
+        var formData = new FormData(document.querySelector('.create_form_data'));
+        // Make fetch request
+        fetch('/admin/categorymanagement', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            window.location.reload()
+
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+
+      }
+
+    }
+  </script>
 
 
 

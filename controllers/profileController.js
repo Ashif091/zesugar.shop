@@ -7,6 +7,8 @@ const product = require("../models/productModel")
 const path = require('path');
 const fs = require('fs');
 const sharp = require('sharp');
+const makePdf = require('../helpers/PdfGenerator.js') 
+
 
 
 
@@ -29,6 +31,139 @@ module.exports = {
         } catch (error) {
             console.log(`server Error with (profile GET) `);
             return res.render("404page", { error })
+        }
+
+    },
+    createCode: async (req, res) => {
+        try {
+            console.log("req createCode");
+            const user = req.session.username;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            let userData = await userdata.findById(user._id);
+
+            // Generate a unique six-digit number
+            let referralCode;
+            do {
+                referralCode = parseInt(Math.random() * 900000) + 100000;
+            } while (await userdata.exists({ referral_code: referralCode }));
+
+            // Save the referral code to userData
+            userData.referral_code = referralCode;
+            await userData.save();
+
+            res.json({ message: 'createCode successfully', status: true });
+
+        } catch (error) {
+            console.log(`server Error with (createCode GET) `);
+            return res.json({ status: false, error, message: 'Fail to createCode, server Error !' });
+        }
+
+    },
+    checkCode: async (req, res) => {
+        try {
+            console.log("req checkCode");
+            const { code } = req.body
+            console.log(code);
+            const user = req.session.username;
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            let userData = await userdata.findById(user._id);
+
+            // Generate a unique six-digit number
+            let referralCode;
+            do {
+                referralCode = parseInt(Math.random() * 900000) + 100000;
+            } while (await userdata.exists({ referral_code: referralCode }));
+
+            // Save the referral code to userData
+            userData.referral_code = referralCode;
+            await userData.save();
+
+            const referralUser = await userdata.findOne({ referral_code: code })
+
+            if (!referralUser) {
+                return res.json({ status: false, error, message: 'Enter valid code' });
+            }
+            let referralUserWallet = await Wallet.findOne({ userId: referralUser._id })
+            if (!referralUserWallet) {
+                console.log('no Wallet');
+                referralUserWallet = new Wallet({
+                    userId: referralUser._id,
+                    transactions: [
+                        {
+                            description: `Referral amount of ${userData.name}`,
+                            amount: 504,
+                        },
+                    ],
+
+                    balance: 504,
+
+                });
+                await referralUserWallet.save();
+
+            } else {
+
+                await Wallet.updateOne(
+                    { userId: referralUser._id },
+                    {
+                        $inc: { balance: 504 },
+                        $push: {
+                            transactions: {
+                                description: `Referral amount of ${userData.name}`,
+                                amount: 504,
+                                transaction_type: true,
+                                date: new Date(),
+                            },
+                        },
+                    }
+                );
+            }
+
+            let UserWallet = await Wallet.findOne({ userId: userData._id })
+            if (!UserWallet) {
+                console.log('no Wallet');
+                UserWallet = new Wallet({
+                    userId: userData._id,
+                    transactions: [
+                        {
+                            description: `By using referral code of  ${referralUser.name}`,
+                            amount: 504,
+                        },
+                    ],
+
+                    balance: 504,
+
+                });
+                await UserWallet.save();
+
+            } else {
+
+                await Wallet.updateOne(
+                    { userId: userData._id },
+                    {
+                        $inc: { balance: 204 },
+                        $push: {
+                            transactions: {
+                                description: `By using referral code of  ${referralUser.name}`,
+                                amount: 204,
+                                transaction_type: true,
+                                date: new Date(),
+                            },
+                        },
+                    }
+                );
+            }
+
+
+
+            res.json({ message: 'apply Code successfully', status: true, amount: 204, referralCode});
+
+        } catch (error) {
+            console.log(`server Error with (createCode GET) `);
+            return res.json({ status: false, error, message: 'Fail to createCode, server Error !' });
         }
 
     },
@@ -108,6 +243,7 @@ module.exports = {
         }
     }
     ,
+
     profileAddress: async (req, res) => {
         try {
             const user = req.session.username;
@@ -320,6 +456,10 @@ module.exports = {
             let userData = await userdata.findById(user._id);
 
             const orderdata = await UserOrder.findById(orderid);
+            if(orderdata.status==='cancelled'){
+                console.log(true);
+                return res.redirect('back')
+            }
             if (orderdata.paymentMethod == 'UPI' || orderdata.paymentMethod == 'Wallet') {
                 let userWallet = await Wallet.findOne({ userId: userData._id })
                 //___________cash add to  Wallet______________ 
@@ -385,7 +525,7 @@ module.exports = {
 
             orderdata.status = 'cancelled';
             orderdata.balance_amount = 'Refund';
-            orderdata.paymentMethod = 'Successful';
+            orderdata.paymentStatus = 'Processing';
             orderdata.check_status = false;
             await orderdata.save();
             //cart upadate 
@@ -408,7 +548,7 @@ module.exports = {
             if (!user) {
                 res.status(208).redirect('/');
             }
-            
+
             let userData = await userdata.findById(user._id);
 
             let userWishlist = await wishlist.findOne({ userId: userData._id }).populate(['items.product']);
@@ -489,7 +629,7 @@ module.exports = {
                 { $pull: { items: { product: productId } } }
             )
             const WishlistItems = await wishlist.findOne({ userId: userData._id });
-            return res.json({ status: true, errmsg: ` `, data: productId,itemsCount:WishlistItems.items.length});
+            return res.json({ status: true, errmsg: ` `, data: productId, itemsCount: WishlistItems.items.length });
 
 
         } catch (error) {
@@ -498,6 +638,65 @@ module.exports = {
         }
     }
     ,
+    orderReturn: async (req, res) => {
+        try {
+            const user = req.session.username;
+            const { reason, orderId } = req.body;
+            console.log(req.body);
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            const userData = await userdata.findById(user._id);
+            const orderdata = await UserOrder.findById(orderId);
+
+            console.log(orderdata);
+
+            orderdata.status = 'Return';
+            orderdata.balance_amount = orderdata.totalPrice;
+            orderdata.paymentStatus = 'Processing';
+            orderdata.check_status = false;
+            orderdata.retun_reason = reason;
+
+            await orderdata.save();
+
+            return res.json({ status: true, errMsg: "" })
+
+
+
+        } catch (error) {
+            console.log(`server Error with (edit Address DELETE)${error} `);
+            return res.json({ status: false, errMsg: "server Error" })
+        }
+    },
+
+
+    invoice: (async (req, res) => {
+        console.log('req is invoice');
+        try { 
+            const user = req.session.username;
+            const orderid = req.query.data;
+            console.log(orderid);
+            if (!user) {
+                res.status(208).redirect('/');
+            }
+            let userData = await userdata.findById(user._id);
+
+            const orderDetail = await UserOrder.findById(orderid).populate(['items.product', 'shippingAddress']);
+            console.log(orderDetail);
+            const path = './z_p-invoice.pdf'; 
+            makePdf(path,orderDetail); 
+            setTimeout(() => {
+                res.download(path, () => {
+                    console.log("send success");
+                    // fs.unlinkSync(path); // Delete the file after sending it
+                });
+            }, 1000);
+
+        } catch (error) {
+            console.log(`server have trouble ${error}`);
+        }
+
+    }),
 
 
 

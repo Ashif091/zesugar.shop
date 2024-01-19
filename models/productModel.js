@@ -12,6 +12,9 @@ const ProductSchema = new mongoose.Schema({
 
     min: 0,
   },
+  real_price: {
+    type: Number,
+  },
   brand: {
     type: String,
   },
@@ -26,20 +29,32 @@ const ProductSchema = new mongoose.Schema({
     },
   ],
 
-  product_discount: {
+  product_off: {
     type: Number,
   },
   product_category: {
     type: String,
   },
+  product_categoryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'category',
+  },
   product_publishDate: {
     type: Date,
     default: Date.now,
   },
-  product_status:{
-    type:Boolean,
-    default:true,
-  }
+  product_status: {
+    type: Boolean,
+    default: true,
+  },
+  offer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'offer',
+  },
+  category_offer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'offer',
+  },
 });
 
 product = mongoose.model('product', ProductSchema);
