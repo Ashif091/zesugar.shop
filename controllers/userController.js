@@ -14,7 +14,7 @@ module.exports = {
     login: ((req, res) => {
 
         try {
-            res.status(208).redirect('/');
+            res.status(208).redirect('/home');
         } catch (error) {
             console.log("server ERROR - page ", error);
             return res.render("404page", { error })
@@ -51,6 +51,38 @@ module.exports = {
 
 
             res.status(201).render("home.ejs", { userData, categorylist, productlist })
+
+        } catch (error) {
+            console.log("server ERROR - page ", error);
+            return res.render("404page", { error })
+        }
+
+    }),
+    landing: (async (req, res) => {
+        try {
+            let categorylist = await category.aggregate([
+                {
+                    $lookup: {
+                        from: "products",
+                        localField: "category_name",
+                        foreignField: "product_category",
+                        as: "product_data"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "offers",
+                        localField: "category_offer",
+                        foreignField: "_id",
+                        as: "category_offer"
+                    }
+                }
+            ]);
+
+            let productlist = await product.find({})
+
+
+            res.status(201).render("landing.ejs", {categorylist, productlist })
 
         } catch (error) {
             console.log("server ERROR - page ", error);
@@ -176,7 +208,7 @@ module.exports = {
             }
             console.log(`${userCheck.name} entered`);
             req.session.username = userCheck
-            return res.redirect("/")
+            return res.redirect("/home")
         } catch (error) {
             console.log("server ERROR - page ", error);
             return res.render("404page", { error })

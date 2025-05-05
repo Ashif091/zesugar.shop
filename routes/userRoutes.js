@@ -15,7 +15,8 @@ const { login,
   singupconfirmation,
   page,
   productGET,
-  checkpassword } = require("../controllers/userController")
+  checkpassword, 
+  landing} = require("../controllers/userController")
 //_____________________cart controller_____________________
 const { addToCart,
   getCart,
@@ -57,14 +58,15 @@ const {getWallet,
   } = require("../controllers/walletController")
 
   // _____________________SEARCH Controller___________________
-  const {getSearchPage,
+  const {getSearchPage, getPublicSearchPage,
   } = require("../controllers/searchController")
 
   // ________________________________________________________
 
 
 router.route('/login').get(authenticateUser, login).post(check)
-router.route("/").get(userstatus, home)
+router.route("/home").get(userstatus, home)
+router.route("/").get(landing)
 router.route("/logout").get(logout)
 router.route("/signup").get(signupAuthenticateUser, registerpage).post(signup)
 router.route("/forgotpassword").get(forgotpassword).post(otpsender)
@@ -136,6 +138,7 @@ router.route('/getprofile_wallet').get(userstatus,getWallet)
 
 
 router.route('/search').get(userstatus,getSearchPage)
+router.route('/search_public').get(getPublicSearchPage)
 
 
 //=================================================

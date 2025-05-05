@@ -1,0 +1,121 @@
+<nav class="navbar navbar-expand-md" id="navbar">
+    <!-- Brand -->
+    <a class="navbar-brand" href="/home" id="logo"><img src="/image/logo.webp" alt="" width="70px">ZESUGAR
+      PISTORS</a>
+  
+    <!--collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span><img src="/image/menu.png" alt="" width="30px"></span>
+    </button>
+  
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse search_bar_div" id="collapsibleNavbar">
+      <input type="text" class="search_input_tag" placeholder="Search for Products, ">
+      <div class="search_btn_div"><img src="/image/search.webp" width="20px" alt=""></div>
+    </div>
+    <!-- nav bar links end -->
+    <!-- side logos -->
+
+    <!-- node -->
+    <!-- side logo end -->
+  
+  </nav>
+  
+  <style>
+    .search_btn_div {
+      width: 8%;
+      margin: -.4rem 0 0 0;
+      height: 35px;
+      border-bottom-right-radius: 12px;
+      border-top-right-radius: 12px;
+      padding: 0 0 0 4px;
+      border: 1.3px solid #fff;
+      color: #fff;
+      padding: .3rem .8rem;
+      cursor: pointer;
+      user-select: none;
+      background-color: rgb(76, 46, 60);
+    }
+  
+    /* .search_btn_div: {
+      background-color: rgb(76, 46, 60);
+      box-shadow: 2px 2px 5px #e66dac;
+    } */
+  
+    .search_input_tag {
+      margin: -.4rem 0 0 .5rem;
+      width: 60%;
+      height: 35px;
+      background-color: transparent;
+      border: 1.3px solid #fff;
+      border-bottom-left-radius: 12px;
+      border-top-left-radius: 12px;
+      padding: 0 0 0 1rem;
+      color: #fff;
+  
+    }
+  
+    .search_input_tag:focus~.search_btn_div,
+    .search_input_tag:focus {
+      box-shadow: 2px 2px 5px #e66dac;
+      outline: none;
+    }
+  
+    .search_input_tag:focus {
+      outline: none;
+    }
+  
+    .search_bar_div {
+      max-width: 60%;
+      min-height: 70px;
+      position: relative;
+      display: flex;
+    }
+  
+    .profile_img_tag {
+      width: 40px;
+      height: 40px;
+      margin-left: 10px;
+      border-radius: 50%;
+      border: 2px solid rgb(114, 6, 37);
+      overflow: hidden;
+    }
+  
+    .profile_img_tag img {
+      width: 100%;
+    }
+  
+    .profile_tag {
+      cursor: pointer;
+  
+    }
+  
+    .name_tag {
+      margin-top: 17px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    // search action 
+    document.querySelector(".search_input_tag").addEventListener('keypress', function(e) {
+      if (e.keyCode == 13) {
+        document.querySelector(".search_btn_div").click();
+      }
+    });
+  
+    document.querySelector(".search_btn_div").addEventListener('click', function() {
+      const searchData = document.querySelector(".search_input_tag").value;
+      if (searchData.trim().length > 0) {
+        window.location.href = `/search_public/?q=${searchData.trim()}`
+  
+      }
+    });
+  
+  
+  
+  
+    document.querySelector('.search_input_tag').addEventListener('focus', function() {
+      document.querySelector('.search_btn_div').classList.add('focused');
+    });
+  </script>
