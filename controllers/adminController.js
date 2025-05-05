@@ -30,7 +30,7 @@ module.exports = {
         if (!email || !password) {
             res.status(400).render("admin.ejs", { errmsg: "email and password are needed" })
         }
-        const admindata = { email: "admin@gmail.com", password: "$2b$10$pB.a6M2BD5b94XnViZG7RuEY6PK3HgB6Msah/3BAac59qq7OAse7O" }
+        const admindata = { email: "admin@gmail.com", password: "$2b$10$0t78yX4pp9TZBApiSmcaMOkC0UndIk/1drvxZzVxKLNuJzOL1OrOm" }
         if (email === admindata.email) {
             const verify = await bcrypt.compare(password, admindata.password)
             if (!verify) {
